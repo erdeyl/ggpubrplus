@@ -2,6 +2,30 @@
 
 ## Bug fixes
 
+### Package Dependency Updates
+
+- **Raised minimum R version** to R >= 4.1.0 (from R >= 3.1.0) to match ggplot2
+  >= 3.5.2 requirement.
+
+- **Raised minimum dplyr version** to dplyr >= 1.1.0 (from dplyr >= 0.7.1) to
+  use modern `reframe()`, `slice_head()`, `slice_tail()`, `across()`, and
+  `where()` functions.
+
+### dplyr Compatibility
+
+- **`ggsummarytable()` mutate_if() deprecation**: Replaced deprecated
+  `dplyr::mutate_if()` with `dplyr::mutate(across(where(...)))` syntax.
+
+- **`compare_means()` do() deprecation**: Replaced deprecated `dplyr::do()`
+  with modern `dplyr::reframe()` for p-value adjustment calculations.
+
+- **`desc_statby()` do() deprecation**: Replaced deprecated `dplyr::do()`
+  with `dplyr::reframe()` for computing summary statistics by groups.
+
+- **`.top_up()` and `.top_down()` do() deprecation**: Replaced deprecated
+  `dplyr::do(utils::tail())` and `dplyr::do(utils::head())` with modern
+  `dplyr::slice_tail()` and `dplyr::slice_head()` functions.
+
 ### ggplot2 3.4.0+ Compatibility
 
 - **`border()` size deprecation** (Issues #644, #654, #656): Fixed deprecation
