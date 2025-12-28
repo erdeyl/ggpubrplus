@@ -915,9 +915,14 @@ p
 # add: center to add
 # grouping.vars: grouping variables
 .add_center_line <- function(p, add = c("none", "mean", "median"), grouping.vars = NULL,
-                             color = "black", linetype = "dashed", size = NULL)
+                             color = "black", linetype = "dashed", size = NULL, linewidth = NULL)
 {
 
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(linewidth)) {
+    size <- linewidth
+  }
   add <- match.arg(add)
   data <- p$data
   # x <- .mapping(p)$x
@@ -935,7 +940,7 @@ p
                 stats::median(data[[x]], na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data,
                        xintercept = m, color = color,
-                       linetype = linetype, size = size)
+                       linetype = linetype, linewidth = size)
   }
   # Case of grouping variable
   else {
@@ -944,7 +949,7 @@ p
       summarise(.center = compute_center(!!sym(x), na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data_sum,
                        xintercept = ".center", color = color,
-                       linetype = linetype, size = size)
+                       linetype = linetype, linewidth = size)
   }
 
   p
