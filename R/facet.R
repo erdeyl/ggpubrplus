@@ -24,10 +24,11 @@ NULL
 #'  "Lev", "Lev2") ).
 #'@param panel.labs.background a list to customize the background of panel
 #'  labels. Should contain the combination of the following elements: \itemize{
-#'  \item \code{color, linetype, size}: background line color, type and size
+#'  \item \code{color, linetype, linewidth}: background line color, type and width
 #'  \item \code{fill}: background fill color. } For example,
 #'  panel.labs.background = list(color = "blue", fill = "pink", linetype =
-#'  "dashed", size = 0.5).
+#'  "dashed", linewidth = 0.5). Note: \code{size} is deprecated, use
+#'  \code{linewidth} instead.
 #'@param panel.labs.font a list of aestheics indicating the size (e.g.: 14), the
 #'  face/style (e.g.: "plain", "bold", "italic", "bold.italic") and the color
 #'  (e.g.: "red") and the orientation angle (e.g.: 45) of panel labels.
@@ -75,6 +76,11 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
   }
 
   panel.labs.background <- .compact(panel.labs.background)
+  # Convert size to linewidth for element_rect (ggplot2 3.4.0+ compatibility)
+  if("size" %in% names(panel.labs.background)) {
+    panel.labs.background$linewidth <- panel.labs.background$size
+    panel.labs.background$size <- NULL
+  }
   panel.labs.font.x <- .compact(panel.labs.font.x)
   panel.labs.font.y <- .compact(panel.labs.font.y)
 
