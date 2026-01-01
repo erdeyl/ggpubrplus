@@ -353,8 +353,19 @@ p
   if(!.is_empty(legend.title)){
 
     if(.is_list(legend.title)) p <- p + do.call(ggplot2::labs, legend.title)
-    else p <- p +
-       labs(color = legend.title, fill = legend.title, linetype = legend.title, shape = legend.title)
+    else {
+      # Only set legend title for aesthetics actually used in the plot
+      # to avoid "Ignoring unknown labels" warnings from ggplot2
+      used_aes <- names(p$mapping)
+      labs_args <- list()
+      if("colour" %in% used_aes || "color" %in% used_aes) labs_args$colour <- legend.title
+      if("fill" %in% used_aes) labs_args$fill <- legend.title
+      if("linetype" %in% used_aes) labs_args$linetype <- legend.title
+      if("shape" %in% used_aes) labs_args$shape <- legend.title
+      if(length(labs_args) > 0) {
+        p <- p + do.call(ggplot2::labs, labs_args)
+      }
+    }
   }
 
    if(!is.null(font)){
