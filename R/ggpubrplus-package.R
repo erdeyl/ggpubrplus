@@ -5,15 +5,15 @@
 #' General resources:
 #'
 #'\itemize{
-#' \item \href{https://rpkgs.datanovia.com/ggpubr/}{ggpubr documentation}
-#' \item \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{ggpubr tutorials}
+#' \item \href{https://github.com/erdeyl/ggpubr-modern}{ggpubrplus documentation}
+#' \item \href{https://rpkgs.datanovia.com/ggpubr/}{Original ggpubr documentation}
 #'}
 #'
 #' @section Package options:
 #'
 #' \describe{
 #' \item{ggpubr.parse_aes}{logical indicating whether to parse or not aesthetics variables names.
-#' Default is \code{TRUE}. For example, if you want \code{ggpubr} to handle non-standard column names, like \code{A-A},
+#' Default is \code{TRUE}. For example, if you want \code{ggpubrplus} to handle non-standard column names, like \code{A-A},
 #' without parsing, then set this option to \code{FALSE} using \code{options(ggpubr.parse_aes = FALSE)}.}
 #' \item{ggpubr.null_device}{A function that creates an appropriate null device.
 #' These include: \code{\link[cowplot:pdf_null_device]{cowplot::pdf_null_device}},

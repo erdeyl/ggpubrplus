@@ -50,7 +50,7 @@
 #' # Read a contingency table: housetasks
 #' # Repartition of 13 housetasks in the couple
 #' data <- read.delim(
-#'   system.file("demo-data/housetasks.txt", package = "ggpubr"),
+#'   system.file("demo-data/housetasks.txt", package = "ggpubrplus"),
 #'   row.names = 1
 #'   )
 #' data

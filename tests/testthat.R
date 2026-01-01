@@ -1,4 +1,4 @@
 library(testthat)
-library(ggpubr)
+library(ggpubrplus)
 
-test_check("ggpubr")
+test_check("ggpubrplus")

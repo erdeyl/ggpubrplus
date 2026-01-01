@@ -1,18 +1,21 @@
-Package: ggpubr
+Package: ggpubrplus
 Type: Package
-Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.6.3
-Date: 2025-12-21
+Title: 'ggplot2' Based Publication Ready Plots (Extended)
+Version: 0.7.0
+Date: 2025-12-31
 Authors@R: c(
-    person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"),
-    person("Laszlo", "Erdey", role = "ctb", email = "erdey.laszlo@econ.unideb.hu",
-           comment = "Faculty of Economics and Business, University of Debrecen, Hungary"))
-Description: The 'ggplot2' package is excellent and flexible for elegant data
-    visualization in R. However the default generated plots requires some formatting
-    before we can send them for publication. Furthermore, to customize a 'ggplot',
-    the syntax is opaque and this raises the level of difficulty for researchers
-    with no advanced R programming skills. 'ggpubr' provides some easy-to-use
-    functions for creating and customizing 'ggplot2'- based publication ready plots.
+    person("Laszlo", "Erdey", role = c("aut", "cre"), email = "erdey.laszlo@econ.unideb.hu",
+           comment = "Faculty of Economics and Business, University of Debrecen, Hungary"),
+    person("Alboukadel", "Kassambara", role = "aut", email = "alboukadel.kassambara@gmail.com",
+           comment = "Original ggpubr package author"))
+Description: Extended version of 'ggpubr' with modernized code for compatibility
+    with current R ecosystem (ggplot2 3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, R 4.1.0+).
+    The 'ggplot2' package is excellent and flexible for elegant data visualization
+    in R. However the default generated plots requires some formatting before we
+    can send them for publication. Furthermore, to customize a 'ggplot', the syntax
+    is opaque and this raises the level of difficulty for researchers with no
+    advanced R programming skills. 'ggpubrplus' provides some easy-to-use functions
+    for creating and customizing 'ggplot2'-based publication ready plots.
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
@@ -34,7 +37,7 @@ Imports:
     gridExtra,
     glue,
     polynom,
-    rlang (>= 0.4.6),
+    rlang (>= 1.0.0),
     rstatix (>= 0.7.2),
     tibble,
     magrittr
@@ -44,8 +47,8 @@ Suggests:
     RColorBrewer,
     gtable,
     testthat
-URL: https://rpkgs.datanovia.com/ggpubr/
-BugReports: https://github.com/kassambara/ggpubr/issues
+URL: https://github.com/erdeyl/ggpubr-modern
+BugReports: https://github.com/erdeyl/ggpubr-modern/issues
 RoxygenNote: 7.3.3
 Collate:
     'utilities_color.R'
@@ -98,9 +101,9 @@ Collate:
     'ggmaplot.R'
     'ggpaired.R'
     'ggparagraph.R'
-    'ggpubr-package.R'
-    'ggpubr_args.R'
-    'ggpubr_options.R'
+    'ggpubrplus-package.R'
+    'ggpubrplus_args.R'
+    'ggpubrplus_options.R'
     'ggqqplot.R'
     'utilities_label.R'
     'stat_cor.R'

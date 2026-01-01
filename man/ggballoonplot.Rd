@@ -87,7 +87,7 @@ my_cols <- c("#0D0887FF", "#6A00A8FF", "#B12A90FF",
 # Read a contingency table: housetasks
 # Repartition of 13 housetasks in the couple
 data <- read.delim(
-  system.file("demo-data/housetasks.txt", package = "ggpubr"),
+  system.file("demo-data/housetasks.txt", package = "ggpubrplus"),
   row.names = 1
   )
 data

@@ -1,4 +1,4 @@
-data("gene_expression", package = "ggpubr")
+data("gene_expression", package = "ggpubrplus")
 
 test_that(".get_label_data works when label.select specified as a list", {
   results <- .get_label_data(

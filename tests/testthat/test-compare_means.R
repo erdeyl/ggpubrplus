@@ -1,5 +1,5 @@
 
-data("gene_expression", package = "ggpubr")
+data("gene_expression", package = "ggpubrplus")
 data("ToothGrowth")
 
 

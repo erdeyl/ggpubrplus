@@ -11,7 +11,7 @@ NULL
 #'
 #'# Import the image
 #'img.file <- system.file(file.path("images", "background-image.png"),
-#'                        package = "ggpubr")
+#'                        package = "ggpubrplus")
 #'img <- png::readPNG(img.file)
 #'
 #'# Plot with background image

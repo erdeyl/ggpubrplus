@@ -7,7 +7,7 @@ df[['spa ced']] <- df[['supp']]
 
 
 test_that("facet works", {
-  p <- ggpubr::ggboxplot(df, "dose", "len", facet.by = "supp")
+  p <- ggpubrplus::ggboxplot(df, "dose", "len", facet.by = "supp")
   panels <- ggplot2::layer_data(p)[["PANEL"]] %>%
     unique() %>%
     as.numeric()
@@ -16,7 +16,7 @@ test_that("facet works", {
 
 
 test_that("facet works when column names contain space", {
-  p <- ggpubr::ggboxplot(df, "dose", "len", facet.by = "spa ced")
+  p <- ggpubrplus::ggboxplot(df, "dose", "len", facet.by = "spa ced")
   panels <- ggplot2::layer_data(p)[["PANEL"]] %>%
     unique() %>%
     as.numeric()
