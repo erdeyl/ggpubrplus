@@ -2,6 +2,7 @@
 
 [![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen)](https://github.com/erdeyl/ggpubrplus)
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2+-blue.svg)](https://www.gnu.org/licenses/gpl-2.0)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18131490.svg)](https://doi.org/10.5281/zenodo.18131490)
 
 **A modernized fork of ggpubr with full compatibility for ggplot2 3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, and R 4.1.0+**
 
@@ -30,7 +31,7 @@ remotes::install_github("erdeyl/ggpubrplus")
 
 ## Key Fixes
 
-### ggplot2 3.4.0+ `size` → `linewidth` Fixes
+### ggplot2 3.4.0+ `size` -> `linewidth` Fixes
 - `border()` - element_rect() size deprecation
 - `ggscatter()` - geom_rug() and stat_stars() size deprecation
 - `ggpaired()` - geom_line() size deprecation
@@ -56,6 +57,16 @@ remotes::install_github("erdeyl/ggpubrplus")
 - `ggviolin()` - Added missing adjust parameter (Issue #552)
 - `ggdensity()` - Added missing bw parameter (Issue #490)
 - `stat_cor()` - Fixed locale issue with `options(OutDec = ",")` (Issue #512)
+
+## Citation
+
+Please cite both the original package and this fork:
+
+**Original package:**
+> Kassambara A (2023). ggpubr: 'ggplot2' Based Publication Ready Plots. R package version 0.6.0. https://CRAN.R-project.org/package=ggpubr
+
+**This fork:**
+> Erdey L (2025). Supplementary compatibility updates for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2 >= 3.5.2, dplyr >= 1.1.0, tidyr >= 1.3.0, R >= 4.1.0). R package version 0.7.0. https://doi.org/10.5281/zenodo.18131490
 
 ## Original Package
 

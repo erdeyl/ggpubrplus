@@ -1,4 +1,4 @@
-citHeader("To cite ggpubr in publications, please use the original package citation:")
+citHeader("To cite ggpubrplus in publications, please cite both the original package and this fork:")
 
 # Primary citation - Original package
 bibentry(
@@ -12,16 +12,31 @@ bibentry(
     "Kassambara A (2023).",
     "ggpubr: 'ggplot2' Based Publication Ready Plots.",
     "R package version 0.6.0.",
-    "https://CRAN.R-project.org/package=ggpubr."
+    "https://CRAN.R-project.org/package=ggpubr"
+  )
+)
+
+# Secondary citation - This fork
+bibentry(
+  bibtype  = "Manual",
+  title    = "Supplementary compatibility updates for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2 >= 3.5.2, dplyr >= 1.1.0, tidyr >= 1.3.0, R >= 4.1.0)",
+  author   = person("Laszlo", "Erdey"),
+  year     = "2025",
+  note     = "R package version 0.7.0",
+  url      = "https://github.com/erdeyl/ggpubrplus",
+  doi      = "10.5281/zenodo.18131490",
+  textVersion = paste(
+    "Erdey L (2025).",
+    "Supplementary compatibility updates for ggpubr (Kassambara, 2023):",
+    "Modern R ecosystem support (ggplot2 >= 3.5.2, dplyr >= 1.1.0, tidyr >= 1.3.0, R >= 4.1.0).",
+    "R package version 0.7.0.",
+    "https://doi.org/10.5281/zenodo.18131490"
   )
 )
 
 citFooter(
-  "Note: This is ggpubr-modern, a temporary compatibility fork maintained by",
+  "Note: This is ggpubrplus, a compatibility fork maintained by",
   "Laszlo Erdey (Faculty of Economics and Business, University of Debrecen, Hungary).",
-  "This fork provides ggplot2 3.4.0+ compatibility fixes, including the transition",
-  "from the deprecated 'size' aesthetic to 'linewidth' for line-based geoms.",
   "A pull request has been submitted to the original package (PR #657).",
-  "Once accepted, users should switch back to the official CRAN package.",
-  "Repository: https://github.com/erdeyl/ggpubr-modern"
+  "Once accepted, users should switch back to the official CRAN package."
 )

@@ -47,7 +47,8 @@ Suggests:
     RColorBrewer,
     gtable,
     testthat
-URL: https://github.com/erdeyl/ggpubrplus
+URL: https://github.com/erdeyl/ggpubrplus,
+    https://doi.org/10.5281/zenodo.18131490
 BugReports: https://github.com/erdeyl/ggpubrplus/issues
 RoxygenNote: 7.3.3
 Collate:
