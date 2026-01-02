@@ -8,14 +8,15 @@ Authors@R: c(
            comment = "Faculty of Economics and Business, University of Debrecen, Hungary"),
     person("Alboukadel", "Kassambara", role = "aut", email = "alboukadel.kassambara@gmail.com",
            comment = "Original ggpubr package author"))
-Description: Extended version of 'ggpubr' with modernized code for compatibility
-    with current R ecosystem (ggplot2 3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, R 4.1.0+).
-    The 'ggplot2' package is excellent and flexible for elegant data visualization
-    in R. However the default generated plots requires some formatting before we
-    can send them for publication. Furthermore, to customize a 'ggplot', the syntax
-    is opaque and this raises the level of difficulty for researchers with no
-    advanced R programming skills. 'ggpubrplus' provides some easy-to-use functions
-    for creating and customizing 'ggplot2'-based publication ready plots.
+Description: Supplementary compatibility updates for ggpubr (Kassambara, 2023).
+    Modern R ecosystem support (ggplot2 >= 3.5.2, dplyr >= 1.1.0, tidyr >= 1.3.0,
+    R >= 4.1.0) - to be cited with the original package. The 'ggplot2' package is
+    excellent and flexible for elegant data visualization in R. However the default
+    generated plots requires some formatting before we can send them for publication.
+    Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the
+    level of difficulty for researchers with no advanced R programming skills.
+    'ggpubrplus' provides some easy-to-use functions for creating and customizing
+    'ggplot2'-based publication ready plots.
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
