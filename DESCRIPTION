@@ -1,7 +1,7 @@
 Package: ggpubrplus
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots (Extended)
-Version: 0.7.0
+Version: 0.8.0
 Date: 2026-01-02
 Authors@R: c(
     person("Laszlo", "Erdey", role = c("aut", "cre"), email = "erdey.laszlo@econ.unideb.hu",
@@ -16,7 +16,9 @@ Description: Supplementary compatibility updates for ggpubr (Kassambara, 2023).
     Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the
     level of difficulty for researchers with no advanced R programming skills.
     'ggpubrplus' provides some easy-to-use functions for creating and customizing
-    'ggplot2'-based publication ready plots.
+    'ggplot2'-based publication ready plots. Features include customizable p-value
+    formatting with predefined style presets (APA, AMA, NEJM, Lancet, GraphPad) for
+    matching journal-specific publication requirements.
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
