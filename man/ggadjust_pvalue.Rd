@@ -11,6 +11,10 @@ ggadjust_pvalue(
   label = "p.adj",
   hide.ns = NULL,
   symnum.args = list(),
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
   output = c("plot", "stat_test")
 )
 }
@@ -51,6 +55,23 @@ italic(p)= {p}"}}.}
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
+
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
 
 \item{output}{character. Possible values are one of \code{c("plot",
 "stat_test")}. Default is "plot".}

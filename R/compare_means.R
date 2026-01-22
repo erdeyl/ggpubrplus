@@ -1,4 +1,4 @@
-#' @include utilities.R
+#' @include utilities.R p_format_utils.R
 NULL
 #'Comparison of Means
 #'@description Performs one or multiple mean comparisons.
@@ -44,6 +44,19 @@ NULL
 #'
 #'  Note that, when the \code{formula} contains multiple variables, the p-value
 #'  adjustment is done independently for each variable.
+#'@param p.format.style character string specifying the p-value formatting style.
+#'  One of: \code{"default"} (backward compatible, uses scientific notation),
+#'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+#'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+#'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+#'  See \code{\link{list_p_format_styles}} for details.
+#'@param p.digits integer specifying the number of decimal places for p-values.
+#'  If provided, overrides the style default.
+#'@param p.leading.zero logical indicating whether to include leading zero before
+#'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
+#'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#'  Values below this threshold are shown as "< threshold". Set to NULL to always
+#'  show exact values. If provided, overrides the style default.
 #'@return return a data frame with the following columns:
 #'\itemize{
 #'\item \code{.y.}: the y variable used in the test.
@@ -104,7 +117,9 @@ NULL
 compare_means <- function(formula, data, method = "wilcox.test",
                           paired = FALSE,
                           group.by = NULL, ref.group = NULL,
-                          symnum.args = list(), p.adjust.method = "holm", ...)
+                          symnum.args = list(), p.adjust.method = "holm",
+                          p.format.style = "default", p.digits = NULL,
+                          p.leading.zero = NULL, p.min.threshold = NULL, ...)
 {
 
   . <- NULL
@@ -228,7 +243,11 @@ compare_means <- function(formula, data, method = "wilcox.test",
   pvalue.signif <- do.call(stats::symnum, symnum.args) %>%
     as.character()
 
-  pvalue.format <- format.pval(res$p, digits = 2)
+  pvalue.format <- format_p_value(res$p,
+                                   style = p.format.style,
+                                   digits = p.digits,
+                                   leading.zero = p.leading.zero,
+                                   min.threshold = p.min.threshold)
 
   .y. <- p.adj <- p <- NULL
   pvalue.adj <- res %>%
@@ -239,8 +258,10 @@ compare_means <- function(formula, data, method = "wilcox.test",
     mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
            method = method.name)
 
+  # Resolve p.digits for adjusted p-value rounding
+ p_params <- resolve_p_format_params(p.format.style, p.digits, p.leading.zero, p.min.threshold)
   res %>%
-    mutate(p.adj = signif(p.adj, digits = 2)) %>%
+    mutate(p.adj = signif(p.adj, digits = p_params$digits)) %>%
     tibble::as_tibble()
 }
 

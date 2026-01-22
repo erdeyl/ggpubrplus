@@ -30,6 +30,10 @@ stat_pwc(
   symnum.args = list(),
   hide.ns = FALSE,
   remove.bracket = FALSE,
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -65,6 +69,10 @@ geom_pwc(
   symnum.args = list(),
   hide.ns = FALSE,
   remove.bracket = FALSE,
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -207,6 +215,23 @@ displaying significance levels. Filter is done by checking the column
 \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
 when character value. Possible values are "p" or "p.adj", for filtering out
 non significant. }}
+
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
 
 \item{position}{A position adjustment to use on the data for this layer. This
 can be used in various ways, including to prevent overplotting and

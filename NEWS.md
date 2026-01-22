@@ -1,4 +1,57 @@
-# ggpubrplus 0.7.0
+# ggpubrplus 0.8.0
+
+## New Features
+
+### Customizable P-Value Formatting (Addresses kassambara/ggpubr#334)
+
+Added comprehensive p-value formatting system with predefined style presets to match
+different journal and publication style requirements.
+
+**New Functions:**
+- `format_p_value()` - Format p-values with customizable decimal places, leading zero,
+  and threshold notation
+- `get_p_format_style()` - Retrieve a predefined formatting style by name
+- `list_p_format_styles()` - List all available predefined styles
+
+**New Parameters in Statistical Functions:**
+The following functions now support p-value formatting parameters (`p.format.style`,
+`p.digits`, `p.leading.zero`, `p.min.threshold`):
+- `stat_compare_means()`
+- `compare_means()`
+- `geom_pwc()` / `stat_pwc()`
+- `stat_anova_test()`
+- `stat_kruskal_test()`
+- `stat_friedman_test()`
+- `stat_welch_anova_test()`
+- `stat_cor()`
+- `ggadjust_pvalue()`
+
+**Available Styles:**
+
+| Style | Digits | Leading Zero | Threshold | Description |
+|-------|--------|--------------|-----------|-------------|
+| default | 2 | Yes | None | Current behavior (backward compatible) |
+| apa | 3 | No | < .001 | APA Style |
+| nejm | 3 | Yes | < 0.001 | New England Journal of Medicine |
+| lancet | 4 | Yes | < 0.0001 | The Lancet |
+| ama | 3 | No | < .001 | American Medical Association |
+| graphpad | 4 | Yes | < 0.0001 | GraphPad Prism |
+| scientific | 2 | Yes | None | Scientific notation for GWAS |
+
+**Example Usage:**
+```r
+# Use APA style formatting
+bxp + stat_compare_means(p.format.style = "apa")
+
+# Use NEJM style
+bxp + geom_pwc(method = "t_test", p.format.style = "nejm")
+
+# Custom formatting: 4 digits, no leading zero
+compare_means(len ~ dose, ToothGrowth, p.digits = 4, p.leading.zero = FALSE)
+
+# List all available styles
+list_p_format_styles()
+```
 
 ## Package Rename
 

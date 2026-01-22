@@ -1,4 +1,4 @@
-#' @include utilities.R utilities_label.R utils_stat_test_label.R
+#' @include utilities.R utilities_label.R utils_stat_test_label.R p_format_utils.R
 NULL
 #'Add Mean Comparison P-values to a ggplot
 #'@description Add mean comparison p-values to a ggplot, such as box blots, dot
@@ -18,7 +18,21 @@ NULL
 #'  significance levels.
 #'@param label character string specifying label type. Allowed values include
 #'  "p.signif" (shows the significance levels), "p.format" (shows the formatted
+#'
 #'  p value).
+#'@param p.format.style character string specifying the p-value formatting style.
+#'  One of: \code{"default"} (backward compatible, uses scientific notation),
+#'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+#'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+#'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+#'  See \code{\link{list_p_format_styles}} for details.
+#'@param p.digits integer specifying the number of decimal places for p-values.
+#'  If provided, overrides the style default.
+#'@param p.leading.zero logical indicating whether to include leading zero before
+#'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
+#'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#'  Values below this threshold are shown as "< threshold". If provided, overrides
+#'  the style default.
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -105,6 +119,8 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      label.x = NULL, label.y = NULL, vjust = 0, tip.length = 0.03,
                      bracket.size = 0.3, step.increase = 0,
                      symnum.args = list(),
+                     p.format.style = "default", p.digits = NULL,
+                     p.leading.zero = NULL, p.min.threshold = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
 
@@ -159,6 +175,8 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                     method = method, method.args = method.args,
                     paired = paired, ref.group = ref.group,
                     symnum.args = symnum.args,
+                    p.format.style = p.format.style, p.digits = p.digits,
+                    p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
                     hide.ns = hide.ns, na.rm = na.rm, vjust = vjust,...)
     )
 
@@ -173,6 +191,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 
                   compute_panel = function(data, scales, method, method.args,
                                            paired, ref.group, symnum.args,
+                                           p.format.style, p.digits,
+                                           p.leading.zero, p.min.threshold,
                                            hide.ns, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep)
                     {
@@ -206,7 +226,9 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                     method.args <- method.args %>%
                       .add_item(data = data, method = method,
                                 paired = paired, ref.group = ref.group,
-                                symnum.args = symnum.args)
+                                symnum.args = symnum.args,
+                                p.format.style = p.format.style, p.digits = p.digits,
+                                p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold)
 
                     if(.is.multiple.grouping.vars){
                       method.args <- method.args %>%
@@ -219,8 +241,13 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       .test <- do.call(compare_means, method.args)
                     }
 
-                    pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
-                                      paste("p =", signif(.test$p, 2)))
+                    # Format p-value for label using the specified style
+                    p_formatted <- format_p_value(.test$p,
+                                                  style = p.format.style,
+                                                  digits = p.digits,
+                                                  leading.zero = p.leading.zero,
+                                                  min.threshold = p.min.threshold)
+                    pvaltxt <- paste("p =", p_formatted)
                     .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
 
                     # Options for label positioning
