@@ -200,9 +200,9 @@ StatCor<- ggproto("StatCor", Stat,
         cor.coef.name = cor.coef.name, type = output.type
         ),
       p.label = get_p_label(
-        p, accuracy = p.accuracy, type = output.type,
+        pval, p.digits = p.digits, accuracy = p.accuracy, type = output.type,
         p.format.style = p.format.style, p.leading.zero = p.leading.zero
-        )
+      )
   )
 
   # Defining correlation labels
@@ -228,39 +228,48 @@ StatCor<- ggproto("StatCor", Stat,
 
 
 # Formatting R and P ----------------------
-get_p_label <- function(x, accuracy = 0.0001, type = "expression",
+get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
                         p.format.style = "default", p.leading.zero = NULL){
-  # If using a custom style (not default), apply style-based formatting
-  if (!is.null(p.format.style) && p.format.style != "default") {
-    style_params <- get_p_format_style(p.format.style)
-    # Override accuracy with style's min.threshold if accuracy not specified
-    if (is.null(accuracy) && !is.null(style_params$min.threshold)) {
-      accuracy <- style_params$min.threshold
+
+  if (!is.null(p.format.style) && p.format.style != "default" && is.null(accuracy)) {
+    p_formatted <- format_p_value(
+      x,
+      style = p.format.style,
+      digits = p.digits,
+      leading.zero = p.leading.zero,
+      min.threshold = NULL
+    )
+    label <- ifelse(
+      startsWith(p_formatted, "<"),
+      paste("p", p_formatted),
+      paste("p =", p_formatted)
+    )
+  } else {
+    # Backward compatible behavior (scales::pvalue + accuracy)
+    if(is.null(accuracy)){
+      label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
     }
-    # Override leading.zero with style's setting if not specified
-    if (is.null(p.leading.zero)) {
+    else if (!(accuracy < 1)){
+      stop(
+        "Accuracy should be < 1; For example use 0.01, 0.001, 0.0001, etc.",
+        call. = FALSE
+      )
+    }
+    else{
+      label <- scales::pvalue(x, accuracy = accuracy, add_p = TRUE)
+      # Add space before and after: = or <
+      label <- gsub(pattern = "(=|<)", replacement = " \\1 ", x = label)
+    }
+
+    # Apply style-based leading.zero preference even in legacy path
+    if (!is.null(p.format.style) && p.format.style != "default" && is.null(p.leading.zero)) {
+      style_params <- get_p_format_style(p.format.style)
       p.leading.zero <- style_params$leading.zero
     }
-  }
 
-  if(is.null(accuracy)){
-    label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
-  }
-  else if (!(accuracy < 1)){
-    stop(
-      "Accuracy should be < 1; For example use 0.01, 0.001, 0.0001, etc.",
-      call. = FALSE
-    )
-  }
-  else{
-    label <- scales::pvalue(x, accuracy = accuracy, add_p = TRUE)
-    # Add space before and after: = or <
-    label <- gsub(pattern = "(=|<)", replacement = " \\1 ", x = label)
-  }
-
-  # Remove leading zero if requested (for APA style)
-  if (!is.null(p.leading.zero) && !p.leading.zero) {
-    label <- gsub("0\\.", ".", label)
+    if (!is.null(p.leading.zero) && !p.leading.zero) {
+      label <- gsub("0\\.", ".", label)
+    }
   }
 
   if(type == "expression"){

@@ -145,8 +145,8 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
   if (!is.null(size) && !is.null(linewidth)) {
     stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
   } else if (!is.null(size)) {
-    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
     linewidth <- size
+    size <- NULL
   } else if (is.null(linewidth)) {
     linewidth <- NULL # Default value
   }
@@ -160,8 +160,6 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
   # Check bins
   if(is.null(bins) & is.null(binwidth)){
     bins <- 30
-    warning("Using `bins = 30` by default. Pick better value with the argument `bins`.",
-            call.= FALSE)
   }
 
   add <- match.arg(add)
@@ -179,11 +177,19 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
-  p <- p +
+  if ("linewidth" %in% names(formals(ggplot2::geom_histogram))) {
+    p <- p +
       geom_exec(geom_histogram, data = data,
-                 color = color, fill = fill, size = linewidth,
-                 linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
-                 weight = weight, position = position, ...)
+                color = color, fill = fill, linewidth = linewidth,
+                linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
+                weight = weight, position = position, ...)
+  } else {
+    p <- p +
+      geom_exec(geom_histogram, data = data,
+                color = color, fill = fill, size = linewidth,
+                linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
+                weight = weight, position = position, ...)
+  }
 
   # Add mean/median
   if(add %in% c("mean", "median")){

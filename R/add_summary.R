@@ -181,7 +181,8 @@ mean_ci <- function(x, ci = 0.95, error.limit = "both"){
   sd = stats::sd(x, na.rm=TRUE)
   se <- sd / sqrt(length)
   .mean <- base::mean(x, na.rm = TRUE)
-  ci <- stats::qt(ci/2 + .5, length-1)*se
+  df <- length - 1
+  ci <- if (is.finite(df) && df > 0 && is.finite(se)) stats::qt(ci/2 + .5, df) * se else NA_real_
   data.frame(
     y =  .mean,
     ymin = .mean - ci,

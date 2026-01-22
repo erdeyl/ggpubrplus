@@ -209,9 +209,11 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
   groups <- c(x, color, fill, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
-  summary.stats <- data %>%
-    group_by(!!!syms(groups)) %>%
-    get_summary_stats(!!y)
+  summary.stats <- suppressWarnings(
+    data %>%
+      group_by(!!!syms(groups)) %>%
+      get_summary_stats(!!y)
+  )
   # No need to repeat the panel label on the table
   table.facet.by <- facet.by
   if(free.panels) table.facet.by <- NULL
