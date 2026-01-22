@@ -1,4 +1,4 @@
-#' @include utilities.R utilities_label.R
+#' @include utilities.R utilities_label.R p_format_utils.R
 NULL
 #'Add Correlation Coefficients with P-values to a Scatter Plot
 #'@description Add correlation coefficients with p-values to a scatter plot. Can
@@ -96,6 +96,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
+                     p.format.style = "default", p.leading.zero = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -107,7 +108,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
                   method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
-                  p.accuracy = p.accuracy, cor.coef.name = cor.coef.name,
+                  p.accuracy = p.accuracy, p.format.style = p.format.style,
+                  p.leading.zero = p.leading.zero, cor.coef.name = cor.coef.name,
                   parse = parse, na.rm = na.rm, ...)
   )
 }
@@ -119,7 +121,8 @@ StatCor<- ggproto("StatCor", Stat,
 
                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
-                                           r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name)
+                                           r.digits, p.digits, r.accuracy, p.accuracy,
+                                           p.format.style, p.leading.zero, cor.coef.name)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -131,6 +134,7 @@ StatCor<- ggproto("StatCor", Stat,
                       label.sep = label.sep, output.type = output.type, digits = digits,
                       r.digits = r.digits, p.digits = p.digits,
                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
+                      p.format.style = p.format.style, p.leading.zero = p.leading.zero,
                       cor.coef.name = cor.coef.name
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
@@ -153,6 +157,7 @@ StatCor<- ggproto("StatCor", Stat,
                       label.sep = ", ", output.type = "expression",
                       digits = 2, r.digits = digits, p.digits = digits,
                       r.accuracy = NULL, p.accuracy = NULL,
+                      p.format.style = "default", p.leading.zero = NULL,
                       cor.coef.name = "R"){
   # Overwritting digits by accuracy, if specified
   if(!is.null(p.accuracy)){
@@ -190,7 +195,8 @@ StatCor<- ggproto("StatCor", Stat,
         cor.coef.name = cor.coef.name, type = output.type
         ),
       p.label = get_p_label(
-        p, accuracy = p.accuracy, type = output.type
+        p, accuracy = p.accuracy, type = output.type,
+        p.format.style = p.format.style, p.leading.zero = p.leading.zero
         )
   )
 
@@ -217,7 +223,21 @@ StatCor<- ggproto("StatCor", Stat,
 
 
 # Formatting R and P ----------------------
-get_p_label <- function(x, accuracy = 0.0001, type = "expression"){
+get_p_label <- function(x, accuracy = 0.0001, type = "expression",
+                        p.format.style = "default", p.leading.zero = NULL){
+  # If using a custom style (not default), apply style-based formatting
+  if (!is.null(p.format.style) && p.format.style != "default") {
+    style_params <- get_p_format_style(p.format.style)
+    # Override accuracy with style's min.threshold if accuracy not specified
+    if (is.null(accuracy) && !is.null(style_params$min.threshold)) {
+      accuracy <- style_params$min.threshold
+    }
+    # Override leading.zero with style's setting if not specified
+    if (is.null(p.leading.zero)) {
+      p.leading.zero <- style_params$leading.zero
+    }
+  }
+
   if(is.null(accuracy)){
     label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
   }
@@ -232,6 +252,12 @@ get_p_label <- function(x, accuracy = 0.0001, type = "expression"){
     # Add space before and after: = or <
     label <- gsub(pattern = "(=|<)", replacement = " \\1 ", x = label)
   }
+
+  # Remove leading zero if requested (for APA style)
+  if (!is.null(p.leading.zero) && !p.leading.zero) {
+    label <- gsub("0\\.", ".", label)
+  }
+
   if(type == "expression"){
     label <- gsub(pattern = "p = ", replacement = "italic(p)~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)

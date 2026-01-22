@@ -1,4 +1,4 @@
-#' @include utilities.R geom_pwc.R
+#' @include utilities.R geom_pwc.R p_format_utils.R
 NULL
 
 #'Adjust p-values Displayed on a GGPlot
@@ -55,7 +55,10 @@ NULL
 #' )
 #'@export
 ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "p.adj",
-                            hide.ns = NULL, symnum.args = list(), output = c("plot", "stat_test")){
+                            hide.ns = NULL, symnum.args = list(),
+                            p.format.style = "default", p.digits = NULL,
+                            p.leading.zero = NULL, p.min.threshold = NULL,
+                            output = c("plot", "stat_test")){
   output <- match.arg(output)
   .build <- ggplot_build(p)
   .build_data <- .build$data
@@ -99,8 +102,25 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     p <- p.adj <- NULL
     stat_test <- stat_test %>%
       dplyr::select(-dplyr::one_of(c("p", "p.adj", "p.format", "p.adj.format", "label"))) %>%
-      dplyr::inner_join(padjusted, by = c("PANEL", "group", "group1", "group2")) %>%
-      rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4) %>%
+      dplyr::inner_join(padjusted, by = c("PANEL", "group", "group1", "group2"))
+
+    # Format p-values using the specified style
+    if (p.format.style == "default") {
+      stat_test <- stat_test %>%
+        rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4)
+    } else {
+      stat_test <- stat_test %>%
+        dplyr::mutate(
+          p.format = format_p_value(p, style = p.format.style,
+                                    digits = p.digits, leading.zero = p.leading.zero,
+                                    min.threshold = p.min.threshold),
+          p.adj.format = format_p_value(p.adj, style = p.format.style,
+                                        digits = p.digits, leading.zero = p.leading.zero,
+                                        min.threshold = p.min.threshold)
+        )
+    }
+
+    stat_test <- stat_test %>%
       rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
       rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
       add_stat_label(label = label)

@@ -1,4 +1,4 @@
-#' @include utilities.R utils_stat_test_label.R
+#' @include utilities.R utils_stat_test_label.R p_format_utils.R
 NULL
 #'Add Anova Test P-values to a GGPlot
 #'@description Adds automatically one-way and two-way ANOVA test p-values to a
@@ -57,6 +57,19 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
+#'@param p.format.style character string specifying the p-value formatting style.
+#'  One of: \code{"default"} (backward compatible, uses scientific notation),
+#'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+#'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+#'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+#'  See \code{\link{list_p_format_styles}} for details.
+#'@param p.digits integer specifying the number of decimal places for p-values.
+#'  If provided, overrides the style default.
+#'@param p.leading.zero logical indicating whether to include leading zero before
+#'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
+#'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#'  Values below this threshold are shown as "< threshold". If provided, overrides
+#'  the style default.
 #'@param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
@@ -207,6 +220,8 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
                             p.adjust.method = "holm", significance = list(),
+                            p.format.style = "default", p.digits = NULL,
+                            p.leading.zero = NULL, p.min.threshold = NULL,
                             geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
                             inherit.aes = TRUE, parse = FALSE,  ...) {
 
@@ -239,7 +254,9 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
       step.increase = step.increase, p.adjust.method = p.adjust.method,
-      significance = fortify_signif_symbols_encoding(significance), ...
+      significance = fortify_signif_symbols_encoding(significance),
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...
     )
   )
 }
@@ -271,7 +288,8 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                          compute_panel = function(data, scales, method, method.args, group.by,
                                                   correction, p.adjust.method,
                                                   stat.label, label.x.npc, label.y.npc, label.x, label.y,
-                                                  significance, is.group.specified, step.increase){
+                                                  significance, is.group.specified, step.increase,
+                                                  p.format.style, p.digits, p.leading.zero, p.min.threshold){
                            p <- p.adj <- x <- NULL
                            if(method %in% c("one_way_repeated", "friedman_test")){
                              # One-way repeated measures ANOVA
@@ -358,8 +376,25 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                            stat.test <- stat.test %>%
                              rstatix::adjust_pvalue(method = p.adjust.method) %>%
                              rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                             rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                             rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4) %>%
+                             rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols)
+
+                           # Format p-values using the specified style
+                           if (p.format.style == "default") {
+                             stat.test <- stat.test %>%
+                               rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4)
+                           } else {
+                             stat.test <- stat.test %>%
+                               dplyr::mutate(
+                                 p.format = format_p_value(p, style = p.format.style,
+                                                           digits = p.digits, leading.zero = p.leading.zero,
+                                                           min.threshold = p.min.threshold),
+                                 p.adj.format = format_p_value(p.adj, style = p.format.style,
+                                                               digits = p.digits, leading.zero = p.leading.zero,
+                                                               min.threshold = p.min.threshold)
+                               )
+                           }
+
+                           stat.test <- stat.test %>%
                              add_stat_n() %>%
                              keep_only_tbl_df_classes() %>%
                              mutate(method = method.name) %>%

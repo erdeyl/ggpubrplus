@@ -1,4 +1,4 @@
-#' @include utilities.R utils_stat_test_label.R utils-aes.R
+#' @include utilities.R utils_stat_test_label.R utils-aes.R p_format_utils.R
 NULL
 
 #'Add Pairwise Comparisons P-values to a GGPlot
@@ -93,6 +93,19 @@ NULL
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
 #'@param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
+#'@param p.format.style character string specifying the p-value formatting style.
+#'  One of: \code{"default"} (backward compatible, uses scientific notation),
+#'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+#'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+#'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+#'  See \code{\link{list_p_format_styles}} for details.
+#'@param p.digits integer specifying the number of decimal places for p-values.
+#'  If provided, overrides the style default.
+#'@param p.leading.zero logical indicating whether to include leading zero before
+#'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
+#'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#'  Values below this threshold are shown as "< threshold". If provided, overrides
+#'  the style default.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
 #'  displaying significance levels. Filter is done by checking the column
@@ -234,6 +247,8 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.format.style = "default", p.digits = NULL,
+                     p.leading.zero = NULL, p.min.threshold = NULL,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
 
@@ -270,7 +285,9 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
-      hide.ns = hide.ns, parse = parse, ...)
+      hide.ns = hide.ns, parse = parse,
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...)
   )
 }
 
@@ -295,7 +312,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
-                                                     symnum.args, hide.ns, group.by, dodge, remove.bracket) {
+                                                     symnum.args, hide.ns, group.by, dodge, remove.bracket,
+                                                     p.format.style, p.digits, p.leading.zero, p.min.threshold) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -370,8 +388,27 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               stat.test <- stat.test %>%
                                 rstatix::add_x_position(x = "x", group = "group", dodge = dodge) %>%
                                 rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                                rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                                rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4) %>%
+                                rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols)
+
+                              # Format p-values using the specified style
+                              if (p.format.style == "default") {
+                                # Use rstatix default formatting for backward compatibility
+                                stat.test <- stat.test %>%
+                                  rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4)
+                              } else {
+                                # Use custom formatting based on style
+                                stat.test <- stat.test %>%
+                                  dplyr::mutate(
+                                    p.format = format_p_value(p, style = p.format.style,
+                                                              digits = p.digits, leading.zero = p.leading.zero,
+                                                              min.threshold = p.min.threshold),
+                                    p.adj.format = format_p_value(p.adj, style = p.format.style,
+                                                                  digits = p.digits, leading.zero = p.leading.zero,
+                                                                  min.threshold = p.min.threshold)
+                                  )
+                              }
+
+                              stat.test <- stat.test %>%
                                 add_stat_n() %>%
                                 keep_only_tbl_df_classes() %>%
                                 add_stat_label(label = stat.label)
@@ -473,6 +510,8 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.format.style = "default", p.digits = NULL,
+                     p.leading.zero = NULL, p.min.threshold = NULL,
                      position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
   p.adjust.by <- match.arg(p.adjust.by)
@@ -514,6 +553,8 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, remove.bracket = remove.bracket,
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
       parse = parse,
       ...
     )

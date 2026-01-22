@@ -92,6 +92,8 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, group.by
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
                             p.adjust.method = "holm", significance = list(),
+                            p.format.style = "default", p.digits = NULL,
+                            p.leading.zero = NULL, p.min.threshold = NULL,
                             geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
                             inherit.aes = TRUE, parse = FALSE,  ...) {
 
@@ -118,7 +120,9 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, group.by
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
       step.increase = step.increase, p.adjust.method = p.adjust.method,
-      significance = fortify_signif_symbols_encoding(significance), ...
+      significance = fortify_signif_symbols_encoding(significance),
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...
     )
   )
 }
