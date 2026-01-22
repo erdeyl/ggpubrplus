@@ -229,22 +229,44 @@ format_p_value <- function(p,
   }
 
   p_valid <- p[valid_idx]
-  formatted <- character(length(p_valid))
 
-  for (i in seq_along(p_valid)) {
-    pval <- p_valid[i]
+  if (use.scientific) {
+    # Use vectorized format.pval for consistent formatting across values
+    # This preserves the original behavior where format.pval formats all values
+    # together to maintain consistent decimal places
+    formatted <- format.pval(p_valid, digits = digits)
 
-    # Check if below threshold
-    if (!is.null(min.threshold) && !use.scientific && pval < min.threshold) {
-      # Format threshold value
-      threshold_str <- format_single_p(min.threshold, digits, leading.zero, FALSE)
-      formatted[i] <- paste0("< ", threshold_str)
-    } else if (use.scientific) {
-      # Use scientific notation (default/backward compatible behavior)
-      formatted[i] <- format.pval(pval, digits = digits)
-    } else {
-      # Format exact value
-      formatted[i] <- format_single_p(pval, digits, leading.zero, FALSE)
+    # Apply threshold if specified
+    if (!is.null(min.threshold)) {
+      below_threshold <- p_valid < min.threshold
+      if (any(below_threshold)) {
+        threshold_digits <- max(digits, -floor(log10(min.threshold)))
+        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE)
+        formatted[below_threshold] <- paste0("< ", threshold_str)
+      }
+    }
+
+    # Apply leading zero removal if requested
+    if (!leading.zero) {
+      formatted <- sub("^0\\.", ".", formatted)
+      formatted <- sub("^-0\\.", "-.", formatted)
+    }
+  } else {
+    # Non-scientific styles: format individually
+    formatted <- character(length(p_valid))
+    for (i in seq_along(p_valid)) {
+      pval <- p_valid[i]
+
+      # Check if below threshold
+      if (!is.null(min.threshold) && pval < min.threshold) {
+        # Format threshold value - use enough digits to show the threshold
+        threshold_digits <- max(digits, -floor(log10(min.threshold)))
+        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE)
+        formatted[i] <- paste0("< ", threshold_str)
+      } else {
+        # Format exact value
+        formatted[i] <- format_single_p(pval, digits, leading.zero, FALSE)
+      }
     }
   }
 

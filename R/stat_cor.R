@@ -39,6 +39,11 @@ NULL
 #'@param p.accuracy a real value specifying the number of decimal places of
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
+#'@param p.format.style character specifying the p-value formatting style.
+#'  One of "default", "apa", "nejm", "lancet", "ama", "graphpad", "scientific".
+#'  Default is "default" for backward compatibility.
+#'@param p.leading.zero logical. Whether to include leading zero before decimal
+#'  point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If

@@ -6,7 +6,7 @@
 \alias{ggpubrplus-package}
 \title{ggpubrplus: 'ggplot2' Based Publication Ready Plots (Extended)}
 \description{
-Extended version of 'ggpubr' with modernized code for compatibility with current R ecosystem (ggplot2 3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, R 4.1.0+). The 'ggplot2' package is excellent and flexible for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills. 'ggpubrplus' provides some easy-to-use functions for creating and customizing 'ggplot2'-based publication ready plots.
+Supplementary compatibility updates for ggpubr (Kassambara, 2023). Modern R ecosystem support (ggplot2 >= 3.5.2, dplyr >= 1.1.0, tidyr >= 1.3.0, R >= 4.1.0) - to be cited with the original package. The 'ggplot2' package is excellent and flexible for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills. 'ggpubrplus' provides some easy-to-use functions for creating and customizing 'ggplot2'-based publication ready plots.
 }
 \details{
 General resources:
@@ -39,6 +39,7 @@ when calling \code{\link{ggarrange}()} or \code{\link{as_ggplot}()}} }
 Useful links:
 \itemize{
   \item \url{https://github.com/erdeyl/ggpubrplus}
+  \item \doi{10.5281/zenodo.18131490}
   \item Report bugs at \url{https://github.com/erdeyl/ggpubrplus/issues}
 }
 

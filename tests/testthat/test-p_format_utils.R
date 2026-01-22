@@ -1,6 +1,6 @@
 
 test_that("format_p_value returns correct format for default style", {
-  # Default style should use 2 significant digits with scientific notation
+  # Default style should use format.pval with 2 significant digits
   expect_equal(format_p_value(0.001234), "0.0012")
   expect_equal(format_p_value(0.000001234), "1.2e-06")
   expect_equal(format_p_value(0.05), "0.05")
@@ -9,14 +9,14 @@ test_that("format_p_value returns correct format for default style", {
 
 test_that("format_p_value returns correct format for APA style", {
   # APA: 3 decimals, no leading zero, < .001 threshold
-
-p <- format_p_value(0.0456, style = "apa")
+  p <- format_p_value(0.0456, style = "apa")
   expect_true(grepl("046", p))
   expect_false(grepl("^0\\.", p))
 
   # Very small p-values should use < .001
   p_small <- format_p_value(0.0001, style = "apa")
-  expect_true(grepl("<", p_small) || grepl("001", p_small))
+  expect_true(grepl("<", p_small))
+  expect_true(grepl("\\.001", p_small))
 })
 
 test_that("format_p_value returns correct format for NEJM style", {
@@ -26,34 +26,38 @@ test_that("format_p_value returns correct format for NEJM style", {
 
   # Very small p-values should use < 0.001
   p_small <- format_p_value(0.0001, style = "nejm")
-  expect_true(grepl("<", p_small) || grepl("0\\.001", p_small))
+  expect_true(grepl("<", p_small))
+  expect_true(grepl("0\\.001", p_small))
 })
 
 test_that("format_p_value returns correct format for Lancet style", {
   # Lancet: 4 decimals, leading zero
   p <- format_p_value(0.04567, style = "lancet")
-  expect_true(grepl("0\\.0457", p) || grepl("0\\.04567", p))
+  expect_true(grepl("0\\.0457", p))
 })
 
 test_that("format_p_value respects custom digits parameter", {
   # Custom digits should override style defaults
-  p <- format_p_value(0.04567, style = "default", digits = 4)
+  # Using a non-scientific style to test digits more clearly
+  p <- format_p_value(0.04567, style = "nejm", digits = 4)
   expect_true(grepl("0457", p))
 })
 
 test_that("format_p_value respects custom leading.zero parameter", {
-  # Override leading zero setting
-  p_no_zero <- format_p_value(0.05, style = "default", leading.zero = FALSE)
+  # Override leading zero setting - use non-scientific style
+  p_no_zero <- format_p_value(0.05, style = "nejm", leading.zero = FALSE)
   expect_false(grepl("^0\\.", p_no_zero))
+  expect_true(grepl("^\\.05", p_no_zero))
 
   p_with_zero <- format_p_value(0.05, style = "apa", leading.zero = TRUE)
   expect_true(grepl("^0\\.", p_with_zero))
 })
 
 test_that("format_p_value respects custom min.threshold parameter", {
-  # Custom minimum threshold
-  p <- format_p_value(0.00001, style = "default", min.threshold = 0.0001)
+  # Custom minimum threshold with non-scientific style
+  p <- format_p_value(0.00001, style = "nejm", min.threshold = 0.0001)
   expect_true(grepl("<", p))
+  expect_true(grepl("0\\.0001", p))
 })
 
 test_that("get_p_format_style returns correct style parameters", {
@@ -96,27 +100,38 @@ test_that("format_p_value handles vector input", {
 })
 
 test_that("format_p_value returns scientific style correctly", {
-  # Scientific style: uses scientific notation
-  p <- format_p_value(0.0001234, style = "scientific")
+  # Scientific style: uses format.pval which may use scientific notation for very small values
+  p <- format_p_value(0.0000001234, style = "scientific")
   expect_true(grepl("e-", p))
 })
 
 test_that("format_p_value for GraphPad style", {
   # GraphPad: 4 decimals, leading zero, < 0.0001 threshold
   p <- format_p_value(0.04567, style = "graphpad")
-  expect_true(grepl("0\\.0457", p) || grepl("0\\.04567", p))
+  expect_true(grepl("0\\.0457", p))
 })
 
-test_that("format_p_value handles edge cases",
-{
+test_that("format_p_value handles edge cases", {
   # P-value of exactly 1
   expect_equal(format_p_value(1), "1")
 
-  # Very small p-value
-  p_tiny <- format_p_value(1e-20, style = "default")
+  # Very small p-value with scientific style
+  p_tiny <- format_p_value(1e-20, style = "scientific")
   expect_true(grepl("e-", p_tiny) || grepl("<", p_tiny))
 
   # P-value of exactly 0 (edge case)
   p_zero <- format_p_value(0)
   expect_true(grepl("0", p_zero) || grepl("<", p_zero))
+})
+
+test_that("format_p_value leading.zero works with scientific styles", {
+  # Test leading zero removal with default style
+  p <- format_p_value(0.05, style = "default", leading.zero = FALSE)
+  expect_true(grepl("^\\.05", p))
+})
+
+test_that("format_p_value min.threshold works with scientific styles", {
+  # Test min.threshold with default style
+  p <- format_p_value(0.00001, style = "default", min.threshold = 0.0001)
+  expect_true(grepl("<", p))
 })

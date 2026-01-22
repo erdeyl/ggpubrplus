@@ -65,6 +65,7 @@ Collate:
     'background_image.R'
     'bgcolor.R'
     'border.R'
+    'p_format_utils.R'
     'compare_means.R'
     'create_aes.R'
     'diff_express.R'

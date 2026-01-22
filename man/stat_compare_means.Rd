@@ -24,6 +24,10 @@ stat_compare_means(
   bracket.size = 0.3,
   step.increase = 0,
   symnum.args = list(),
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -81,8 +85,9 @@ significance levels.}
 separate the correlation coefficient and the p.value.}
 
 \item{label}{character string specifying label type. Allowed values include
-"p.signif" (shows the significance levels), "p.format" (shows the formatted
-p value).}
+ "p.signif" (shows the significance levels), "p.format" (shows the formatted
+
+ p value).}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
 vector of the same length as the number of groups and/or panels. If too
@@ -118,6 +123,23 @@ height for every additional comparison to minimize overlap.}
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
+
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
