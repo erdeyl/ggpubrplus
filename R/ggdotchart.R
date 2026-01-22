@@ -204,10 +204,18 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 
 
     # Use linewidth instead of size for geom_linerange (ggplot2 3.4.0+ compatibility)
-    if(!is.null(add.params$size))
-      option$linewidth <- add.params$size
-    if(!is.null(add.params$linewidth))
+    if(!is.null(add.params$linewidth)) {
       option$linewidth <- add.params$linewidth
+    } else if(!is.null(add.params$size)) {
+      option$linewidth <- add.params$size
+    }
+
+    if ("linewidth" %in% names(formals(ggplot2::geom_linerange))) {
+      option$size <- NULL
+    } else {
+      if (is.null(option$size) && !is.null(option$linewidth)) option$size <- option$linewidth
+      option$linewidth <- NULL
+    }
 
     option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_linerange, option)

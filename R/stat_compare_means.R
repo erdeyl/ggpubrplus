@@ -247,7 +247,11 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                                                   digits = p.digits,
                                                   leading.zero = p.leading.zero,
                                                   min.threshold = p.min.threshold)
-                    pvaltxt <- paste("p =", p_formatted)
+                    pvaltxt <- ifelse(
+                      startsWith(p_formatted, "<"),
+                      paste("p", p_formatted),
+                      paste("p =", p_formatted)
+                    )
                     .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
 
                     # Options for label positioning

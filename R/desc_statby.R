@@ -68,7 +68,12 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
   data_sum$se <- data_sum$sd / sqrt(data_sum$length) # standard error
   # Confidence interval from t-distribution
   # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
-  data_sum$ci <- stats::qt(ci/2 + .5, data_sum$length-1)*data_sum$se
+  df <- data_sum$length - 1
+  data_sum$ci <- ifelse(
+    is.finite(df) & df > 0 & is.finite(data_sum$se),
+    stats::qt(ci/2 + .5, df) * data_sum$se,
+    NA_real_
+  )
   data_sum$range <- data_sum$max - data_sum$min
   data_sum$cv <- data_sum$sd/data_sum$mean
   data_sum$var <- data_sum$sd^2

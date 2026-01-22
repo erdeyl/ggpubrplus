@@ -957,9 +957,19 @@ p
     m <- ifelse(add == "mean",
                 mean(data[[x]], na.rm = TRUE),
                 stats::median(data[[x]], na.rm = TRUE))
-    p <- p + geom_exec(geom_vline, data = data,
-                       xintercept = m, color = color,
-                       linetype = linetype, linewidth = size)
+    line_width_arg <- if ("linewidth" %in% names(formals(ggplot2::geom_vline))) "linewidth" else "size"
+    width_opt <- list(size)
+    names(width_opt) <- line_width_arg
+    p <- p + do.call(
+      ggplot2::geom_vline,
+      c(
+        list(
+          xintercept = m, color = color,
+          linetype = linetype, inherit.aes = FALSE
+        ),
+        width_opt
+      )
+    )
   }
   # Case of grouping variable
   else {
@@ -968,7 +978,8 @@ p
       summarise(.center = compute_center(!!sym(x), na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data_sum,
                        xintercept = ".center", color = color,
-                       linetype = linetype, linewidth = size)
+                       linetype = linetype, linewidth = size,
+                       inherit.aes = FALSE)
   }
 
   p
