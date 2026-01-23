@@ -19,6 +19,100 @@ fortify_signif_symbols_encoding <- function(symnum.args = list()){
   symnum.args
 }
 
+
+#' Build symnum.args from Significance Parameters
+#'
+#' @description Internal helper function to build a symnum.args list from
+#'   user-friendly significance parameters. This allows users to specify
+#'   custom significance cutoffs and symbols without using the complex
+#'   symnum.args format directly.
+#'
+#' @param signif.cutoffs Numeric vector of p-value cutoffs in descending order
+#'   (e.g., \code{c(0.10, 0.05, 0.01)} or \code{c(0.10, 0.05, 0.01, 0.001)}).
+#'   Values smaller than each cutoff receive the corresponding symbol.
+#' @param signif.symbols Character vector of symbols matching signif.cutoffs.
+#'   If NULL, auto-generated based on length: 3 cutoffs -> c("*", "**", "***"),
+#'   4 cutoffs -> c("*", "**", "***", "****").
+#' @param ns.symbol Character string for non-significant results. Default is "ns".
+#'   Use "" (empty string) to show nothing for non-significant results.
+#' @param use.four.stars Logical. If TRUE and signif.symbols is NULL, include
+#'   four stars (****) for the most significant level. Default is FALSE.
+#' @param symnum.args Existing symnum.args list. If provided and non-empty,
+#'   it takes precedence over other parameters (for backward compatibility).
+#'
+#' @return A list suitable for use as symnum.args parameter.
+#'
+#' @details
+#' Priority order:
+#' 1. If symnum.args is provided (non-empty), use it directly
+#' 2. If signif.cutoffs is provided, build symnum.args from it
+#' 3. Otherwise, use package defaults
+#'
+#' @keywords internal
+build_symnum_args <- function(signif.cutoffs = NULL,
+                              signif.symbols = NULL,
+                              ns.symbol = "ns",
+                              use.four.stars = FALSE,
+                              symnum.args = list()) {
+
+
+ # Priority 1: If symnum.args is provided, use it directly (backward compatibility)
+  if (!.is_empty(symnum.args)) {
+    return(fortify_signif_symbols_encoding(symnum.args))
+  }
+
+  # Priority 2: If signif.cutoffs is provided, build from it
+  if (!is.null(signif.cutoffs)) {
+    # Validate cutoffs
+    if (!is.numeric(signif.cutoffs) || any(signif.cutoffs <= 0) || any(signif.cutoffs >= 1)) {
+      stop("signif.cutoffs must be numeric values between 0 and 1 (exclusive)", call. = FALSE)
+    }
+
+    # Sort cutoffs in descending order (largest to smallest)
+    signif.cutoffs <- sort(signif.cutoffs, decreasing = TRUE)
+    n_cutoffs <- length(signif.cutoffs)
+
+    # Auto-generate symbols if not provided
+    if (is.null(signif.symbols)) {
+      # Generate symbols: *, **, ***, (****)
+      if (use.four.stars && n_cutoffs >= 4) {
+        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+      } else if (n_cutoffs > 3 && !use.four.stars) {
+        stop("signif.cutoffs has more than 3 levels but use.four.stars = FALSE. ",
+             "Either set use.four.stars = TRUE or provide signif.symbols explicitly.",
+             call. = FALSE)
+      } else {
+        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+      }
+    }
+
+    # Validate symbols length
+    if (length(signif.symbols) != n_cutoffs) {
+      stop("signif.symbols must have the same length as signif.cutoffs (", n_cutoffs, ")",
+           call. = FALSE)
+    }
+
+    # Build cutpoints: 0, cutoffs (ascending), Inf
+    cutpoints <- c(0, rev(signif.cutoffs), Inf)
+
+    # Build symbols: most significant first, then less significant, then ns
+    symbols <- c(rev(signif.symbols), ns.symbol)
+
+    return(list(cutpoints = cutpoints, symbols = symbols))
+  }
+
+  # Priority 3: Use package defaults, but respect ns.symbol if customized
+  default_args <- fortify_signif_symbols_encoding(list())
+
+  # If ns.symbol is different from default, update it
+  if (ns.symbol != "ns") {
+    # Replace the last symbol (ns) with the custom one
+    default_args$symbols[length(default_args$symbols)] <- ns.symbol
+  }
+
+  default_args
+}
+
 # Check user specified label -----------------------------
 
 # Check if is glue package expression

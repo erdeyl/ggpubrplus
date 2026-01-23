@@ -229,3 +229,78 @@ test_that("stat_compare_means with p.format.signif and threshold shows 'p <' not
 })
 
 
+# Tests for custom significance cutoffs and symbols
+test_that("stat_compare_means works with custom signif.cutoffs (3 levels)", {
+  stat.test <- .get_stat_test(df, label = "p.signif",
+                               signif.cutoffs = c(0.10, 0.05, 0.01))
+  # p = 0.064 is between 0.05 and 0.10, so should get "*"
+  expect_equal(stat.test$label, "*")
+})
+
+test_that("stat_compare_means works with custom signif.cutoffs (4 levels with use.four.stars)", {
+  # Use paired test which has significant p-value (~0.004)
+  stat.test <- .get_stat_test(df, label = "p.signif", paired = TRUE,
+                               signif.cutoffs = c(0.10, 0.05, 0.01, 0.001),
+                               use.four.stars = TRUE)
+  # p ~ 0.004 is between 0.001 and 0.01, so should get "***"
+  expect_equal(stat.test$label, "***")
+})
+
+test_that("stat_compare_means works with custom signif.symbols", {
+  stat.test <- .get_stat_test(df, label = "p.signif",
+                               signif.cutoffs = c(0.10, 0.05, 0.01),
+                               signif.symbols = c("+", "++", "+++"))
+  # p = 0.064 is between 0.05 and 0.10, so should get "+"
+  expect_equal(stat.test$label, "+")
+})
+
+test_that("stat_compare_means works with custom ns.symbol", {
+  # Create data with non-significant difference
+  set.seed(456)
+  test_df <- data.frame(
+    group = rep(c("A", "B"), each = 10),
+    value = rnorm(20, mean = 5, sd = 1)
+  )
+  bxp <- ggboxplot(test_df, x = "group", y = "value") +
+    stat_compare_means(label = "p.signif", ns.symbol = "N.S.")
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+
+  expect_equal(stat.test$label, "N.S.")
+})
+
+test_that("stat_compare_means works with empty ns.symbol", {
+  # Create data with non-significant difference
+  set.seed(456)
+  test_df <- data.frame(
+    group = rep(c("A", "B"), each = 10),
+    value = rnorm(20, mean = 5, sd = 1)
+  )
+  bxp <- ggboxplot(test_df, x = "group", y = "value") +
+    stat_compare_means(label = "p.signif", ns.symbol = "")
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+
+  expect_equal(stat.test$label, "")
+})
+
+test_that("show.signif = FALSE falls back to p.format with warning", {
+  expect_warning(
+    bxp <- ggboxplot(df, x = "supp", y = "len") +
+      stat_compare_means(label = "p.format.signif", show.signif = FALSE),
+    "falling back"
+  )
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+  # Should show p-value only, no stars
+  expect_equal(stat.test$label, "p = 0.064")
+})
+
+test_that("stat_compare_means with p.format.signif uses custom signif.cutoffs", {
+  stat.test <- .get_stat_test(df, label = "p.format.signif",
+                               signif.cutoffs = c(0.10, 0.05, 0.01))
+  # p = 0.064 is between 0.05 and 0.10, so should get "*"
+  expect_equal(stat.test$label, "p = 0.064 *")
+})
+
+

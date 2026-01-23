@@ -34,6 +34,10 @@ stat_pwc(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -73,6 +77,10 @@ geom_pwc(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -205,7 +213,10 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
- \item \code{****}:  p <= 0.0001 }}
+ \item \code{****}:  p <= 0.0001 }
+
+ Note: If \code{signif.cutoffs} is provided, it takes precedence over
+ \code{symnum.args}.}
 
 \item{hide.ns}{can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).}
 
@@ -232,6 +243,21 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 \item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
 Values below this threshold are shown as "< threshold". If provided, overrides
 the style default.}
+
+\item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
+for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+Default is NULL, which uses the package defaults.}
+
+\item{signif.symbols}{character vector of symbols corresponding to
+\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+(and "****" if \code{use.four.stars = TRUE}).}
+
+\item{ns.symbol}{character string for non-significant results. Default is "ns".
+Use "" (empty string) to show nothing.}
+
+\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
+significant level. Default is FALSE.}
 
 \item{position}{A position adjustment to use on the data for this layer. This
 can be used in various ways, including to prevent overplotting and

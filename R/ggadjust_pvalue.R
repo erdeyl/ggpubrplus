@@ -53,12 +53,35 @@ NULL
 #'   bxp, p.adjust.method = "bonferroni",
 #'   label = "{p.adj.format}{p.adj.signif}"
 #' )
+#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  Default is NULL, which uses the package defaults.
+#'@param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#'@param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#'@param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
 #'@export
 ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "p.adj",
                             hide.ns = NULL, symnum.args = list(),
                             p.format.style = "default", p.digits = NULL,
                             p.leading.zero = NULL, p.min.threshold = NULL,
+                            signif.cutoffs = NULL, signif.symbols = NULL,
+                            ns.symbol = "ns", use.four.stars = FALSE,
                             output = c("plot", "stat_test")){
+
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
+
   output <- match.arg(output)
   .build <- ggplot_build(p)
   .build_data <- .build$data
@@ -79,7 +102,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
   }
 
   stat_test <- .build$data[[layer]]
-  sy <- fortify_signif_symbols_encoding(symnum.args)
+  sy <- symnum.args
   if(all(is.na(stat_test$p))){
     warning(
       "p-values can't be adjusted for the specified stat method.\n",

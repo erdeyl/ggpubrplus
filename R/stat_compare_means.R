@@ -33,6 +33,21 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  If \code{use.four.stars = TRUE}, can include a fourth level.
+#'  Default is NULL, which uses the package defaults.
+#'@param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#'@param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#'@param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
+#'@param show.signif logical. If TRUE (default), shows significance symbols when
+#'  using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
+#'  the p-value (equivalent to \code{label = "p.format"}) with a warning.
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -121,8 +136,27 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      symnum.args = list(),
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE, show.signif = TRUE,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
+
+  # Handle show.signif = FALSE with label = "p.format.signif"
+  if (!show.signif && identical(label, "p.format.signif")) {
+    warning("show.signif = FALSE with label = 'p.format.signif': ",
+            "falling back to 'p.format' (p-value only, no significance symbols)",
+            call. = FALSE)
+    label <- "p.format"
+  }
+
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
 
   if(!is.null(comparisons)){
 
@@ -140,16 +174,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
     if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
-      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=Inf)
-      if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
-    }
-
-    if(!.is_empty(symnum.args)){
-
-      symnum.args.isok <- length(symnum.args$cutpoints == length(symnum.args$symbols))
-      if(!symnum.args.isok)
-        stop("Incorrect format detected in symnum.args. ",
-             "Check the documentation.")
+      # Use cutpoints from symnum.args (already built from new parameters)
       map_signif_level <- symnum.args$cutpoints[-1] # the first element is 0 (the minimum p-value)
       names(map_signif_level) <- symnum.args$symbols
       if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)

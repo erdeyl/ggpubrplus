@@ -149,5 +149,80 @@ test_that("add_stat_label works with Kruskal-Wallis stats label formats", {
 })
 
 
+# Tests for build_symnum_args helper function
+test_that("build_symnum_args uses symnum.args when provided (backward compatibility)", {
+  result <- build_symnum_args(
+    symnum.args = list(cutpoints = c(0, 0.01, 0.05, 1), symbols = c("**", "*", "ns"))
+  )
+  expect_equal(result$cutpoints, c(0, 0.01, 0.05, 1))
+  expect_equal(result$symbols, c("**", "*", "ns"))
+})
+
+test_that("build_symnum_args builds from signif.cutoffs (3 levels)", {
+  result <- build_symnum_args(
+    signif.cutoffs = c(0.10, 0.05, 0.01)
+  )
+  # Cutoffs should be sorted ascending and wrapped with 0 and Inf
+  expect_equal(result$cutpoints, c(0, 0.01, 0.05, 0.10, Inf))
+  # Symbols should be: most significant first, then less, then ns
+  expect_equal(result$symbols, c("***", "**", "*", "ns"))
+})
+
+test_that("build_symnum_args builds from signif.cutoffs (4 levels with use.four.stars)", {
+  result <- build_symnum_args(
+    signif.cutoffs = c(0.10, 0.05, 0.01, 0.001),
+    use.four.stars = TRUE
+  )
+  expect_equal(result$cutpoints, c(0, 0.001, 0.01, 0.05, 0.10, Inf))
+  expect_equal(result$symbols, c("****", "***", "**", "*", "ns"))
+})
+
+test_that("build_symnum_args uses custom signif.symbols", {
+  result <- build_symnum_args(
+    signif.cutoffs = c(0.10, 0.05, 0.01),
+    signif.symbols = c("+", "++", "+++")
+  )
+  expect_equal(result$symbols, c("+++", "++", "+", "ns"))
+})
+
+test_that("build_symnum_args uses custom ns.symbol", {
+  result <- build_symnum_args(
+    signif.cutoffs = c(0.10, 0.05, 0.01),
+    ns.symbol = "N.S."
+  )
+  expect_equal(result$symbols[4], "N.S.")
+})
+
+test_that("build_symnum_args uses empty ns.symbol", {
+  result <- build_symnum_args(
+    signif.cutoffs = c(0.10, 0.05, 0.01),
+    ns.symbol = ""
+  )
+  expect_equal(result$symbols[4], "")
+})
+
+test_that("build_symnum_args errors when signif.cutoffs has 4+ levels without use.four.stars", {
+  expect_error(
+    build_symnum_args(signif.cutoffs = c(0.10, 0.05, 0.01, 0.001)),
+    "use.four.stars"
+  )
+})
+
+test_that("build_symnum_args errors when signif.symbols length doesn't match", {
+  expect_error(
+    build_symnum_args(
+      signif.cutoffs = c(0.10, 0.05, 0.01),
+      signif.symbols = c("+", "++")  # Only 2, but need 3
+    ),
+    "same length"
+  )
+})
+
+test_that("build_symnum_args uses defaults when nothing provided", {
+  result <- build_symnum_args()
+  # Should use package defaults
+  expect_equal(result$cutpoints, c(0, 1e-04, 0.001, 0.01, 0.05, Inf))
+  expect_equal(result$symbols, c("****", "***", "**", "*", "ns"))
+})
 
 

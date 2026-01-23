@@ -35,6 +35,24 @@ NULL
 #'  In other words, we use the following convention for symbols indicating
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }
+#'
+#'  Note: If \code{signif.cutoffs} is provided, it takes precedence over
+#'  \code{symnum.args}.
+#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  If \code{use.four.stars = TRUE}, can include a fourth level (e.g.,
+#'  \code{c(0.10, 0.05, 0.01, 0.001)} for "****" at p < 0.001).
+#'  Default is NULL, which uses the package defaults (backward compatible).
+#'@param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}). Must have the same length
+#'  as \code{signif.cutoffs}.
+#'@param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing for non-significant results.
+#'@param use.four.stars logical. If TRUE and \code{signif.symbols} is NULL,
+#'  allows four stars (****) for the most significant level when
+#'  \code{signif.cutoffs} has 4 levels. Default is FALSE.
 #'@param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
 #'  multiple pairwise tests are performed; or when there are multiple grouping
@@ -119,18 +137,25 @@ compare_means <- function(formula, data, method = "wilcox.test",
                           group.by = NULL, ref.group = NULL,
                           symnum.args = list(), p.adjust.method = "holm",
                           p.format.style = "default", p.digits = NULL,
-                          p.leading.zero = NULL, p.min.threshold = NULL, ...)
+                          p.leading.zero = NULL, p.min.threshold = NULL,
+                          signif.cutoffs = NULL, signif.symbols = NULL,
+                          ns.symbol = "ns", use.four.stars = FALSE, ...)
 {
 
   . <- NULL
 
   method.info <- .method_info(method)
-  method <- method.info$method
+ method <- method.info$method
   method.name <- method.info$name
 
-  if(.is_empty(symnum.args))
-    symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05,  1),
-                        symbols = c("****", "***", "**", "*",  "ns"))
+  # Build symnum.args from new parameters or use defaults
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
 
   if(!inherits(data, "data.frame"))
     stop("data must be a data.frame.")
