@@ -161,3 +161,71 @@ test_that("stat_compare_means works for pairwise comparisons with multiple group
 })
 
 
+# Issue #4: Test for p.format.signif label type
+test_that("stat_compare_means works with label='p.format.signif' to show p-value with significance stars", {
+  stat.test <- .get_stat_test(df, label = "p.format.signif")
+  label_coords_observed <- stat.test[, c("x", "y", "label")]
+  label_coords_observed$x <- as.numeric(label_coords_observed$x)
+
+  # The p-value is ~0.064 which is "ns" (not significant)
+  expect_equal(label_coords_observed$label, "p = 0.064 ns")
+  expect_equal(label_coords_observed$x, 1)
+  expect_equal(label_coords_observed$y, 33.9)
+})
+
+test_that("stat_compare_means with label='p.format.signif' shows stars for significant results", {
+  # Use paired test which has significant p-value
+  stat.test <- .get_stat_test(df, label = "p.format.signif", paired = TRUE)
+  label_value <- stat.test$label
+
+  # Should have format "p = X.XXXX **" (p ~ 0.004 is **)
+  expect_true(grepl("^p = .* \\*\\*$", label_value),
+              info = paste("Observed label =", label_value))
+})
+
+
+# Issue #5: Test that p-values with threshold show "p <" not "p = <"
+test_that("stat_compare_means with p.format and threshold shows 'p <' not 'p = <'", {
+  # Create data with very significant difference to get p < 0.001
+  set.seed(123)
+  test_df <- data.frame(
+    group = rep(c("A", "B"), each = 30),
+    value = c(rnorm(30, mean = 0, sd = 1), rnorm(30, mean = 5, sd = 1))
+  )
+
+  bxp <- ggboxplot(test_df, x = "group", y = "value") +
+    stat_compare_means(label = "p.format", p.format.style = "nejm")
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+
+  # Should show "p < 0.001" not "p = < 0.001"
+  expect_true(grepl("^p < ", stat.test$label) || grepl("^p = 0\\.", stat.test$label),
+              info = paste("Observed label =", stat.test$label))
+  expect_false(grepl("p = <", stat.test$label),
+               info = paste("Label should not contain 'p = <', but got:", stat.test$label))
+})
+
+test_that("stat_compare_means with p.format.signif and threshold shows 'p <' not 'p = <'", {
+  # Create data with very significant difference
+  set.seed(123)
+  test_df <- data.frame(
+    group = rep(c("A", "B"), each = 30),
+    value = c(rnorm(30, mean = 0, sd = 1), rnorm(30, mean = 5, sd = 1))
+  )
+
+  bxp <- ggboxplot(test_df, x = "group", y = "value") +
+    stat_compare_means(label = "p.format.signif", p.format.style = "nejm")
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+
+  # Should show "p < 0.001 ****" not "p = < 0.001 ****"
+  expect_true(grepl("^p < ", stat.test$label),
+              info = paste("Observed label =", stat.test$label))
+  expect_false(grepl("p = <", stat.test$label),
+               info = paste("Label should not contain 'p = <', but got:", stat.test$label))
+  # Should have stars
+  expect_true(grepl("\\*+$", stat.test$label),
+              info = paste("Label should end with stars, but got:", stat.test$label))
+})
+
+

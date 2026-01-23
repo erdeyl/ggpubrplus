@@ -17,9 +17,9 @@ NULL
 #'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels.
 #'@param label character string specifying label type. Allowed values include
-#'  "p.signif" (shows the significance levels), "p.format" (shows the formatted
-#'
-#'  p value).
+#'  \code{"p.signif"} (shows the significance levels), \code{"p.format"} (shows
+#'  the formatted p-value), and \code{"p.format.signif"} (shows the formatted
+#'  p-value followed by significance stars, e.g., "p = 0.01 **").
 #'@param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
 #'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
@@ -329,10 +329,11 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   allowed.label <- list(
     "p.signif" = quote(ggplot2::after_stat(p.signif)),
     "..p.signif.." = quote(ggplot2::after_stat(p.signif)),
-    "p.format" = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "..p.format.." = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "p" = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "..p.." = quote(ggplot2::after_stat(paste0("p = ", p.format)))
+    "p.format" = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "..p.format.." = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "p" = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "..p.." = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "p.format.signif" = quote(ggplot2::after_stat(create_p_label(p.format, p.signif)))
   )
 
   if(!is.null(label)){

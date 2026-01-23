@@ -340,3 +340,52 @@ digits = if (is.null(digits)) style_settings$digits else digits,
     use.scientific = style_settings$use.scientific
   )
 }
+
+
+#' Create P-Value Label with Proper Prefix
+#'
+#' @description Creates a p-value label string with proper handling of inequality
+#'   symbols. When the formatted p-value starts with "<" or ">", uses "p <value"
+
+#'   or "p >value" format. Otherwise uses "p = value" format.
+#'
+#' @param p.format Character string of the formatted p-value (e.g., "0.05", "< 0.001").
+#' @param p.signif Optional character string of significance symbol (e.g., "*", "**", "ns").
+#'   If provided, it will be appended after the p-value.
+#'
+#' @return A character string with the properly formatted p-value label.
+#'
+#' @examples
+#' \dontrun{
+#' create_p_label("0.05")
+#' # Returns: "p = 0.05"
+#'
+#' create_p_label("< 0.001")
+#' # Returns: "p < 0.001"
+#'
+#' create_p_label("0.01", "**")
+#' # Returns: "p = 0.01 **"
+#'
+#' create_p_label("< 0.001", "****")
+#' # Returns: "p < 0.001 ****"
+#' }
+#'
+#' @keywords internal
+#' @export
+create_p_label <- function(p.format, p.signif = NULL) {
+  # Check if p.format starts with < or >
+  has_inequality <- grepl("^[<>]", p.format)
+
+  # Create base label
+  label <- ifelse(has_inequality,
+                  paste("p", p.format),
+                  paste("p =", p.format))
+
+  # Append significance if provided
+
+  if (!is.null(p.signif)) {
+    label <- paste(label, p.signif)
+  }
+
+  label
+}

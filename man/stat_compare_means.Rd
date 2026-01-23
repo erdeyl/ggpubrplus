@@ -85,9 +85,9 @@ significance levels.}
 separate the correlation coefficient and the p.value.}
 
 \item{label}{character string specifying label type. Allowed values include
- "p.signif" (shows the significance levels), "p.format" (shows the formatted
-
- p value).}
+\code{"p.signif"} (shows the significance levels), \code{"p.format"} (shows
+the formatted p-value), and \code{"p.format.signif"} (shows the formatted
+p-value followed by significance stars, e.g., "p = 0.01 **").}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
 vector of the same length as the number of groups and/or panels. If too
