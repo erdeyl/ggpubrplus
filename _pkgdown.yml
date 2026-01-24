@@ -60,6 +60,7 @@ reference:
   - title: P-Value Formatting
     contents:
       - format_p_value
+      - create_p_label
       - get_p_format_style
       - list_p_format_styles
   - title: Plot Tables and Paragraphs
