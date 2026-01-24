@@ -28,6 +28,12 @@ stat_compare_means(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
+  show.signif = TRUE,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -85,9 +91,9 @@ significance levels.}
 separate the correlation coefficient and the p.value.}
 
 \item{label}{character string specifying label type. Allowed values include
- "p.signif" (shows the significance levels), "p.format" (shows the formatted
-
- p value).}
+\code{"p.signif"} (shows the significance levels), \code{"p.format"} (shows
+the formatted p-value), and \code{"p.format.signif"} (shows the formatted
+p-value followed by significance stars, e.g., "p = 0.01 **").}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
 vector of the same length as the number of groups and/or panels. If too
@@ -122,7 +128,10 @@ height for every additional comparison to minimize overlap.}
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
- \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
+ \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }
+
+ Note: If \code{signif.cutoffs} is provided, it takes precedence over
+ \code{symnum.args}.}
 
 \item{p.format.style}{character string specifying the p-value formatting style.
 One of: \code{"default"} (backward compatible, uses scientific notation),
@@ -140,6 +149,29 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 \item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
 Values below this threshold are shown as "< threshold". If provided, overrides
 the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
+\item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
+for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+If \code{use.four.stars = TRUE}, can include a fourth level.
+Default is NULL, which uses the package defaults.}
+
+\item{signif.symbols}{character vector of symbols corresponding to
+\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+(and "****" if \code{use.four.stars = TRUE}).}
+
+\item{ns.symbol}{character string for non-significant results. Default is "ns".
+Use "" (empty string) to show nothing.}
+
+\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
+significant level. Default is FALSE.}
+
+\item{show.signif}{logical. If TRUE (default), shows significance symbols when
+using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
+the p-value (equivalent to \code{label = "p.format"}) with a warning.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument

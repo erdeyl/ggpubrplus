@@ -40,7 +40,7 @@ NULL
 #'   legend.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
-#' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
+#' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #' @seealso \code{\link{annotate_figure}()}
 #' @examples
 #' data("ToothGrowth")

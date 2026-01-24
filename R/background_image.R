@@ -4,7 +4,7 @@ NULL
 #'@description Add background image to ggplot2.
 #'@param raster.img raster object to display, as returned by the function
 #'  \code{readPNG()}[in \code{png} package] and \code{readJPEG()} [in \code{jpeg} package].
-#'@author Alboukadel Kassambara <alboukadel.kassambara@@gmail.com>
+#'@author Laszlo Erdey <erdey.laszlo@@econ.unideb.hu>
 #' @examples
 #' \dontrun{
 #'install.packages("png")

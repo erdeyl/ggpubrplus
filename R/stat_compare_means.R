@@ -17,9 +17,9 @@ NULL
 #'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels.
 #'@param label character string specifying label type. Allowed values include
-#'  "p.signif" (shows the significance levels), "p.format" (shows the formatted
-#'
-#'  p value).
+#'  \code{"p.signif"} (shows the significance levels), \code{"p.format"} (shows
+#'  the formatted p-value), and \code{"p.format.signif"} (shows the formatted
+#'  p-value followed by significance stars, e.g., "p = 0.01 **").
 #'@param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
 #'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
@@ -33,6 +33,23 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
+#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  If \code{use.four.stars = TRUE}, can include a fourth level.
+#'  Default is NULL, which uses the package defaults.
+#'@param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#'@param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#'@param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
+#'@param show.signif logical. If TRUE (default), shows significance symbols when
+#'  using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
+#'  the p-value (equivalent to \code{label = "p.format"}) with a warning.
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -121,8 +138,28 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      symnum.args = list(),
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE, show.signif = TRUE,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
+
+  # Handle show.signif = FALSE with label = "p.format.signif"
+  if (!show.signif && identical(label, "p.format.signif")) {
+    warning("show.signif = FALSE with label = 'p.format.signif': ",
+            "falling back to 'p.format' (p-value only, no significance symbols)",
+            call. = FALSE)
+    label <- "p.format"
+  }
+
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
 
   if(!is.null(comparisons)){
 
@@ -140,16 +177,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
     if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
-      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=Inf)
-      if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
-    }
-
-    if(!.is_empty(symnum.args)){
-
-      symnum.args.isok <- length(symnum.args$cutpoints == length(symnum.args$symbols))
-      if(!symnum.args.isok)
-        stop("Incorrect format detected in symnum.args. ",
-             "Check the documentation.")
+      # Use cutpoints from symnum.args (already built from new parameters)
       map_signif_level <- symnum.args$cutpoints[-1] # the first element is 0 (the minimum p-value)
       names(map_signif_level) <- symnum.args$symbols
       if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
@@ -177,6 +205,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                     symnum.args = symnum.args,
                     p.format.style = p.format.style, p.digits = p.digits,
                     p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+                    p.decimal.mark = p.decimal.mark,
                     hide.ns = hide.ns, na.rm = na.rm, vjust = vjust,...)
     )
 
@@ -192,7 +221,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                   compute_panel = function(data, scales, method, method.args,
                                            paired, ref.group, symnum.args,
                                            p.format.style, p.digits,
-                                           p.leading.zero, p.min.threshold,
+                                           p.leading.zero, p.min.threshold, p.decimal.mark,
                                            hide.ns, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep)
                     {
@@ -228,7 +257,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                                 paired = paired, ref.group = ref.group,
                                 symnum.args = symnum.args,
                                 p.format.style = p.format.style, p.digits = p.digits,
-                                p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold)
+                                p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+                                p.decimal.mark = p.decimal.mark)
 
                     if(.is.multiple.grouping.vars){
                       method.args <- method.args %>%
@@ -246,12 +276,9 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                                                   style = p.format.style,
                                                   digits = p.digits,
                                                   leading.zero = p.leading.zero,
-                                                  min.threshold = p.min.threshold)
-                    pvaltxt <- ifelse(
-                      startsWith(p_formatted, "<"),
-                      paste("p", p_formatted),
-                      paste("p =", p_formatted)
-                    )
+                                                  min.threshold = p.min.threshold,
+                                                  decimal.mark = p.decimal.mark)
+                    pvaltxt <- create_p_label(p_formatted)
                     .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
 
                     # Options for label positioning
@@ -305,6 +332,9 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       p.signif[p.signif == "ns"] <- " "
                       res$p.signif <- p.signif
                     }
+                    if (all(c("p.format", "p.signif") %in% names(res))) {
+                      res[["p.format.signif"]] <- add_stat_label(res, label = "p.format.signif")$label
+                    }
                     res
                   }
 
@@ -329,10 +359,11 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   allowed.label <- list(
     "p.signif" = quote(ggplot2::after_stat(p.signif)),
     "..p.signif.." = quote(ggplot2::after_stat(p.signif)),
-    "p.format" = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "..p.format.." = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "p" = quote(ggplot2::after_stat(paste0("p = ", p.format))),
-    "..p.." = quote(ggplot2::after_stat(paste0("p = ", p.format)))
+    "p.format" = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "..p.format.." = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "p" = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "..p.." = quote(ggplot2::after_stat(create_p_label(p.format))),
+    "p.format.signif" = quote(ggplot2::after_stat(p.format.signif))
   )
 
   if(!is.null(label)){
@@ -358,5 +389,3 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   names(x) <- n
   x
 }
-
-

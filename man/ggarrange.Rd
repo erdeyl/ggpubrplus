@@ -117,5 +117,5 @@ ggarrange(bxp, dp,  common.legend = TRUE)
 \code{\link{annotate_figure}()}
 }
 \author{
-Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
+Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu}
 }

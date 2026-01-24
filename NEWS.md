@@ -1,3 +1,12 @@
+# ggpubrplus 0.8.1
+
+## Bug fixes and consistency
+
+- Route `p.format.signif` through `add_stat_label()` for plotmath-safe asterisks.
+- Use adjusted p-values when raw p-values are missing for `p.format.signif`.
+- Add `p.decimal.mark` support across p-value formatting helpers.
+- Documentation cleanup: clarify `create_p_label()` public status and normalize roxygen spacing.
+
 # ggpubrplus 0.8.0
 
 ## New Features

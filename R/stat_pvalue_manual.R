@@ -133,6 +133,7 @@ stat_pvalue_manual <- function(
   if(is.null(label)){
     label <- guess_signif_label_column(data)
   }
+  data <- add_p_format_signif(data)
   # Hide NS
   if(is.logical(hide.ns)){
     if(hide.ns) data <- remove_ns(data)

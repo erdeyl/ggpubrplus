@@ -19,6 +19,98 @@ fortify_signif_symbols_encoding <- function(symnum.args = list()){
   symnum.args
 }
 
+
+#' Build symnum.args from Significance Parameters
+#'
+#' @description Internal helper function to build a symnum.args list from
+#'   user-friendly significance parameters. This allows users to specify
+#'   custom significance cutoffs and symbols without using the complex
+#'   symnum.args format directly.
+#'
+#' @param signif.cutoffs Numeric vector of p-value cutoffs in descending order
+#'   (e.g., \code{c(0.10, 0.05, 0.01)} or \code{c(0.10, 0.05, 0.01, 0.001)}).
+#'   Values smaller than each cutoff receive the corresponding symbol.
+#' @param signif.symbols Character vector of symbols matching signif.cutoffs.
+#'   If NULL, auto-generated based on length: 3 cutoffs -> c("*", "**", "***"),
+#'   4 cutoffs -> c("*", "**", "***", "****").
+#' @param ns.symbol Character string for non-significant results. Default is "ns".
+#'   Use "" (empty string) to show nothing for non-significant results.
+#' @param use.four.stars Logical. If TRUE and signif.symbols is NULL, include
+#'   four stars (****) for the most significant level. Default is FALSE.
+#' @param symnum.args Existing symnum.args list. If provided and non-empty,
+#'   it takes precedence over other parameters (for backward compatibility).
+#'
+#' @return A list suitable for use as symnum.args parameter.
+#'
+#' @details
+#' Priority order:
+#' 1. If symnum.args is provided (non-empty), use it directly
+#' 2. If signif.cutoffs is provided, build symnum.args from it
+#' 3. Otherwise, use package defaults
+#'
+#' @keywords internal
+build_symnum_args <- function(signif.cutoffs = NULL,
+                              signif.symbols = NULL,
+                              ns.symbol = "ns",
+                              use.four.stars = FALSE,
+                              symnum.args = list()) {
+  # Priority 1: If symnum.args is provided, use it directly (backward compatibility)
+  if (!.is_empty(symnum.args)) {
+    return(fortify_signif_symbols_encoding(symnum.args))
+  }
+
+  # Priority 2: If signif.cutoffs is provided, build from it
+  if (!is.null(signif.cutoffs)) {
+    # Validate cutoffs
+    if (!is.numeric(signif.cutoffs) || any(signif.cutoffs <= 0) || any(signif.cutoffs >= 1)) {
+      stop("signif.cutoffs must be numeric values between 0 and 1 (exclusive)", call. = FALSE)
+    }
+
+    # Sort cutoffs in descending order (largest to smallest)
+    signif.cutoffs <- sort(signif.cutoffs, decreasing = TRUE)
+    n_cutoffs <- length(signif.cutoffs)
+
+    # Auto-generate symbols if not provided
+    if (is.null(signif.symbols)) {
+      # Generate symbols: *, **, ***, (****)
+      if (use.four.stars && n_cutoffs >= 4) {
+        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+      } else if (n_cutoffs > 3 && !use.four.stars) {
+        stop("signif.cutoffs has more than 3 levels but use.four.stars = FALSE. ",
+             "Either set use.four.stars = TRUE or provide signif.symbols explicitly.",
+             call. = FALSE)
+      } else {
+        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+      }
+    }
+
+    # Validate symbols length
+    if (length(signif.symbols) != n_cutoffs) {
+      stop("signif.symbols must have the same length as signif.cutoffs (", n_cutoffs, ")",
+           call. = FALSE)
+    }
+
+    # Build cutpoints: 0, cutoffs (ascending), Inf
+    cutpoints <- c(0, rev(signif.cutoffs), Inf)
+
+    # Build symbols: most significant first, then less significant, then ns
+    symbols <- c(rev(signif.symbols), ns.symbol)
+
+    return(list(cutpoints = cutpoints, symbols = symbols))
+  }
+
+  # Priority 3: Use package defaults, but respect ns.symbol if customized
+  default_args <- fortify_signif_symbols_encoding(list())
+
+  # If ns.symbol is different from default, update it
+  if (ns.symbol != "ns") {
+    # Replace the last symbol (ns) with the custom one
+    default_args$symbols[length(default_args$symbols)] <- ns.symbol
+  }
+
+  default_args
+}
+
 # Check user specified label -----------------------------
 
 # Check if is glue package expression
@@ -70,6 +162,7 @@ escape_psignif_asteriks <- function(label){
 # label: can be p, p.signif, p.adj or glue expression
 add_stat_label <- function (stat.test,  label = NULL){
   is_plotmath <- FALSE
+  stat.test <- add_p_format_signif(stat.test)
   if(is.null(label)){
     stat.test$label <- add_p(stat.test$p.format)
   }
@@ -114,12 +207,15 @@ fortify_plotmath <- function(label){
     # Escape p signif stars
     label <- gsub(pattern = "\\}\\{p.signif\\}", replacement = "}*`{p.signif}`", x = label)
     label <- gsub(pattern = "\\}\\{p.adj.signif\\}", replacement = "}*`{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "\\}\\{p.format.signif\\}", replacement = "}*`{p.format.signif}`", x = label)
     # Escape p signif stars preceded by space
     label <- gsub(pattern = "\\s\\{p.signif\\}", replacement = " `{p.signif}`", x = label)
     label <- gsub(pattern = "\\s\\{p.adj.signif\\}", replacement = " `{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "\\s\\{p.format.signif\\}", replacement = " `{p.format.signif}`", x = label)
     # Escape p signif stars preceded by equal signs
     label <- gsub(pattern = "=(\\s+)?\\{p.signif}", replacement = "=\\1`{p.signif}`", x = label)
     label <- gsub(pattern = "=(\\s+)?\\{p.adj.signif}", replacement = "=\\1`{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "=(\\s+)?\\{p.format.signif}", replacement = "=\\1`{p.format.signif}`", x = label)
   }
   label <- gsub(pattern = "eta2[g]", replacement = "eta[g]^2", x = label, fixed = TRUE)
   label <- gsub(pattern = "eta2[p]", replacement = "eta[p]^2", x = label, fixed = TRUE)
@@ -130,15 +226,46 @@ fortify_plotmath <- function(label){
 # add_p(0.05) --> p = 0.05
 # add_p("<0.05") --> p < 0.05
 add_p <-function(label){
-  contain.inf.symbol <- grepl("<", label)
-  label2 <- paste0("p", " = ", label)
-  if(sum(contain.inf.symbol) > 0){
-    # no need to add =
-    label2[contain.inf.symbol] <- paste0("p", label[contain.inf.symbol])
+  create_p_label(label)
+}
+
+# Add combined p.format + p.signif column when available
+# Falls back to adjusted values when raw p-values are missing.
+add_p_format_signif <- function(stat.test){
+  if ("p.format.signif" %in% colnames(stat.test)) {
+    return(stat.test)
   }
-  # Add space before and after inf symbol
-  label2 <- gsub(pattern = "<", replacement = " < ", label2)
-  label2
+
+  has_p <- all(c("p.format", "p.signif") %in% colnames(stat.test))
+  has_adj <- all(c("p.adj.format", "p.adj.signif") %in% colnames(stat.test))
+  if (!has_p && !has_adj) {
+    return(stat.test)
+  }
+
+  if (has_p) {
+    p_format <- stat.test$p.format
+    p_signif <- stat.test$p.signif
+  } else {
+    p_format <- rep(NA_character_, nrow(stat.test))
+    p_signif <- rep(NA_character_, nrow(stat.test))
+  }
+
+  if (has_adj) {
+    use_adj <- is.na(p_format) | p_format == ""
+    p_format[use_adj] <- stat.test$p.adj.format[use_adj]
+    p_signif[use_adj] <- stat.test$p.adj.signif[use_adj]
+  }
+
+  if (all(is.na(p_format))) {
+    return(stat.test)
+  }
+
+  p_signif[is.na(p_signif)] <- ""
+  combined <- rep(NA_character_, length(p_format))
+  ok <- !is.na(p_format)
+  combined[ok] <- create_p_label(p_format[ok], p_signif[ok])
+  stat.test[["p.format.signif"]] <- combined
+  stat.test
 }
 
 # Add statistical test number of samples
@@ -189,7 +316,7 @@ convert_label_dotdot_notation_to_after_stat <- function(mapping){
 
       label <-  rlang::as_label(mapping$label)
       dot_dot_labels <- c(
-        "p.signif", "p.adj.signif", "p.format", "p", "p.adj",
+        "p.signif", "p.adj.signif", "p.format", "p.format.signif", "p", "p.adj",
         "eq.label", "adj.rr.label", "rr.label", "AIC.label", "BIC.label"
       )
       for (dot_dot_label in dot_dot_labels) {

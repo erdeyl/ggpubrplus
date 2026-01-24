@@ -17,6 +17,11 @@ compare_means(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
   ...
 )
 }
@@ -59,7 +64,10 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
- \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
+ \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }
+
+ Note: If \code{signif.cutoffs} is provided, it takes precedence over
+ \code{symnum.args}.}
 
 \item{p.adjust.method}{method for adjusting p values (see
  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
@@ -88,6 +96,28 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 Values below this threshold are shown as "< threshold". Set to NULL to always
 show exact values. If provided, overrides the style default.}
 
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
+\item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
+for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+If \code{use.four.stars = TRUE}, can include a fourth level (e.g.,
+\code{c(0.10, 0.05, 0.01, 0.001)} for "****" at p < 0.001).
+Default is NULL, which uses the package defaults (backward compatible).}
+
+\item{signif.symbols}{character vector of symbols corresponding to
+\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+(and "****" if \code{use.four.stars = TRUE}). Must have the same length
+as \code{signif.cutoffs}.}
+
+\item{ns.symbol}{character string for non-significant results. Default is "ns".
+Use "" (empty string) to show nothing for non-significant results.}
+
+\item{use.four.stars}{logical. If TRUE and \code{signif.symbols} is NULL,
+allows four stars (****) for the most significant level when
+\code{signif.cutoffs} has 4 levels. Default is FALSE.}
+
 \item{...}{Other arguments to be passed to the test function.}
 }
 \value{
@@ -99,6 +129,7 @@ Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
 \item \code{p}: the p-value.
 \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 \item \code{p.format}: the formatted p-value.
+\item \code{p.format.signif}: the formatted p-value with significance symbols.
 \item \code{p.signif}: the significance level.
 \item \code{method}: the statistical test used to compare groups.
 

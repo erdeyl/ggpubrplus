@@ -14,7 +14,7 @@ NULL
 #'@param fig.lab.size optional size of the figure label.
 #'@param fig.lab.face optional font face of the figure label. Allowed values
 #'  include: "plain", "bold", "italic", "bold.italic".
-#'@author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
+#'@author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #'@seealso \code{\link{ggarrange}()}
 #' @examples
 #' data("ToothGrowth")

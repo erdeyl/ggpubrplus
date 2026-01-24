@@ -20,6 +20,7 @@ stat_welch_anova_test(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -113,6 +114,9 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 Values below this threshold are shown as "< threshold". If provided, overrides
 the style default.}
 
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
 can be used to override the default coupling between stats and geoms. The
@@ -176,6 +180,7 @@ Add Welch one-way ANOVA test p-values to a ggplot, such as
  \item{p.signif}: P-value significance.
  \item{p.adj.signif}: Adjusted p-value significance.
  \item{p.format}: Formated p-value.
+ \item{p.format.signif}: Formated p-value with significance symbols.
  \item{p.adj.format}: Formated adjusted p-value.
  \item{n}: number of samples.
   }

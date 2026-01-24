@@ -257,7 +257,8 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
 guess_signif_label_column <- function(data){
   potential.label <- c(
     "label", "labels", "p.adj.signif", "p.adj", "padj",
-    "p.signif", "p.value", "pval", "p.val", "p"
+    "p.signif", "p.format.signif", "p.value", "pval", "p.val", "p",
+    "p.format", "p.adj.format"
   )
   res <- intersect(potential.label, colnames(data))
   if(length(res) > 0){

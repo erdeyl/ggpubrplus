@@ -73,5 +73,5 @@ ggarrange(bxp, dp, dens, ncol = 2) \%>\%
 
 }
 \author{
-Alboukadel Kassambara <alboukadel.kassambara@gmail.com>
+Laszlo Erdey <erdey.laszlo@econ.unideb.hu>
 }

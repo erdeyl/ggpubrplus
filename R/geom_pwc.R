@@ -32,7 +32,8 @@ NULL
 #'@param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
-#'  \code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+#'  \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+#'  \item an
 #'  expression that can be formatted by the \code{\link[glue]{glue}()} package.
 #'  For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
 #'  expression \{p\} will be replaced by its value. \item a combination of
@@ -92,6 +93,20 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
+#'
+#'  Note: If \code{signif.cutoffs} is provided, it takes precedence over
+#'  \code{symnum.args}.
+#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  Default is NULL, which uses the package defaults.
+#'@param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#'@param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#'@param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
 #'@param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
 #'@param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
@@ -106,6 +121,8 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
 #'  displaying significance levels. Filter is done by checking the column
@@ -249,8 +266,20 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
+
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
 
   p.adjust.by <- match.arg(p.adjust.by)
   if(missing(parse) & is_plotmath_expression(label)){
@@ -284,10 +313,11 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       remove.bracket = remove.bracket,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
-      symnum.args = fortify_signif_symbols_encoding(symnum.args),
+      symnum.args = symnum.args,
       hide.ns = hide.ns, parse = parse,
       p.format.style = p.format.style, p.digits = p.digits,
-      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...)
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark, ...)
   )
 }
 
@@ -313,7 +343,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
                                                      symnum.args, hide.ns, group.by, dodge, remove.bracket,
-                                                     p.format.style, p.digits, p.leading.zero, p.min.threshold) {
+                                                     p.format.style, p.digits, p.leading.zero,
+                                                     p.min.threshold, p.decimal.mark) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -381,7 +412,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 # doesn't return p but p.adj
                                 stat.test <- stat.test %>%
                                   tibble::add_column(p = NA, .before = "p.adj")
-                                stat.label <- gsub(pattern = "p.format", replacement = "p.adj.format", stat.label)
+                                stat.label <- gsub(pattern = "p\\.format(?!\\.signif)", replacement = "p.adj.format", stat.label, perl = TRUE)
+                                stat.label <- gsub(pattern = "p\\.signif", replacement = "p.adj.signif", stat.label)
                               }
 
                               sy <- symnum.args
@@ -401,10 +433,12 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                   dplyr::mutate(
                                     p.format = format_p_value(p, style = p.format.style,
                                                               digits = p.digits, leading.zero = p.leading.zero,
-                                                              min.threshold = p.min.threshold),
+                                                              min.threshold = p.min.threshold,
+                                                              decimal.mark = p.decimal.mark),
                                     p.adj.format = format_p_value(p.adj, style = p.format.style,
                                                                   digits = p.digits, leading.zero = p.leading.zero,
-                                                                  min.threshold = p.min.threshold)
+                                                                  min.threshold = p.min.threshold,
+                                                                  decimal.mark = p.decimal.mark)
                                   )
                               }
 
@@ -512,8 +546,21 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
+
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
+
   p.adjust.by <- match.arg(p.adjust.by)
   if(missing(parse) & is_plotmath_expression(label)){
     parse <- TRUE
@@ -551,10 +598,11 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       size = size, label.size = label.size,
       family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
-      symnum.args = fortify_signif_symbols_encoding(symnum.args),
+      symnum.args = symnum.args,
       hide.ns = hide.ns, remove.bracket = remove.bracket,
       p.format.style = p.format.style, p.digits = p.digits,
       p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark,
       parse = parse,
       ...
     )

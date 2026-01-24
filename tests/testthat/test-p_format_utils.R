@@ -60,6 +60,12 @@ test_that("format_p_value respects custom min.threshold parameter", {
   expect_true(grepl("0\\.0001", p))
 })
 
+test_that("format_p_value respects decimal.mark parameter", {
+  p <- format_p_value(0.0047, style = "nejm", decimal.mark = ",")
+  expect_true(grepl(",", p))
+  expect_false(grepl("\\.", p))
+})
+
 test_that("get_p_format_style returns correct style parameters", {
   apa <- get_p_format_style("apa")
   expect_equal(apa$digits, 3)
