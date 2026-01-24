@@ -149,7 +149,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   . <- NULL
 
   method.info <- .method_info(method)
- method <- method.info$method
+  method <- method.info$method
   method.name <- method.info$name
 
   # Build symnum.args from new parameters or use defaults
@@ -462,4 +462,3 @@ compare_means <- function(formula, data, method = "wilcox.test",
   group.by = c(group.by, ".y.")
 
 }
-

@@ -54,9 +54,7 @@ build_symnum_args <- function(signif.cutoffs = NULL,
                               ns.symbol = "ns",
                               use.four.stars = FALSE,
                               symnum.args = list()) {
-
-
- # Priority 1: If symnum.args is provided, use it directly (backward compatibility)
+  # Priority 1: If symnum.args is provided, use it directly (backward compatibility)
   if (!.is_empty(symnum.args)) {
     return(fortify_signif_symbols_encoding(symnum.args))
   }
