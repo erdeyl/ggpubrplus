@@ -1,3 +1,10 @@
+# ggpubrplus 0.8.2
+
+## Documentation and release
+
+- Refresh documentation for the 0.8.2 release.
+- Clarify public `create_p_label()` usage and tidy formatting.
+
 # ggpubrplus 0.8.1
 
 ## Bug fixes and consistency
