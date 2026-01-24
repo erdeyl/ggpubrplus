@@ -164,6 +164,7 @@ escape_psignif_asteriks <- function(label){
 # label: can be p, p.signif, p.adj or glue expression
 add_stat_label <- function (stat.test,  label = NULL){
   is_plotmath <- FALSE
+  stat.test <- add_p_format_signif(stat.test)
   if(is.null(label)){
     stat.test$label <- add_p(stat.test$p.format)
   }
@@ -208,12 +209,15 @@ fortify_plotmath <- function(label){
     # Escape p signif stars
     label <- gsub(pattern = "\\}\\{p.signif\\}", replacement = "}*`{p.signif}`", x = label)
     label <- gsub(pattern = "\\}\\{p.adj.signif\\}", replacement = "}*`{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "\\}\\{p.format.signif\\}", replacement = "}*`{p.format.signif}`", x = label)
     # Escape p signif stars preceded by space
     label <- gsub(pattern = "\\s\\{p.signif\\}", replacement = " `{p.signif}`", x = label)
     label <- gsub(pattern = "\\s\\{p.adj.signif\\}", replacement = " `{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "\\s\\{p.format.signif\\}", replacement = " `{p.format.signif}`", x = label)
     # Escape p signif stars preceded by equal signs
     label <- gsub(pattern = "=(\\s+)?\\{p.signif}", replacement = "=\\1`{p.signif}`", x = label)
     label <- gsub(pattern = "=(\\s+)?\\{p.adj.signif}", replacement = "=\\1`{p.adj.signif}`", x = label)
+    label <- gsub(pattern = "=(\\s+)?\\{p.format.signif}", replacement = "=\\1`{p.format.signif}`", x = label)
   }
   label <- gsub(pattern = "eta2[g]", replacement = "eta[g]^2", x = label, fixed = TRUE)
   label <- gsub(pattern = "eta2[p]", replacement = "eta[p]^2", x = label, fixed = TRUE)
@@ -224,15 +228,46 @@ fortify_plotmath <- function(label){
 # add_p(0.05) --> p = 0.05
 # add_p("<0.05") --> p < 0.05
 add_p <-function(label){
-  contain.inf.symbol <- grepl("<", label)
-  label2 <- paste0("p", " = ", label)
-  if(sum(contain.inf.symbol) > 0){
-    # no need to add =
-    label2[contain.inf.symbol] <- paste0("p", label[contain.inf.symbol])
+  create_p_label(label)
+}
+
+# Add combined p.format + p.signif column when available
+# Falls back to adjusted values when raw p-values are missing.
+add_p_format_signif <- function(stat.test){
+  if ("p.format.signif" %in% colnames(stat.test)) {
+    return(stat.test)
   }
-  # Add space before and after inf symbol
-  label2 <- gsub(pattern = "<", replacement = " < ", label2)
-  label2
+
+  has_p <- all(c("p.format", "p.signif") %in% colnames(stat.test))
+  has_adj <- all(c("p.adj.format", "p.adj.signif") %in% colnames(stat.test))
+  if (!has_p && !has_adj) {
+    return(stat.test)
+  }
+
+  if (has_p) {
+    p_format <- stat.test$p.format
+    p_signif <- stat.test$p.signif
+  } else {
+    p_format <- rep(NA_character_, nrow(stat.test))
+    p_signif <- rep(NA_character_, nrow(stat.test))
+  }
+
+  if (has_adj) {
+    use_adj <- is.na(p_format) | p_format == ""
+    p_format[use_adj] <- stat.test$p.adj.format[use_adj]
+    p_signif[use_adj] <- stat.test$p.adj.signif[use_adj]
+  }
+
+  if (all(is.na(p_format))) {
+    return(stat.test)
+  }
+
+  p_signif[is.na(p_signif)] <- ""
+  combined <- rep(NA_character_, length(p_format))
+  ok <- !is.na(p_format)
+  combined[ok] <- create_p_label(p_format[ok], p_signif[ok])
+  stat.test[["p.format.signif"]] <- combined
+  stat.test
 }
 
 # Add statistical test number of samples
@@ -283,7 +318,7 @@ convert_label_dotdot_notation_to_after_stat <- function(mapping){
 
       label <-  rlang::as_label(mapping$label)
       dot_dot_labels <- c(
-        "p.signif", "p.adj.signif", "p.format", "p", "p.adj",
+        "p.signif", "p.adj.signif", "p.format", "p.format.signif", "p", "p.adj",
         "eq.label", "adj.rr.label", "rr.label", "AIC.label", "BIC.label"
       )
       for (dot_dot_label in dot_dot_labels) {

@@ -17,6 +17,7 @@ NULL
 #'  \item{p.signif}: P-value significance.
 #'  \item{p.adj.signif}: Adjusted p-value significance.
 #'  \item{p.format}: Formated p-value.
+#'  \item{p.format.signif}: Formated p-value with significance symbols.
 #'  \item{p.adj.format}: Formated adjusted p-value.
 #'  \item{n}: number of samples.
 #'   }
@@ -88,6 +89,7 @@ stat_welch_anova_test <- function(mapping = NULL, data = NULL, group.by = NULL,
                             p.adjust.method = "holm", significance = list(),
                             p.format.style = "default", p.digits = NULL,
                             p.leading.zero = NULL, p.min.threshold = NULL,
+                            p.decimal.mark = NULL,
                             geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
                             inherit.aes = TRUE, parse = FALSE,  ...) {
 
@@ -111,7 +113,8 @@ stat_welch_anova_test <- function(mapping = NULL, data = NULL, group.by = NULL,
       step.increase = step.increase, p.adjust.method = p.adjust.method,
       significance = fortify_signif_symbols_encoding(significance),
       p.format.style = p.format.style, p.digits = p.digits,
-      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark, ...
     )
   )
 }

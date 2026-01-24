@@ -33,6 +33,23 @@ test_that("add_stat_label works with glue expression", {
   expect_equal(glueed$label, c("p < 0.0001 ****", "p < 0.0001 ****", "p = 0.00018 ***"))
 })
 
+test_that("add_stat_label supports p.format.signif label", {
+  combined <- add_stat_label(stat.test, label = "p.format.signif")
+  expect_equal(combined$label, c("p < 0.0001 ****", "p < 0.0001 ****", "p = 0.00018 ***"))
+})
+
+test_that("add_stat_label falls back to adjusted p-values when raw p is missing", {
+  stat.test.adj <- data.frame(
+    stringsAsFactors = FALSE,
+    p.format = c(NA_character_),
+    p.signif = c(NA_character_),
+    p.adj.format = c("<0.001"),
+    p.adj.signif = c("***")
+  )
+  combined <- add_stat_label(stat.test.adj, label = "p.format.signif")
+  expect_equal(combined$label, "p < 0.001 ***")
+})
+
 test_that("add_stat_label works with plotmath: Usage of simple equal '='", {
   simple_equals <- add_stat_label(stat.test, label = "italic(p)={p.format}{p.signif}")
   simple_equals_space <- add_stat_label(stat.test, label = "italic(p) = {p.format}{p.signif}")
@@ -224,5 +241,3 @@ test_that("build_symnum_args uses defaults when nothing provided", {
   expect_equal(result$cutpoints, c(0, 1e-04, 0.001, 0.01, 0.05, Inf))
   expect_equal(result$symbols, c("****", "***", "**", "*", "ns"))
 })
-
-

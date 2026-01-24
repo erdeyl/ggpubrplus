@@ -33,6 +33,8 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
 #'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
 #'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
@@ -136,6 +138,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      symnum.args = list(),
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
                      signif.cutoffs = NULL, signif.symbols = NULL,
                      ns.symbol = "ns", use.four.stars = FALSE, show.signif = TRUE,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
@@ -202,6 +205,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                     symnum.args = symnum.args,
                     p.format.style = p.format.style, p.digits = p.digits,
                     p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+                    p.decimal.mark = p.decimal.mark,
                     hide.ns = hide.ns, na.rm = na.rm, vjust = vjust,...)
     )
 
@@ -217,7 +221,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                   compute_panel = function(data, scales, method, method.args,
                                            paired, ref.group, symnum.args,
                                            p.format.style, p.digits,
-                                           p.leading.zero, p.min.threshold,
+                                           p.leading.zero, p.min.threshold, p.decimal.mark,
                                            hide.ns, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep)
                     {
@@ -253,7 +257,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                                 paired = paired, ref.group = ref.group,
                                 symnum.args = symnum.args,
                                 p.format.style = p.format.style, p.digits = p.digits,
-                                p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold)
+                                p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+                                p.decimal.mark = p.decimal.mark)
 
                     if(.is.multiple.grouping.vars){
                       method.args <- method.args %>%
@@ -271,12 +276,9 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                                                   style = p.format.style,
                                                   digits = p.digits,
                                                   leading.zero = p.leading.zero,
-                                                  min.threshold = p.min.threshold)
-                    pvaltxt <- ifelse(
-                      startsWith(p_formatted, "<"),
-                      paste("p", p_formatted),
-                      paste("p =", p_formatted)
-                    )
+                                                  min.threshold = p.min.threshold,
+                                                  decimal.mark = p.decimal.mark)
+                    pvaltxt <- create_p_label(p_formatted)
                     .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
 
                     # Options for label positioning
@@ -330,6 +332,9 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       p.signif[p.signif == "ns"] <- " "
                       res$p.signif <- p.signif
                     }
+                    if (all(c("p.format", "p.signif") %in% names(res))) {
+                      res[["p.format.signif"]] <- add_stat_label(res, label = "p.format.signif")$label
+                    }
                     res
                   }
 
@@ -358,7 +363,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
     "..p.format.." = quote(ggplot2::after_stat(create_p_label(p.format))),
     "p" = quote(ggplot2::after_stat(create_p_label(p.format))),
     "..p.." = quote(ggplot2::after_stat(create_p_label(p.format))),
-    "p.format.signif" = quote(ggplot2::after_stat(create_p_label(p.format, p.signif)))
+    "p.format.signif" = quote(ggplot2::after_stat(p.format.signif))
   )
 
   if(!is.null(label)){
@@ -384,5 +389,3 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   names(x) <- n
   x
 }
-
-

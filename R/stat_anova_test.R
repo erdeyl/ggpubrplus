@@ -70,10 +70,13 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
-#'  \code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+#'  \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+#'  \item an
 #'  expression that can be formatted by the \code{\link[glue]{glue}()} package.
 #'  For example, when specifying \code{label = "Anova, p = \{p\}"}, the
 #'  expression \{p\} will be replaced by its value. \item a combination of
@@ -115,7 +118,8 @@ NULL
 #'  the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
 #'  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
 #'  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
-#'  Formated p-value. \item{p.adj.format}: Formated adjusted p-value. \item{n}:
+#'  Formated p-value. \item{p.format.signif}: Formated p-value with significance symbols.
+#'  \item{p.adj.format}: Formated adjusted p-value. \item{n}:
 #'  number of samples. }
 #'
 #' @examples
@@ -222,6 +226,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
                             p.adjust.method = "holm", significance = list(),
                             p.format.style = "default", p.digits = NULL,
                             p.leading.zero = NULL, p.min.threshold = NULL,
+                            p.decimal.mark = NULL,
                             geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
                             inherit.aes = TRUE, parse = FALSE,  ...) {
 
@@ -256,7 +261,8 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
       step.increase = step.increase, p.adjust.method = p.adjust.method,
       significance = fortify_signif_symbols_encoding(significance),
       p.format.style = p.format.style, p.digits = p.digits,
-      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark, ...
     )
   )
 }
@@ -289,7 +295,8 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                                                   correction, p.adjust.method,
                                                   stat.label, label.x.npc, label.y.npc, label.x, label.y,
                                                   significance, is.group.specified, step.increase,
-                                                  p.format.style, p.digits, p.leading.zero, p.min.threshold){
+                                                  p.format.style, p.digits, p.leading.zero, p.min.threshold,
+                                                  p.decimal.mark){
                            p <- p.adj <- x <- NULL
                            if(method %in% c("one_way_repeated", "friedman_test")){
                              # One-way repeated measures ANOVA
@@ -387,10 +394,12 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                                dplyr::mutate(
                                  p.format = format_p_value(p, style = p.format.style,
                                                            digits = p.digits, leading.zero = p.leading.zero,
-                                                           min.threshold = p.min.threshold),
+                                                           min.threshold = p.min.threshold,
+                                                           decimal.mark = p.decimal.mark),
                                  p.adj.format = format_p_value(p.adj, style = p.format.style,
                                                                digits = p.digits, leading.zero = p.leading.zero,
-                                                               min.threshold = p.min.threshold)
+                                                               min.threshold = p.min.threshold,
+                                                               decimal.mark = p.decimal.mark)
                                )
                            }
 
@@ -552,4 +561,3 @@ set_label_hvjust <- function(stat.test, data, group){
   stat.test <- stat.test %>% tibble::add_column(hjust = hjust, vjust = vjust)
   stat.test
 }
-

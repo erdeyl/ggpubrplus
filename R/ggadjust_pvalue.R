@@ -69,6 +69,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
                             hide.ns = NULL, symnum.args = list(),
                             p.format.style = "default", p.digits = NULL,
                             p.leading.zero = NULL, p.min.threshold = NULL,
+                            p.decimal.mark = NULL,
                             signif.cutoffs = NULL, signif.symbols = NULL,
                             ns.symbol = "ns", use.four.stars = FALSE,
                             output = c("plot", "stat_test")){
@@ -111,7 +112,8 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
       "internally; they only return the p.adj.",
       call. = FALSE
     )
-    label <- gsub(pattern = "p.format", replacement = "p.adj.format", label)
+    label <- gsub(pattern = "p\\.format(?!\\.signif)", replacement = "p.adj.format", label, perl = TRUE)
+    label <- gsub(pattern = "p\\.signif", replacement = "p.adj.signif", label)
   }
   else{
     padjusted <- stat_test %>%
@@ -136,10 +138,12 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
         dplyr::mutate(
           p.format = format_p_value(p, style = p.format.style,
                                     digits = p.digits, leading.zero = p.leading.zero,
-                                    min.threshold = p.min.threshold),
+                                    min.threshold = p.min.threshold,
+                                    decimal.mark = p.decimal.mark),
           p.adj.format = format_p_value(p.adj, style = p.format.style,
                                         digits = p.digits, leading.zero = p.leading.zero,
-                                        min.threshold = p.min.threshold)
+                                        min.threshold = p.min.threshold,
+                                        decimal.mark = p.decimal.mark)
         )
     }
 

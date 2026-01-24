@@ -32,7 +32,8 @@ NULL
 #'@param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
-#'  \code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+#'  \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+#'  \item an
 #'  expression that can be formatted by the \code{\link[glue]{glue}()} package.
 #'  For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
 #'  expression \{p\} will be replaced by its value. \item a combination of
@@ -120,6 +121,8 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". If provided, overrides
 #'  the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
 #'  displaying significance levels. Filter is done by checking the column
@@ -263,6 +266,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
                      signif.cutoffs = NULL, signif.symbols = NULL,
                      ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
@@ -312,7 +316,8 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       symnum.args = symnum.args,
       hide.ns = hide.ns, parse = parse,
       p.format.style = p.format.style, p.digits = p.digits,
-      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold, ...)
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark, ...)
   )
 }
 
@@ -338,7 +343,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
                                                      symnum.args, hide.ns, group.by, dodge, remove.bracket,
-                                                     p.format.style, p.digits, p.leading.zero, p.min.threshold) {
+                                                     p.format.style, p.digits, p.leading.zero,
+                                                     p.min.threshold, p.decimal.mark) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -406,7 +412,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 # doesn't return p but p.adj
                                 stat.test <- stat.test %>%
                                   tibble::add_column(p = NA, .before = "p.adj")
-                                stat.label <- gsub(pattern = "p.format", replacement = "p.adj.format", stat.label)
+                                stat.label <- gsub(pattern = "p\\.format(?!\\.signif)", replacement = "p.adj.format", stat.label, perl = TRUE)
+                                stat.label <- gsub(pattern = "p\\.signif", replacement = "p.adj.signif", stat.label)
                               }
 
                               sy <- symnum.args
@@ -426,10 +433,12 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                   dplyr::mutate(
                                     p.format = format_p_value(p, style = p.format.style,
                                                               digits = p.digits, leading.zero = p.leading.zero,
-                                                              min.threshold = p.min.threshold),
+                                                              min.threshold = p.min.threshold,
+                                                              decimal.mark = p.decimal.mark),
                                     p.adj.format = format_p_value(p.adj, style = p.format.style,
                                                                   digits = p.digits, leading.zero = p.leading.zero,
-                                                                  min.threshold = p.min.threshold)
+                                                                  min.threshold = p.min.threshold,
+                                                                  decimal.mark = p.decimal.mark)
                                   )
                               }
 
@@ -537,6 +546,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
                      signif.cutoffs = NULL, signif.symbols = NULL,
                      ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE,
@@ -592,6 +602,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       hide.ns = hide.ns, remove.bracket = remove.bracket,
       p.format.style = p.format.style, p.digits = p.digits,
       p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark,
       parse = parse,
       ...
     )

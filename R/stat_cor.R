@@ -44,6 +44,8 @@ NULL
 #'  Default is "default" for backward compatibility.
 #'@param p.leading.zero logical. Whether to include leading zero before decimal
 #'  point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -102,6 +104,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
                      p.format.style = "default", p.leading.zero = NULL,
+                     p.decimal.mark = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -114,7 +117,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
                   method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
                   p.accuracy = p.accuracy, p.format.style = p.format.style,
-                  p.leading.zero = p.leading.zero, cor.coef.name = cor.coef.name,
+                  p.leading.zero = p.leading.zero, p.decimal.mark = p.decimal.mark,
+                  cor.coef.name = cor.coef.name,
                   parse = parse, na.rm = na.rm, ...)
   )
 }
@@ -127,7 +131,7 @@ StatCor<- ggproto("StatCor", Stat,
                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
                                            r.digits, p.digits, r.accuracy, p.accuracy,
-                                           p.format.style, p.leading.zero, cor.coef.name)
+                                           p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -140,6 +144,7 @@ StatCor<- ggproto("StatCor", Stat,
                       r.digits = r.digits, p.digits = p.digits,
                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
                       p.format.style = p.format.style, p.leading.zero = p.leading.zero,
+                      p.decimal.mark = p.decimal.mark,
                       cor.coef.name = cor.coef.name
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
@@ -163,6 +168,7 @@ StatCor<- ggproto("StatCor", Stat,
                       digits = 2, r.digits = digits, p.digits = digits,
                       r.accuracy = NULL, p.accuracy = NULL,
                       p.format.style = "default", p.leading.zero = NULL,
+                      p.decimal.mark = NULL,
                       cor.coef.name = "R"){
   # Overwritting digits by accuracy, if specified
   if(!is.null(p.accuracy)){
@@ -201,7 +207,8 @@ StatCor<- ggproto("StatCor", Stat,
         ),
       p.label = get_p_label(
         pval, p.digits = p.digits, accuracy = p.accuracy, type = output.type,
-        p.format.style = p.format.style, p.leading.zero = p.leading.zero
+        p.format.style = p.format.style, p.leading.zero = p.leading.zero,
+        p.decimal.mark = p.decimal.mark
       )
   )
 
@@ -229,7 +236,12 @@ StatCor<- ggproto("StatCor", Stat,
 
 # Formatting R and P ----------------------
 get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
-                        p.format.style = "default", p.leading.zero = NULL){
+                        p.format.style = "default", p.leading.zero = NULL,
+                        p.decimal.mark = NULL){
+
+  if (is.null(p.decimal.mark)) {
+    p.decimal.mark <- getOption("OutDec")
+  }
 
   if (!is.null(p.format.style) && p.format.style != "default" && is.null(accuracy)) {
     p_formatted <- format_p_value(
@@ -237,13 +249,10 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
       style = p.format.style,
       digits = p.digits,
       leading.zero = p.leading.zero,
-      min.threshold = NULL
+      min.threshold = NULL,
+      decimal.mark = p.decimal.mark
     )
-    label <- ifelse(
-      startsWith(p_formatted, "<"),
-      paste("p", p_formatted),
-      paste("p =", p_formatted)
-    )
+    label <- create_p_label(p_formatted)
   } else {
     # Backward compatible behavior (scales::pvalue + accuracy)
     if(is.null(accuracy)){
@@ -269,6 +278,9 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
 
     if (!is.null(p.leading.zero) && !p.leading.zero) {
       label <- gsub("0\\.", ".", label)
+    }
+    if (!is.null(p.decimal.mark) && p.decimal.mark != ".") {
+      label <- gsub("\\.", p.decimal.mark, label)
     }
   }
 

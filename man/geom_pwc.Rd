@@ -34,6 +34,7 @@ stat_pwc(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   signif.cutoffs = NULL,
   signif.symbols = NULL,
   ns.symbol = "ns",
@@ -77,6 +78,7 @@ geom_pwc(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   signif.cutoffs = NULL,
   signif.symbols = NULL,
   ns.symbol = "ns",
@@ -141,7 +143,8 @@ for wilcoxon test.}
 \item{label}{character string specifying label. Can be: \itemize{ \item the
 column containing the label (e.g.: \code{label = "p"} or \code{label =
 "p.adj"}), where \code{p} is the p-value. Other possible values are
-\code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+\code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+\item an
 expression that can be formatted by the \code{\link[glue]{glue}()} package.
 For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
 expression \{p\} will be replaced by its value. \item a combination of
@@ -243,6 +246,9 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 \item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
 Values below this threshold are shown as "< threshold". If provided, overrides
 the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
 
 \item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
 for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}

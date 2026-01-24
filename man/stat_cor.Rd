@@ -23,6 +23,7 @@ stat_cor(
   p.accuracy = NULL,
   p.format.style = "default",
   p.leading.zero = NULL,
+  p.decimal.mark = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -102,6 +103,9 @@ Default is "default" for backward compatibility.}
 
 \item{p.leading.zero}{logical. Whether to include leading zero before decimal
 point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument

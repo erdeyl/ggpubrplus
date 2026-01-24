@@ -60,5 +60,5 @@ ggarrange(density.p, text.p,
 
 }
 \author{
-Alboukadel Kassambara <alboukadel.kassambara@gmail.com>
+Laszlo Erdey <erdey.laszlo@econ.unideb.hu>
 }

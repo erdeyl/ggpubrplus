@@ -11,7 +11,7 @@ NULL
 #'  "bold.italic".
 #' @param family font family
 #' @param lineheight Line height, example: lineheight = 2.
-#'@author Alboukadel Kassambara <alboukadel.kassambara@@gmail.com>
+#'@author Laszlo Erdey <erdey.laszlo@@econ.unideb.hu>
 #' @examples
 #' # Density plot
 #'density.p <- ggdensity(iris, x = "Sepal.Length",

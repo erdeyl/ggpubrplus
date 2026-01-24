@@ -60,10 +60,5 @@ Useful links:
 \author{
 \strong{Maintainer}: Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu} (Faculty of Economics and Business, University of Debrecen, Hungary)
 
-Authors:
-\itemize{
-  \item Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com} (Original ggpubr package author)
-}
-
 }
 \keyword{internal}

@@ -72,5 +72,5 @@ annotate_figure(figure,
 \code{\link{ggarrange}()}
 }
 \author{
-Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
+Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu}
 }

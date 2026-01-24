@@ -145,6 +145,8 @@ list_p_format_styles <- function() {
 #' @param leading.zero Logical indicating whether to include leading zero before
 #'   decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 #' @param min.threshold Numeric specifying the minimum p-value to display exactly.
+#' @param decimal.mark Character string to use as the decimal mark. If NULL,
+#'   uses \code{getOption("OutDec")}.
 #'   Values below this threshold are shown as "< threshold" (e.g., "< 0.001").
 #'   Set to NULL to always show exact values. If provided, overrides the style default.
 #'
@@ -196,7 +198,8 @@ format_p_value <- function(p,
                            style = "default",
                            digits = NULL,
                            leading.zero = NULL,
-                           min.threshold = NULL) {
+                           min.threshold = NULL,
+                           decimal.mark = NULL) {
 
 
   # Validate style
@@ -217,6 +220,8 @@ format_p_value <- function(p,
 
   if (is.null(min.threshold)) min.threshold <- style_settings$min.threshold
 
+  if (is.null(decimal.mark)) decimal.mark <- getOption("OutDec")
+
   use.scientific <- style_settings$use.scientific
 
 
@@ -234,14 +239,14 @@ format_p_value <- function(p,
     # Use vectorized format.pval for consistent formatting across values
     # This preserves the original behavior where format.pval formats all values
     # together to maintain consistent decimal places
-    formatted <- format.pval(p_valid, digits = digits)
+    formatted <- format.pval(p_valid, digits = digits, decimal.mark = decimal.mark)
 
     # Apply threshold if specified
     if (!is.null(min.threshold)) {
       below_threshold <- p_valid < min.threshold
       if (any(below_threshold)) {
         threshold_digits <- max(digits, -floor(log10(min.threshold)))
-        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE)
+        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE, decimal.mark)
         formatted[below_threshold] <- paste0("< ", threshold_str)
       }
     }
@@ -261,11 +266,11 @@ format_p_value <- function(p,
       if (!is.null(min.threshold) && pval < min.threshold) {
         # Format threshold value - use enough digits to show the threshold
         threshold_digits <- max(digits, -floor(log10(min.threshold)))
-        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE)
+        threshold_str <- format_single_p(min.threshold, threshold_digits, leading.zero, FALSE, decimal.mark)
         formatted[i] <- paste0("< ", threshold_str)
       } else {
         # Format exact value
-        formatted[i] <- format_single_p(pval, digits, leading.zero, FALSE)
+        formatted[i] <- format_single_p(pval, digits, leading.zero, FALSE, decimal.mark)
       }
     }
   }
@@ -283,11 +288,12 @@ format_p_value <- function(p,
 #' @param digits Number of decimal places.
 #' @param leading.zero Whether to include leading zero.
 #' @param scientific Whether to use scientific notation.
+#' @param decimal.mark Character string to use as the decimal mark.
 #'
 #' @return Formatted character string.
 #'
 #' @keywords internal
-format_single_p <- function(p, digits, leading.zero, scientific) {
+format_single_p <- function(p, digits, leading.zero, scientific, decimal.mark) {
   if (is.na(p)) return(NA_character_)
 
 
@@ -297,7 +303,7 @@ format_single_p <- function(p, digits, leading.zero, scientific) {
 
 
   # Round to specified decimal places
-  formatted <- formatC(p, digits = digits, format = "f")
+  formatted <- formatC(p, digits = digits, format = "f", decimal.mark = decimal.mark)
 
   # Remove leading zero if requested
 
@@ -320,6 +326,7 @@ format_single_p <- function(p, digits, leading.zero, scientific) {
 #' @param digits Override for digits parameter.
 #' @param leading.zero Override for leading.zero parameter.
 #' @param min.threshold Override for min.threshold parameter.
+#' @param decimal.mark Override for decimal.mark parameter.
 #'
 #' @return A list with resolved parameters: digits, leading.zero, min.threshold, use.scientific.
 #'
@@ -327,7 +334,8 @@ format_single_p <- function(p, digits, leading.zero, scientific) {
 resolve_p_format_params <- function(style = "default",
                                     digits = NULL,
                                     leading.zero = NULL,
-                                    min.threshold = NULL) {
+                                    min.threshold = NULL,
+                                    decimal.mark = NULL) {
 
   style <- match.arg(style, names(.p_format_styles))
   style_settings <- .p_format_styles[[style]]
@@ -337,6 +345,7 @@ resolve_p_format_params <- function(style = "default",
 digits = if (is.null(digits)) style_settings$digits else digits,
     leading.zero = if (is.null(leading.zero)) style_settings$leading.zero else leading.zero,
     min.threshold = if (is.null(min.threshold)) style_settings$min.threshold else min.threshold,
+    decimal.mark = if (is.null(decimal.mark)) getOption("OutDec") else decimal.mark,
     use.scientific = style_settings$use.scientific
   )
 }
@@ -381,10 +390,14 @@ create_p_label <- function(p.format, p.signif = NULL) {
                   paste("p", p.format),
                   paste("p =", p.format))
 
+  # Normalize spacing around inequality symbols
+  label <- gsub("([<>])\\s*", "\\1 ", label)
+
   # Append significance if provided
 
   if (!is.null(p.signif)) {
     label <- paste(label, p.signif)
+    label <- trimws(label)
   }
 
   label

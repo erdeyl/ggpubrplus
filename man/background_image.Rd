@@ -31,5 +31,5 @@ ggplot(iris, aes(Species, Sepal.Length))+
 
 }
 \author{
-Alboukadel Kassambara <alboukadel.kassambara@gmail.com>
+Laszlo Erdey <erdey.laszlo@econ.unideb.hu>
 }

@@ -17,6 +17,7 @@ compare_means(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   signif.cutoffs = NULL,
   signif.symbols = NULL,
   ns.symbol = "ns",
@@ -95,6 +96,9 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 Values below this threshold are shown as "< threshold". Set to NULL to always
 show exact values. If provided, overrides the style default.}
 
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
 \item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
 for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
 means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
@@ -125,6 +129,7 @@ Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
 \item \code{p}: the p-value.
 \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 \item \code{p.format}: the formatted p-value.
+\item \code{p.format.signif}: the formatted p-value with significance symbols.
 \item \code{p.signif}: the significance level.
 \item \code{method}: the statistical test used to compare groups.
 

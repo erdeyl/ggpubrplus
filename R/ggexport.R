@@ -15,7 +15,7 @@ NULL
 #'@param res the resolution in ppi (example, res = 250). Used only for raster
 #'  plots.
 #'@param verbose logical. If TRUE, show message.
-#'@author Alboukadel Kassambara <alboukadel.kassambara@@gmail.com>
+#'@author Laszlo Erdey <erdey.laszlo@@econ.unideb.hu>
 #' @examples
 #' \dontrun{
 #' require("magrittr")
@@ -95,4 +95,3 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
 
   if(verbose) message("file saved to ", filename)
 }
-

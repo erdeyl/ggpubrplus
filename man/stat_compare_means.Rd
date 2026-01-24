@@ -28,6 +28,7 @@ stat_compare_means(
   p.digits = NULL,
   p.leading.zero = NULL,
   p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   signif.cutoffs = NULL,
   signif.symbols = NULL,
   ns.symbol = "ns",
@@ -148,6 +149,9 @@ decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 \item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
 Values below this threshold are shown as "< threshold". If provided, overrides
 the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
 
 \item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
 for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}

@@ -8,7 +8,8 @@ resolve_p_format_params(
   style = "default",
   digits = NULL,
   leading.zero = NULL,
-  min.threshold = NULL
+  min.threshold = NULL,
+  decimal.mark = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ resolve_p_format_params(
 \item{leading.zero}{Override for leading.zero parameter.}
 
 \item{min.threshold}{Override for min.threshold parameter.}
+
+\item{decimal.mark}{Override for decimal.mark parameter.}
 }
 \value{
 A list with resolved parameters: digits, leading.zero, min.threshold, use.scientific.

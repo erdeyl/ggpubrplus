@@ -4,7 +4,7 @@
 \alias{format_single_p}
 \title{Format a Single P-Value}
 \usage{
-format_single_p(p, digits, leading.zero, scientific)
+format_single_p(p, digits, leading.zero, scientific, decimal.mark)
 }
 \arguments{
 \item{p}{Single numeric p-value.}
@@ -14,6 +14,8 @@ format_single_p(p, digits, leading.zero, scientific)
 \item{leading.zero}{Whether to include leading zero.}
 
 \item{scientific}{Whether to use scientific notation.}
+
+\item{decimal.mark}{Character string to use as the decimal mark.}
 }
 \value{
 Formatted character string.

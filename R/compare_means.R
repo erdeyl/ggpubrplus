@@ -75,6 +75,8 @@ NULL
 #'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". Set to NULL to always
 #'  show exact values. If provided, overrides the style default.
+#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
 #'@return return a data frame with the following columns:
 #'\itemize{
 #'\item \code{.y.}: the y variable used in the test.
@@ -83,6 +85,7 @@ NULL
 #'\item \code{p}: the p-value.
 #'\item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 #'\item \code{p.format}: the formatted p-value.
+#'\item \code{p.format.signif}: the formatted p-value with significance symbols.
 #'\item \code{p.signif}: the significance level.
 #'\item \code{method}: the statistical test used to compare groups.
 #'
@@ -138,6 +141,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
                           symnum.args = list(), p.adjust.method = "holm",
                           p.format.style = "default", p.digits = NULL,
                           p.leading.zero = NULL, p.min.threshold = NULL,
+                          p.decimal.mark = NULL,
                           signif.cutoffs = NULL, signif.symbols = NULL,
                           ns.symbol = "ns", use.four.stars = FALSE, ...)
 {
@@ -272,7 +276,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
                                    style = p.format.style,
                                    digits = p.digits,
                                    leading.zero = p.leading.zero,
-                                   min.threshold = p.min.threshold)
+                                   min.threshold = p.min.threshold,
+                                   decimal.mark = p.decimal.mark)
 
   .y. <- p.adj <- p <- NULL
   pvalue.adj <- res %>%
@@ -284,9 +289,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
            method = method.name)
 
   # Resolve p.digits for adjusted p-value rounding
- p_params <- resolve_p_format_params(p.format.style, p.digits, p.leading.zero, p.min.threshold)
+ p_params <- resolve_p_format_params(
+   p.format.style, p.digits, p.leading.zero, p.min.threshold, p.decimal.mark
+ )
   res %>%
     mutate(p.adj = signif(p.adj, digits = p_params$digits)) %>%
+    add_p_format_signif() %>%
     tibble::as_tibble()
 }
 
@@ -454,11 +462,5 @@ compare_means <- function(formula, data, method = "wilcox.test",
   group.by = c(group.by, ".y.")
 
 }
-
-
-
-
-
-
 
 
