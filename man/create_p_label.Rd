@@ -36,4 +36,3 @@ create_p_label("< 0.001", "****")
 }
 
 }
-\keyword{internal}

@@ -341,8 +341,7 @@ resolve_p_format_params <- function(style = "default",
   style_settings <- .p_format_styles[[style]]
 
   list(
-
-digits = if (is.null(digits)) style_settings$digits else digits,
+    digits = if (is.null(digits)) style_settings$digits else digits,
     leading.zero = if (is.null(leading.zero)) style_settings$leading.zero else leading.zero,
     min.threshold = if (is.null(min.threshold)) style_settings$min.threshold else min.threshold,
     decimal.mark = if (is.null(decimal.mark)) getOption("OutDec") else decimal.mark,
@@ -355,7 +354,6 @@ digits = if (is.null(digits)) style_settings$digits else digits,
 #'
 #' @description Creates a p-value label string with proper handling of inequality
 #'   symbols. When the formatted p-value starts with "<" or ">", uses "p <value"
-
 #'   or "p >value" format. Otherwise uses "p = value" format.
 #'
 #' @param p.format Character string of the formatted p-value (e.g., "0.05", "< 0.001").
@@ -379,7 +377,6 @@ digits = if (is.null(digits)) style_settings$digits else digits,
 #' # Returns: "p < 0.001 ****"
 #' }
 #'
-#' @keywords internal
 #' @export
 create_p_label <- function(p.format, p.signif = NULL) {
   # Check if p.format starts with < or >
@@ -394,7 +391,6 @@ create_p_label <- function(p.format, p.signif = NULL) {
   label <- gsub("([<>])\\s*", "\\1 ", label)
 
   # Append significance if provided
-
   if (!is.null(p.signif)) {
     label <- paste(label, p.signif)
     label <- trimws(label)

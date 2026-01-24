@@ -2,15 +2,15 @@
 NULL
 #'Comparison of Means
 #'@description Performs one or multiple mean comparisons.
-#'@param formula a formula of the form \code{x ~ group} where \code{x} is a
+#' @param formula a formula of the form \code{x ~ group} where \code{x} is a
 #'  numeric variable giving the data values and \code{group} is a factor with
 #'  one or multiple levels giving the corresponding groups. For example,
 #'  \code{formula = TP53 ~ cancer_group}.
 #'
 #'  It's also possible to perform the test for multiple response variables at
 #'  the same time. For example, \code{formula = c(TP53, PTEN) ~ cancer_group}.
-#'@param data a data.frame containing the variables in the formula.
-#'@param method the type of test. Default is \link[stats]{wilcox.test}. Allowed
+#' @param data a data.frame containing the variables in the formula.
+#' @param method the type of test. Default is \link[stats]{wilcox.test}. Allowed
 #'  values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
 #'  \code{\link[stats]{wilcox.test}} (non-parametric). Perform comparison
 #'  between two groups of samples. If the grouping variable contains more than
@@ -18,16 +18,16 @@ NULL
 #'  \code{\link[stats]{anova}} (parametric) and
 #'  \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
 #'  test comparing multiple groups. }
-#'@param paired a logical indicating whether you want a paired test. Used only
+#' @param paired a logical indicating whether you want a paired test. Used only
 #'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
-#'@param group.by  a character vector containing the name of grouping variables.
-#'@param ref.group a character string specifying the reference group. If
+#' @param group.by  a character vector containing the name of grouping variables.
+#' @param ref.group a character string specifying the reference group. If
 #'  specified, for a given grouping variable, each of the group levels will be
 #'  compared to the reference group (i.e. control group).
 #'
 #'  \code{ref.group} can be also \code{".all."}. In this case, each of the
 #'  grouping variable levels is compared to all (i.e. basemean).
-#'@param symnum.args a list of arguments to pass to the function
+#' @param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001,
 #'  0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
@@ -38,22 +38,22 @@ NULL
 #'
 #'  Note: If \code{signif.cutoffs} is provided, it takes precedence over
 #'  \code{symnum.args}.
-#'@param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#' @param signif.cutoffs numeric vector of p-value cutoffs in descending order
 #'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
 #'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
 #'  If \code{use.four.stars = TRUE}, can include a fourth level (e.g.,
 #'  \code{c(0.10, 0.05, 0.01, 0.001)} for "****" at p < 0.001).
 #'  Default is NULL, which uses the package defaults (backward compatible).
-#'@param signif.symbols character vector of symbols corresponding to
+#' @param signif.symbols character vector of symbols corresponding to
 #'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
 #'  (and "****" if \code{use.four.stars = TRUE}). Must have the same length
 #'  as \code{signif.cutoffs}.
-#'@param ns.symbol character string for non-significant results. Default is "ns".
+#' @param ns.symbol character string for non-significant results. Default is "ns".
 #'  Use "" (empty string) to show nothing for non-significant results.
-#'@param use.four.stars logical. If TRUE and \code{signif.symbols} is NULL,
+#' @param use.four.stars logical. If TRUE and \code{signif.symbols} is NULL,
 #'  allows four stars (****) for the most significant level when
 #'  \code{signif.cutoffs} has 4 levels. Default is FALSE.
-#'@param p.adjust.method method for adjusting p values (see
+#' @param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
 #'  multiple pairwise tests are performed; or when there are multiple grouping
 #'  variables. Allowed values include "holm", "hochberg", "hommel",
@@ -62,20 +62,20 @@ NULL
 #'
 #'  Note that, when the \code{formula} contains multiple variables, the p-value
 #'  adjustment is done independently for each variable.
-#'@param p.format.style character string specifying the p-value formatting style.
+#' @param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
 #'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
 #'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
 #'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
 #'  See \code{\link{list_p_format_styles}} for details.
-#'@param p.digits integer specifying the number of decimal places for p-values.
+#' @param p.digits integer specifying the number of decimal places for p-values.
 #'  If provided, overrides the style default.
-#'@param p.leading.zero logical indicating whether to include leading zero before
+#' @param p.leading.zero logical indicating whether to include leading zero before
 #'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
-#'@param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#' @param p.min.threshold numeric specifying the minimum p-value to display exactly.
 #'  Values below this threshold are shown as "< threshold". Set to NULL to always
 #'  show exact values. If provided, overrides the style default.
-#'@param p.decimal.mark character string to use as the decimal mark. If NULL,
+#' @param p.decimal.mark character string to use as the decimal mark. If NULL,
 #'  uses \code{getOption("OutDec")}.
 #'@return return a data frame with the following columns:
 #'\itemize{
@@ -91,7 +91,7 @@ NULL
 #'
 #'
 #'}
-#'@param ... Other arguments to be passed to the test function.
+#' @param ... Other arguments to be passed to the test function.
 #' @examples
 #' # Load data
 #' #:::::::::::::::::::::::::::::::::::::::
@@ -462,5 +462,4 @@ compare_means <- function(formula, data, method = "wilcox.test",
   group.by = c(group.by, ".y.")
 
 }
-
 
