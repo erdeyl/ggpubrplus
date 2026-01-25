@@ -463,8 +463,8 @@ p
   if(is.null(font)) res <- NULL
   else if(inherits(font, "list")) res <- font
   else{
-    # matching size and face
-    size <- grep("^[0-9]+$", font, perl = TRUE)
+    # matching size and face (supports both integer and decimal sizes)
+    size <- grep("^[0-9]+(\\.[0-9]+)?$", font, perl = TRUE)
     face <- grep("plain|bold|italic|bold.italic", font, perl = TRUE)
     if(length(size) == 0) size <- NULL else size <- as.numeric(font[size])
     if(length(face) == 0) face <- NULL else face <- font[face]

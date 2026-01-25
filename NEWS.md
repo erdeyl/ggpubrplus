@@ -1,3 +1,14 @@
+# ggpubrplus 0.8.3
+
+## Bug fixes
+
+- **`.parse_font()` decimal font size parsing** (ggpubr#659): Fixed bug where
+  decimal font sizes (e.g., `lab.font = c(2.4, "italic", "black")`) were not
+  recognized, causing the decimal value to be interpreted as a color index
+  instead. The regex pattern now correctly matches both integer and decimal
+  font sizes. This affects all functions using `lab.font` parameters including
+  `ggpie()`, `ggdonutchart()`, and font parameters in `ggpar()`.
+
 # ggpubrplus 0.8.2
 
 ## Documentation and release
