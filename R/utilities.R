@@ -463,14 +463,18 @@ p
   if(is.null(font)) res <- NULL
   else if(inherits(font, "list")) res <- font
   else{
-    # matching size and face
-    size <- grep("^[0-9]+$", font, perl = TRUE)
-    face <- grep("plain|bold|italic|bold.italic", font, perl = TRUE)
-    if(length(size) == 0) size <- NULL else size <- as.numeric(font[size])
-    if(length(face) == 0) face <- NULL else face <- font[face]
-    color <- setdiff(font, c(size, face))
-    if(length(color) == 0) color <- NULL
-    res <- list(size=size, face = face, color = color)
+    # matching size and face (supports integer, dot, or comma decimals)
+    size_idx <- grep("^[0-9]+([\\.,][0-9]+)?$", font, perl = TRUE)
+    face_idx <- grep("plain|bold|italic|bold.italic", font, perl = TRUE)
+    if(length(size_idx) == 0) size <- NULL else{
+      size_vals <- font[size_idx]
+      size_vals <- gsub(",", ".", size_vals, fixed = TRUE)
+      size <- as.numeric(size_vals)
+    }
+    if(length(face_idx) == 0) face <- NULL else face <- font[face_idx]
+    color_idx <- setdiff(seq_along(font), c(size_idx, face_idx))
+    if(length(color_idx) == 0) color <- NULL else color <- font[color_idx]
+    res <- list(size = size, face = face, color = color)
   }
   res
 }
@@ -1004,7 +1008,6 @@ p
   }
   return (legend)
 }
-
 
 
 

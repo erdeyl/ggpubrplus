@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,14 @@
       <small>Source: <a href="https://github.com/erdeyl/ggpubrplus/blob/HEAD/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.3" id="ggpubrplus-083">ggpubrplus 0.8.3<a class="anchor" aria-label="anchor" href="#ggpubrplus-083"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-8-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-3"></a></h3>
+<ul><li>
+<strong><code>.parse_font()</code> decimal font size parsing</strong> (ggpubr#659): Fixed bug where decimal font sizes (e.g., <code>lab.font = c(2.4, "italic", "black")</code>) were not recognized, causing the decimal value to be interpreted as a color index instead. The regex pattern now correctly matches both integer and decimal (dot or comma) font sizes. This affects all functions using <code>lab.font</code> parameters including <code><a href="../reference/ggpie.html">ggpie()</a></code>, <code><a href="../reference/ggdonutchart.html">ggdonutchart()</a></code>, and font parameters in <code><a href="../reference/ggpar.html">ggpar()</a></code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.2" id="ggpubrplus-082">ggpubrplus 0.8.2<a class="anchor" aria-label="anchor" href="#ggpubrplus-082"></a></h2>
 <div class="section level3">
