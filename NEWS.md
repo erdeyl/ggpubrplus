@@ -1,3 +1,11 @@
+# ggpubrplus 0.8.4 (Unreleased)
+
+## Compatibility
+
+- Convert `size` to `linewidth` for `geom_bar()`/`geom_col()` in `geom_exec()` to
+  preserve bar outline widths with ggplot2 4.0.0+.
+- Tests: replace deprecated `aes_()` usage with tidy-eval equivalents.
+
 # ggpubrplus 0.8.3
 
 ## Bug fixes
