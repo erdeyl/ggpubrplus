@@ -1,4 +1,4 @@
-# ggpubrplus 0.8.4 (Unreleased)
+# ggpubrplus 0.8.4
 
 ## Compatibility
 
