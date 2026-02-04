@@ -126,7 +126,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
 
     p <- p.adj <- NULL
     stat_test <- stat_test %>%
-      dplyr::select(-dplyr::one_of(c("p", "p.adj", "p.format", "p.adj.format", "label"))) %>%
+      dplyr::select(-dplyr::any_of(c("p", "p.adj", "p.format", "p.adj.format", "label"))) %>%
       dplyr::inner_join(padjusted, by = c("PANEL", "group", "group1", "group2"))
 
     # Format p-values using the specified style
