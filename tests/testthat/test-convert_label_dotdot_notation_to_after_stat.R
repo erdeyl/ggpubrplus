@@ -47,20 +47,20 @@ test_that("convert_label_dotdot_notation_to_after_stat qualifies unqualified aft
   expected_mapping <- aes(label = ggplot2::after_stat(eq.label))
   expect_equal(observed_mapping$label, expected_mapping$label)
   
-  # after_stat with spaces (using aes_ for flexibility)
-  mapping <- aes_(label = parse(text = "after_stat (eq.label)")[[1]])
+  # after_stat with spaces (using tidy eval)
+  mapping <- aes(label = !!rlang::parse_expr("after_stat (eq.label)"))
   observed_mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
   expected_mapping <- aes(label = ggplot2::after_stat(eq.label))
   expect_equal(observed_mapping$label, expected_mapping$label)
   
   # after_stat with multiple spaces
-  mapping <- aes_(label = parse(text = "after_stat  (eq.label)")[[1]])
+  mapping <- aes(label = !!rlang::parse_expr("after_stat  (eq.label)"))
   observed_mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
   expected_mapping <- aes(label = ggplot2::after_stat(eq.label))
   expect_equal(observed_mapping$label, expected_mapping$label)
   
   # Multiple after_stat calls
-  mapping <- aes_(label = parse(text = "paste(after_stat(eq.label), after_stat(rr.label))")[[1]])
+  mapping <- aes(label = !!rlang::parse_expr("paste(after_stat(eq.label), after_stat(rr.label))"))
   observed_mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
   expected_mapping <- aes(label = paste(ggplot2::after_stat(eq.label), ggplot2::after_stat(rr.label)))
   expect_equal(observed_mapping$label, expected_mapping$label)
