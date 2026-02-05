@@ -1,3 +1,10 @@
+# ggpubrplus 0.8.4.1
+
+## Compatibility
+
+- Replace deprecated tidyselect helper with `any_of()` for p-value columns.
+- Tests: adjust `geom_exec()` expectations for ggplot2 4.0 layer parameter storage.
+
 # ggpubrplus 0.8.4
 
 ## Compatibility
