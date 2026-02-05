@@ -113,7 +113,7 @@ Publication Ready Plots. R package version 0.6.0.
 **This fork:** \> Erdey L (2026). Supplementary compatibility updates
 for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2
 ≥3.5.2, dplyr ≥1.1.0, tidyr ≥1.3.0, R ≥4.1.0) — to be cited with the
-original package. R package version 0.8.4.
+original package. R package version 0.8.4.1.
 <https://doi.org/10.5281/zenodo.18131490>
 
 ## Original Package
