@@ -25,6 +25,14 @@ ggviolin(
   size = NULL,
   linewidth = NULL,
   width = 1,
+  quantiles = NULL,
+  quantile.linetype = NULL,
+  quantile.type = NULL,
+  quantile.alpha = NULL,
+  quantile.colour = NULL,
+  quantile.color = NULL,
+  quantile.linewidth = NULL,
+  quantile.size = NULL,
   draw_quantiles = NULL,
   select = NULL,
   remove = NULL,
@@ -103,6 +111,23 @@ outlines.}
 \item{linewidth}{constant value specifying the line width.}
 
 \item{width}{violin width.}
+
+\item{quantiles}{numeric vector of quantiles to draw on the violin.}
+
+\item{quantile.linetype}{linetype for quantile lines; set to draw quantiles
+with ggplot2 >= 4.0.0.}
+
+\item{quantile.type}{quantile algorithm passed to ggplot2.}
+
+\item{quantile.alpha}{aesthetics for quantile lines.}
+
+\item{quantile.colour}{aesthetics for quantile lines.}
+
+\item{quantile.color}{aesthetics for quantile lines.}
+
+\item{quantile.linewidth}{aesthetics for quantile lines.}
+
+\item{quantile.size}{aesthetics for quantile lines.}
 
 \item{draw_quantiles}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previous
 specification of drawing quantiles.}
@@ -204,7 +229,7 @@ ggviolin(df, "dose", "len", orientation = "horiz")
 # ++++++++++++++++++++++++++
 # Draw quantiles
 ggviolin(df, "dose", "len", add = "none",
-   draw_quantiles = 0.5)
+   quantiles = 0.5, quantile.linetype = "dashed")
 
 # Add box plot
 ggviolin(df, x = "dose", y = "len",

@@ -8,6 +8,12 @@ NULL
 #'@param width violin width.
 #'@param alpha color transparency. Values should be between 0 and 1.
 #'@param linewidth constant value specifying the line width.
+#'@param quantiles numeric vector of quantiles to draw on the violin.
+#'@param quantile.linetype linetype for quantile lines; set to draw quantiles
+#'  with ggplot2 >= 4.0.0.
+#'@param quantile.type quantile algorithm passed to ggplot2.
+#'@param quantile.alpha,quantile.colour,quantile.color,quantile.linewidth,quantile.size
+#'  aesthetics for quantile lines.
 #'@inheritParams ggplot2::geom_violin
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and
@@ -35,7 +41,7 @@ NULL
 #' # ++++++++++++++++++++++++++
 #' # Draw quantiles
 #' ggviolin(df, "dose", "len", add = "none",
-#'    draw_quantiles = 0.5)
+#'    quantiles = 0.5, quantile.linetype = "dashed")
 #'
 #' # Add box plot
 #' ggviolin(df, x = "dose", y = "len",
@@ -90,6 +96,9 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      title = NULL, xlab = NULL, ylab = NULL,
                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                      linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
+                     quantiles = NULL, quantile.linetype = NULL, quantile.type = NULL,
+                     quantile.alpha = NULL, quantile.colour = NULL, quantile.color = NULL,
+                     quantile.linewidth = NULL, quantile.size = NULL,
                      draw_quantiles = NULL,
                      select = NULL, remove = NULL, order = NULL,
                      add = "mean_se", add.params = list(),
@@ -106,7 +115,10 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
     color = color, fill = fill, palette = palette, alpha = alpha,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    linetype = linetype, trim = trim, size = size, linewidth = linewidth, width = width, draw_quantiles = draw_quantiles,
+    linetype = linetype, trim = trim, size = size, linewidth = linewidth, width = width,
+    quantiles = quantiles, quantile.linetype = quantile.linetype, quantile.type = quantile.type,
+    quantile.alpha = quantile.alpha, quantile.colour = quantile.colour, quantile.color = quantile.color,
+    quantile.linewidth = quantile.linewidth, quantile.size = quantile.size, draw_quantiles = draw_quantiles,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
@@ -143,6 +155,9 @@ ggviolin_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL, alpha = 1,
                       title = NULL, xlab = NULL, ylab = NULL,
                       linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
+                      quantiles = NULL, quantile.linetype = NULL, quantile.type = NULL,
+                      quantile.alpha = NULL, quantile.colour = NULL, quantile.color = NULL,
+                      quantile.linewidth = NULL, quantile.size = NULL,
                       draw_quantiles = NULL,
                       add = "mean_se", add.params = list(),
                       error.plot = "pointrange",
@@ -164,13 +179,48 @@ ggviolin_core <- function(data, x, y,
 
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
+  if(!is.null(quantile.color) && is.null(quantile.colour)) {
+    quantile.colour <- quantile.color
+  }
+
+  if(!is.null(draw_quantiles)) {
+    if(is.null(quantiles)) {
+      quantiles <- draw_quantiles
+      if(is.null(quantile.linetype)) {
+        quantile.linetype <- "solid"
+        warning(
+          "`draw_quantiles` is deprecated. Mapped to `quantiles` and set ",
+          "`quantile.linetype = 'solid'` to preserve legacy behavior. ",
+          "With ggplot2 >= 4.0.0, quantile lines are only drawn when ",
+          "`quantile.linetype` is set; set it explicitly (or set it to NULL ",
+          "to keep the new default)."
+        )
+      } else {
+        warning("`draw_quantiles` is deprecated. Use `quantiles` instead.")
+      }
+    } else {
+      warning("`draw_quantiles` is deprecated and ignored because `quantiles` was supplied.")
+    }
+  }
+
+  if(!is.null(quantiles) && is.null(quantile.linetype) && is.null(draw_quantiles)) {
+    warning(
+      "`quantiles` provided but `quantile.linetype` is NULL. ",
+      "With ggplot2 >= 4.0.0, quantile lines are only drawn when ",
+      "`quantile.linetype` is set."
+    )
+  }
+
   pms <- .violin_params(...)
 
   p <- ggplot(data, create_aes(list(x = x, y = y))) +
       geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
                 trim = trim, size = linewidth, width = width, alpha = alpha,
-                position = position, draw_quantiles = draw_quantiles,
+                position = position, draw_quantiles = NULL, quantiles = quantiles,
+                quantile.linetype = quantile.linetype, quantile.type = quantile.type,
+                quantile.alpha = quantile.alpha, quantile.colour = quantile.colour,
+                quantile.linewidth = quantile.linewidth, quantile.size = quantile.size,
                 stat = pms$stat, scale = pms$scale, adjust = pms$adjust)
 
   # Add
@@ -186,5 +236,3 @@ ggviolin_core <- function(data, x, y,
 
   p
 }
-
-
