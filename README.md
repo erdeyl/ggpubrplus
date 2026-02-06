@@ -8,7 +8,7 @@ v2+](https://img.shields.io/badge/License-GPL%20v2+-blue.svg)](https://www.gnu.o
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18131490.svg)](https://doi.org/10.5281/zenodo.18131490)
 
 **A modernized fork of ggpubr with full compatibility for ggplot2
-3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, and R 4.1.0+**
+4.0.0+, dplyr 1.2.0+, tidyr 1.3.2+, and R 4.1.0+**
 
 ## About This Package
 
@@ -112,7 +112,7 @@ Publication Ready Plots. R package version 0.6.0.
 
 **This fork:** \> Erdey L (2026). Supplementary compatibility updates
 for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2
-≥3.5.2, dplyr ≥1.1.0, tidyr ≥1.3.0, R ≥4.1.0) — to be cited with the
+≥4.0.0, dplyr ≥1.2.0, tidyr ≥1.3.2, R ≥4.1.0) — to be cited with the
 original package. R package version 0.8.4.1.
 <https://doi.org/10.5281/zenodo.18131490>
 

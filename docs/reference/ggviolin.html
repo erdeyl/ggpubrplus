@@ -17,7 +17,7 @@ data at different values."><!-- Global site tag (gtag.js) - Google Analytics -->
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,14 @@ data at different values.</p>
 <span>  size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  linewidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.linetype <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.colour <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.linewidth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantile.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  draw_quantiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  remove <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -193,6 +201,23 @@ outlines.</p></dd>
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
 <dd><p>violin width.</p></dd>
+
+
+<dt id="arg-quantiles">quantiles<a class="anchor" aria-label="anchor" href="#arg-quantiles"></a></dt>
+<dd><p>numeric vector of quantiles to draw on the violin.</p></dd>
+
+
+<dt id="arg-quantile-linetype">quantile.linetype<a class="anchor" aria-label="anchor" href="#arg-quantile-linetype"></a></dt>
+<dd><p>linetype for quantile lines; set to draw quantiles
+with ggplot2 &gt;= 4.0.0.</p></dd>
+
+
+<dt id="arg-quantile-type">quantile.type<a class="anchor" aria-label="anchor" href="#arg-quantile-type"></a></dt>
+<dd><p>quantile algorithm passed to ggplot2.</p></dd>
+
+
+<dt id="arg-quantile-alpha-quantile-colour-quantile-color-quantile-linewidth-quantile-size">quantile.alpha, quantile.colour, quantile.color, quantile.linewidth, quantile.size<a class="anchor" aria-label="anchor" href="#arg-quantile-alpha-quantile-colour-quantile-color-quantile-linewidth-quantile-size"></a></dt>
+<dd><p>aesthetics for quantile lines.</p></dd>
 
 
 <dt id="arg-draw-quantiles">draw_quantiles<a class="anchor" aria-label="anchor" href="#arg-draw-quantiles"></a></dt>
@@ -335,7 +360,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span><span class="co"># ++++++++++++++++++++++++++</span></span></span>
 <span class="r-in"><span><span class="co"># Draw quantiles</span></span></span>
 <span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>, add <span class="op">=</span> <span class="st">"none"</span>,</span></span>
-<span class="r-in"><span>   draw_quantiles <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   quantiles <span class="op">=</span> <span class="fl">0.5</span>, quantile.linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add box plot</span></span></span>

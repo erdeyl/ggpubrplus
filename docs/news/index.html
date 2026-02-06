@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,11 +39,20 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.4.1" id="ggpubrplus-0841">ggpubrplus 0.8.4.1<a class="anchor" aria-label="anchor" href="#ggpubrplus-0841"></a></h2>
+<div class="section level3">
+<h3 id="compatibility-0-8-4-1">Compatibility<a class="anchor" aria-label="anchor" href="#compatibility-0-8-4-1"></a></h3>
+<ul><li>Replace deprecated tidyselect helper with <code>any_of()</code> for p-value columns.</li>
+<li>Tests: adjust <code><a href="../reference/geom_exec.html">geom_exec()</a></code> expectations for ggplot2 4.0 layer parameter storage.</li>
+<li>Bump minimum versions for ggrepel, tidyr, dplyr, cowplot, rlang, and rstatix.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.4" id="ggpubrplus-084">ggpubrplus 0.8.4<a class="anchor" aria-label="anchor" href="#ggpubrplus-084"></a></h2>
 <div class="section level3">
 <h3 id="compatibility-0-8-4">Compatibility<a class="anchor" aria-label="anchor" href="#compatibility-0-8-4"></a></h3>
-<ul><li>Convert <code>size</code> to <code>linewidth</code> for <code>geom_bar()</code>/<code>geom_col()</code> in <code><a href="../reference/geom_exec.html">geom_exec()</a></code> to preserve bar outline widths with ggplot2 4.0.0+.</li>
-<li>Tests: replace deprecated <code>aes_()</code> usage with tidy-eval equivalents.</li>
+<ul><li>Convert <code>size</code> to <code>linewidth</code> for <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code>/<code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> in <code><a href="../reference/geom_exec.html">geom_exec()</a></code> to preserve bar outline widths with ggplot2 4.0.0+.</li>
+<li>Tests: replace deprecated <code><a href="https://ggplot2.tidyverse.org/reference/aes_.html" class="external-link">aes_()</a></code> usage with tidy-eval equivalents.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -185,11 +194,11 @@
 </ul></div>
 <div class="section level4">
 <h4 id="ggplot2-compatibility-issues-0-8-0">ggplot2 3.4.0+ Compatibility (Issues <a href="https://github.com/erdeyl/ggpubrplus/issues/644">#644</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/645">#645</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/654">#654</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/656">#656</a>)<a class="anchor" aria-label="anchor" href="#ggplot2-compatibility-issues-0-8-0"></a></h4>
-<ul><li><p><strong><code><a href="../reference/border.html">border()</a></code> size deprecation</strong> (Issues <a href="https://github.com/erdeyl/ggpubrplus/issues/644">#644</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/654">#654</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/656">#656</a>): Fixed deprecation warning in <code><a href="../reference/border.html">border()</a></code> function by replacing deprecated <code>size</code> parameter with <code>linewidth</code> in <code>element_rect()</code> as required by ggplot2 3.4.0+.</p></li>
-<li><p><strong><code><a href="../reference/stat_cor.html">stat_cor()</a></code> deprecated ..var.. notation</strong>: Updated <code>default_aes</code> to use modern <code>after_stat()</code> syntax instead of deprecated <code>..hjust..</code> and <code>..vjust..</code> notation.</p></li>
+<ul><li><p><strong><code><a href="../reference/border.html">border()</a></code> size deprecation</strong> (Issues <a href="https://github.com/erdeyl/ggpubrplus/issues/644">#644</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/654">#654</a>, <a href="https://github.com/erdeyl/ggpubrplus/issues/656">#656</a>): Fixed deprecation warning in <code><a href="../reference/border.html">border()</a></code> function by replacing deprecated <code>size</code> parameter with <code>linewidth</code> in <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect()</a></code> as required by ggplot2 3.4.0+.</p></li>
+<li><p><strong><code><a href="../reference/stat_cor.html">stat_cor()</a></code> deprecated ..var.. notation</strong>: Updated <code>default_aes</code> to use modern <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">after_stat()</a></code> syntax instead of deprecated <code>..hjust..</code> and <code>..vjust..</code> notation.</p></li>
 <li><p><strong><code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> deprecated ..var.. notation</strong>: Updated <code>default_aes</code> to use <code>after_stat(hjust)</code> and <code>after_stat(vjust)</code> instead of deprecated <code>..hjust..</code> and <code>..vjust..</code> notation.</p></li>
 <li><p><strong><code><a href="../reference/stat_regline_equation.html">stat_regline_equation()</a></code> deprecated ..var.. notation</strong>: Updated <code>default_aes</code> to use <code>after_stat(eq.label)</code>, <code>after_stat(hjust)</code>, and <code>after_stat(vjust)</code> instead of deprecated notation.</p></li>
-<li><p><strong><code><a href="../reference/ggscatter.html">ggscatter()</a></code> geom_rug size deprecation</strong>: Fixed deprecation warning in <code><a href="../reference/ggscatter.html">ggscatter()</a></code> when <code>rug = TRUE</code> by using <code>linewidth</code> instead of <code>size</code> for <code>geom_rug()</code>.</p></li>
+<li><p><strong><code><a href="../reference/ggscatter.html">ggscatter()</a></code> geom_rug size deprecation</strong>: Fixed deprecation warning in <code><a href="../reference/ggscatter.html">ggscatter()</a></code> when <code>rug = TRUE</code> by using <code>linewidth</code> instead of <code>size</code> for <code><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="external-link">geom_rug()</a></code>.</p></li>
 <li><p><strong><code><a href="../reference/ggpaired.html">ggpaired()</a></code> geom_line size deprecation</strong>: Fixed deprecation warning in <code><a href="../reference/ggpaired.html">ggpaired()</a></code> by using <code>linewidth</code> instead of <code>size</code> for connecting lines.</p></li>
 <li><p><strong><code><a href="../reference/ggecdf.html">ggecdf()</a></code> stat_ecdf size deprecation</strong>: Fixed deprecation warning in <code><a href="../reference/ggecdf.html">ggecdf()</a></code> by using <code>linewidth</code> instead of <code>size</code> for the ECDF line.</p></li>
 <li><p><strong><code><a href="../reference/ggdensity.html">ggdensity()</a></code> geom_density size deprecation</strong>: Fixed deprecation warning in <code><a href="../reference/ggdensity.html">ggdensity()</a></code> by using <code>linewidth</code> instead of <code>size</code> for density lines.</p></li>
