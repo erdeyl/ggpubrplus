@@ -1,3 +1,11 @@
+# ggpubrplus (unreleased)
+
+## Compatibility
+
+- Require ggplot2 >= 4.0.0.
+- ggviolin(): add ggplot2 4.x quantile parameters; map deprecated
+  `draw_quantiles` to `quantiles` with verbose migration warnings.
+
 # ggpubrplus 0.8.4.1
 
 ## Compatibility
