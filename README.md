@@ -8,7 +8,7 @@ v2+](https://img.shields.io/badge/License-GPL%20v2+-blue.svg)](https://www.gnu.o
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18131490.svg)](https://doi.org/10.5281/zenodo.18131490)
 
 **A modernized fork of ggpubr with full compatibility for ggplot2
-3.5.2+, dplyr 1.1.0+, tidyr 1.3.0+, and R 4.1.0+**
+4.0.0+, dplyr 1.2.0+, tidyr 1.3.2+, and R 4.1.0+**
 
 ## About This Package
 
@@ -23,11 +23,13 @@ users can switch back to the original package.
 ### Why This Fork Exists
 
 The original ggpubr package generates deprecation warnings with: -
-ggplot2 3.4.0+ (released 2022) - dplyr 1.1.0+ (deprecated `do()`,
-`mutate_if()`) - tidyr 1.3.0+ (deprecated `gather()`)
+ggplot2 4.0.0+ (deprecated `size` vs `linewidth`) - dplyr 1.2.0+
+(deprecated `do()`, `mutate_if()`) - tidyr 1.3.2+ (deprecated
+`gather()`)
 
-This fork resolves all deprecation warnings while maintaining full
-backward compatibility.
+This fork resolves deprecation warnings and targets the modern R
+ecosystem (including ggplot2 4.0.0+), which is a breaking change for
+users on older ggplot2 versions.
 
 ## Installation
 
@@ -112,8 +114,8 @@ Publication Ready Plots. R package version 0.6.0.
 
 **This fork:** \> Erdey L (2026). Supplementary compatibility updates
 for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2
-≥3.5.2, dplyr ≥1.1.0, tidyr ≥1.3.0, R ≥4.1.0) — to be cited with the
-original package. R package version 0.8.4.1.
+≥4.0.0, dplyr ≥1.2.0, tidyr ≥1.3.2, R ≥4.1.0) — to be cited with the
+original package. R package version 0.9.0.
 <https://doi.org/10.5281/zenodo.18131490>
 
 ## Original Package

@@ -119,15 +119,7 @@ with ggplot2 >= 4.0.0.}
 
 \item{quantile.type}{quantile algorithm passed to ggplot2.}
 
-\item{quantile.alpha}{aesthetics for quantile lines.}
-
-\item{quantile.colour}{aesthetics for quantile lines.}
-
-\item{quantile.color}{aesthetics for quantile lines.}
-
-\item{quantile.linewidth}{aesthetics for quantile lines.}
-
-\item{quantile.size}{aesthetics for quantile lines.}
+\item{quantile.alpha, quantile.colour, quantile.color, quantile.linewidth, quantile.size}{aesthetics for quantile lines.}
 
 \item{draw_quantiles}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previous
 specification of drawing quantiles.}
