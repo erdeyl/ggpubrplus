@@ -1,3 +1,11 @@
+# ggpubrplus 0.9.0.1
+
+## Maintenance
+
+- Raise minimum ggplot2 requirement to >= 4.0.2.
+- Synchronize DESCRIPTION, README, CITATION, and package docs for this patch release.
+- No functional API changes.
+
 # ggpubrplus 0.9.0
 
 ## Compatibility

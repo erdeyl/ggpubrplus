@@ -23,12 +23,12 @@ users can switch back to the original package.
 ### Why This Fork Exists
 
 The original ggpubr package generates deprecation warnings with: -
-ggplot2 4.0.0+ (deprecated `size` vs `linewidth`) - dplyr 1.2.0+
+ggplot2 4.0.2+ (deprecated `size` vs `linewidth`) - dplyr 1.2.0+
 (deprecated `do()`, `mutate_if()`) - tidyr 1.3.2+ (deprecated
 `gather()`)
 
 This fork resolves deprecation warnings and targets the modern R
-ecosystem (including ggplot2 4.0.0+), which is a breaking change for
+ecosystem (including ggplot2 4.0.2+), which is a breaking change for
 users on older ggplot2 versions.
 
 ## Installation
@@ -115,7 +115,7 @@ Publication Ready Plots. R package version 0.6.0.
 **This fork:** \> Erdey L (2026). Supplementary compatibility updates
 for ggpubr (Kassambara, 2023): Modern R ecosystem support (ggplot2
 ≥4.0.0, dplyr ≥1.2.0, tidyr ≥1.3.2, R ≥4.1.0) — to be cited with the
-original package. R package version 0.9.0.
+original package. R package version 0.9.0.1.
 <https://doi.org/10.5281/zenodo.18131490>
 
 ## Original Package
