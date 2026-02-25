@@ -1,4 +1,3 @@
-
 test_that("format_p_value returns correct format for default style", {
   # Default style should use format.pval with 2 significant digits
   expect_equal(format_p_value(0.001234), "0.0012")

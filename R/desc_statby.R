@@ -27,42 +27,46 @@
 #'
 #' @examples
 #' # Load data
-#'data("ToothGrowth")
+#' data("ToothGrowth")
 #'
-#'# Descriptive statistics
-#'res <- desc_statby(ToothGrowth, measure.var = "len",
-#'    grps = c("dose", "supp"))
+#' # Descriptive statistics
+#' res <- desc_statby(ToothGrowth,
+#'   measure.var = "len",
+#'   grps = c("dose", "supp")
+#' )
 #' head(res[, 1:10])
 #'
 #' @export
-desc_statby <- function(data, measure.var, grps, ci = 0.95){
-  if(!inherits(data, "data.frame"))
+desc_statby <- function(data, measure.var, grps, ci = 0.95) {
+  if (!inherits(data, "data.frame")) {
     stop("data must be a data.frame.")
+  }
 
-  data %>% as.data.frame() %>%
+  data %>%
+    as.data.frame() %>%
     df_group_by(vars = grps) %>%
     reframe(.summary(.data[[measure.var]], ci = ci)) %>%
     as.data.frame()
 }
 
 # Helper function to compute summary statistics
-.summary <- function(x, ci = 0.95){
-
-  if(is.data.frame(x)){
-    if(ncol(x) == 1) x <- .select_vec(x, 1)
+.summary <- function(x, ci = 0.95) {
+  if (is.data.frame(x)) {
+    if (ncol(x) == 1) x <- .select_vec(x, 1)
   }
-  if(!is.numeric(x))
+  if (!is.numeric(x)) {
     stop("x should be a numeric vector or a data frame with one numeric column")
+  }
 
   data_sum <- data.frame(
     length = base::sum(!is.na(x)),
-    min = base::min(x, na.rm=TRUE),
-    max = base::max(x, na.rm=TRUE),
-    median = stats::median(x, na.rm=TRUE),
-    mean = base::mean(x, na.rm=TRUE),
-    iqr = stats::IQR(x, na.rm=TRUE),
-    mad = stats::mad(x, na.rm=TRUE),
-    sd = stats::sd(x, na.rm=TRUE)
+    min = base::min(x, na.rm = TRUE),
+    max = base::max(x, na.rm = TRUE),
+    median = stats::median(x, na.rm = TRUE),
+    mean = base::mean(x, na.rm = TRUE),
+    iqr = stats::IQR(x, na.rm = TRUE),
+    mad = stats::mad(x, na.rm = TRUE),
+    sd = stats::sd(x, na.rm = TRUE)
   )
 
   data_sum$se <- data_sum$sd / sqrt(data_sum$length) # standard error
@@ -71,15 +75,12 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
   df <- data_sum$length - 1
   data_sum$ci <- ifelse(
     is.finite(df) & df > 0 & is.finite(data_sum$se),
-    stats::qt(ci/2 + .5, df) * data_sum$se,
+    stats::qt(ci / 2 + .5, df) * data_sum$se,
     NA_real_
   )
   data_sum$range <- data_sum$max - data_sum$min
-  data_sum$cv <- data_sum$sd/data_sum$mean
+  data_sum$cv <- data_sum$sd / data_sum$mean
   data_sum$var <- data_sum$sd^2
   data_sum[, 2:ncol(data_sum)] <- data_sum[, 2:ncol(data_sum)]
   return(data_sum)
 }
-
-
-

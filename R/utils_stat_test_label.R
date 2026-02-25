@@ -1,20 +1,20 @@
 # check symnum.args --------------------------------
-fortify_signif_symbols_encoding <- function(symnum.args = list()){
-  if(.is_empty(symnum.args)){
+fortify_signif_symbols_encoding <- function(symnum.args = list()) {
+  if (.is_empty(symnum.args)) {
     symnum.args <- list(
       cutpoints = c(0, 1e-04, 0.001, 0.01, 0.05, Inf),
       symbols = c("****", "***", "**", "*", "ns")
     )
-  }
-  else {
-    symnum.args.isok <- (length(symnum.args$symbols) == length(symnum.args$cutpoints)-1)
-    if(!symnum.args.isok)
+  } else {
+    symnum.args.isok <- (length(symnum.args$symbols) == length(symnum.args$cutpoints) - 1)
+    if (!symnum.args.isok) {
       stop(
         "Incorrect format detected in 'symnum.args'. ",
         "Check the documentation. ",
         "length(symbols) should be length(cutpoints)-1",
         call. = FALSE
-        )
+      )
+    }
   }
   symnum.args
 }
@@ -74,20 +74,30 @@ build_symnum_args <- function(signif.cutoffs = NULL,
     if (is.null(signif.symbols)) {
       # Generate symbols: *, **, ***, (****)
       if (use.four.stars && n_cutoffs >= 4) {
-        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+        signif.symbols <- vapply(
+          seq_len(n_cutoffs),
+          function(i) paste(rep("*", i), collapse = ""),
+          FUN.VALUE = character(1)
+        )
       } else if (n_cutoffs > 3 && !use.four.stars) {
         stop("signif.cutoffs has more than 3 levels but use.four.stars = FALSE. ",
-             "Either set use.four.stars = TRUE or provide signif.symbols explicitly.",
-             call. = FALSE)
+          "Either set use.four.stars = TRUE or provide signif.symbols explicitly.",
+          call. = FALSE
+        )
       } else {
-        signif.symbols <- sapply(1:n_cutoffs, function(i) paste(rep("*", i), collapse = ""))
+        signif.symbols <- vapply(
+          seq_len(n_cutoffs),
+          function(i) paste(rep("*", i), collapse = ""),
+          FUN.VALUE = character(1)
+        )
       }
     }
 
     # Validate symbols length
     if (length(signif.symbols) != n_cutoffs) {
       stop("signif.symbols must have the same length as signif.cutoffs (", n_cutoffs, ")",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
 
     # Build cutpoints: 0, cutoffs (ascending), Inf
@@ -114,38 +124,38 @@ build_symnum_args <- function(signif.cutoffs = NULL,
 # Check user specified label -----------------------------
 
 # Check if is glue package expression
-is_glue_expression <- function(label){
+is_glue_expression <- function(label) {
   grepl("\\{|\\}", label, perl = TRUE)
 }
 
 # Check if label is a plotmath expression
-contains_plotmath_symbols <- function(label){
+contains_plotmath_symbols <- function(label) {
   grepl("==|italic\\s?\\(|bold\\s?\\(|bolditalic\\s?\\(", label)
 }
-starts_with_list <- function(label){
+starts_with_list <- function(label) {
   grepl("^list\\s?\\(", label)
 }
-is_plotmath_expression <- function(label){
+is_plotmath_expression <- function(label) {
   starts_with_list(label) | contains_plotmath_symbols(label)
 }
 
 # Fortify label --------------------
 # if label is plotmath expression, then
 # fortify it in case users miss something
-contains_p_signif <- function(label){
+contains_p_signif <- function(label) {
   any(grepl("p*\\.signif", label))
 }
-contains_twoequal_signs <- function(label){
+contains_twoequal_signs <- function(label) {
   any(grepl("==", label))
 }
-replace_simple_by_double_equals <- function(label){
-  if(!contains_twoequal_signs(label)){
+replace_simple_by_double_equals <- function(label) {
+  if (!contains_twoequal_signs(label)) {
     label <- gsub("=", "==", label)
   }
   label
 }
 
-escape_psignif_asteriks <- function(label){
+escape_psignif_asteriks <- function(label) {
   # Escaping asteriks (special plotmath symbols) in p.signif or p.adj.signif by adding quote
   label <- gsub(pattern = "\\}\\{(p.*.signif)\\}", replacement = "}*`{\\1}`", x = label)
   # p signif preceded with space
@@ -155,41 +165,39 @@ escape_psignif_asteriks <- function(label){
 }
 
 
-
 # Get statistical test label to be displayed -------------------
 # stat.test: statistical test output
 # description: the description of the stat test, for example: "Anova"
 # label: can be p, p.signif, p.adj or glue expression
-add_stat_label <- function (stat.test,  label = NULL){
+add_stat_label <- function(stat.test, label = NULL) {
   is_plotmath <- FALSE
   stat.test <- add_p_format_signif(stat.test)
-  if(is.null(label)){
+  if (is.null(label)) {
     stat.test$label <- add_p(stat.test$p.format)
-  }
-  else{
+  } else {
     is_plotmath <- is_plotmath_expression(label)
-    if(is_plotmath){
+    if (is_plotmath) {
       label <- fortify_plotmath(label)
     }
-    if(is_glue_expression(label)){
+    if (is_glue_expression(label)) {
       stat.test <- stat.test %>% mutate(label = glue(label))
-    }
-    else {
-      if(!(label %in% colnames(stat.test))){
+    } else {
+      if (!(label %in% colnames(stat.test))) {
         stop(
           "Can't find the value of the argument label ('", label, "') in the computed ",
-          "statistical test table.", call. = FALSE
-          )
+          "statistical test table.",
+          call. = FALSE
+        )
       }
       stat.test$label <- as.character(stat.test[[label]])
     }
   }
-  label <- gsub(pattern = "=+(\\s+)?<", replacement = "<\\1", stat.test$label )
-  if(is_plotmath){
+  label <- gsub(pattern = "=+(\\s+)?<", replacement = "<\\1", stat.test$label)
+  if (is_plotmath) {
     label <- replace_simple_by_double_equals(label)
     label <- gsub(pattern = "\\s", replacement = "~", label)
-    label <- gsub(pattern = "~==~", replacement = "~`=`~", label )
-    label <- gsub(pattern = "~<~", replacement = "~`<`~", label )
+    label <- gsub(pattern = "~==~", replacement = "~`=`~", label)
+    label <- gsub(pattern = "~<~", replacement = "~`<`~", label)
     # Make sure that decimal values will be displayed asis in character when parsed by ggplot
     # Add quote around numeric values
     label <- gsub("([0-9.-]+)", "'\\1'", label)
@@ -200,10 +208,10 @@ add_stat_label <- function (stat.test,  label = NULL){
   stat.test
 }
 
-fortify_plotmath <- function(label){
+fortify_plotmath <- function(label) {
   label <- gsub(pattern = "~", replacement = " ", x = label, fixed = TRUE)
-  if(!starts_with_list(label)) label <- paste0("list(", label, ")")
-  if(contains_p_signif(label)){
+  if (!starts_with_list(label)) label <- paste0("list(", label, ")")
+  if (contains_p_signif(label)) {
     # Escape p signif stars
     label <- gsub(pattern = "\\}\\{p.signif\\}", replacement = "}*`{p.signif}`", x = label)
     label <- gsub(pattern = "\\}\\{p.adj.signif\\}", replacement = "}*`{p.adj.signif}`", x = label)
@@ -225,13 +233,13 @@ fortify_plotmath <- function(label){
 # Add p prefix
 # add_p(0.05) --> p = 0.05
 # add_p("<0.05") --> p < 0.05
-add_p <-function(label){
+add_p <- function(label) {
   create_p_label(label)
 }
 
 # Add combined p.format + p.signif column when available
 # Falls back to adjusted values when raw p-values are missing.
-add_p_format_signif <- function(stat.test){
+add_p_format_signif <- function(stat.test) {
   if ("p.format.signif" %in% colnames(stat.test)) {
     return(stat.test)
   }
@@ -269,7 +277,7 @@ add_p_format_signif <- function(stat.test){
 }
 
 # Add statistical test number of samples
-add_stat_n <- function(stat.test){
+add_stat_n <- function(stat.test) {
   stat.test$n <- rstatix::get_n(stat.test)
   stat.test
 }
@@ -278,17 +286,16 @@ add_stat_n <- function(stat.test){
 # gg layer data checking --------------------------
 # Check whether there is multiple grouping variables
 # This is the case for grouped plots
-contains_multiple_grouping_vars <- function(data){
+contains_multiple_grouping_vars <- function(data) {
   !all(data$x == data$group)
 }
 
 # Check if group variable is specified in aes
-is_group_aes_specified <- function(mapping){
+is_group_aes_specified <- function(mapping) {
   answer <- FALSE
-  if(is.null(mapping)) {
+  if (is.null(mapping)) {
     answer <- FALSE
-  }
-  else if(!is.null(mapping$group)) {
+  } else if (!is.null(mapping$group)) {
     answer <- TRUE
   }
   answer
@@ -296,25 +303,23 @@ is_group_aes_specified <- function(mapping){
 
 
 # Manipulating statistical test outputs -----------------
-keep_only_tbl_df_classes <- function(x){
+keep_only_tbl_df_classes <- function(x) {
   toremove <- setdiff(class(x), c("tbl_df", "tbl", "data.frame"))
-  if(length(toremove) > 0){
+  if (length(toremove) > 0) {
     class(x) <- setdiff(class(x), toremove)
   }
   x
 }
 
 
-
 # The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0.
 # after_stat(p.signif) should be used. This function makes automatic
 # conversion if user specified ..p.signif..
-convert_label_dotdot_notation_to_after_stat <- function(mapping){
-  if (!is.null(mapping) ){
+convert_label_dotdot_notation_to_after_stat <- function(mapping) {
+  if (!is.null(mapping)) {
     label <- mapping$label
     if (!is.null(mapping$label)) {
-
-      label <-  rlang::as_label(mapping$label)
+      label <- rlang::as_label(mapping$label)
       dot_dot_labels <- c(
         "p.signif", "p.adj.signif", "p.format", "p.format.signif", "p", "p.adj",
         "eq.label", "adj.rr.label", "rr.label", "AIC.label", "BIC.label"
