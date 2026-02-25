@@ -12,12 +12,15 @@
 #'   geomfunc = NULL.
 #' @examples
 #' \dontrun{
-#' ggplot() + geom_exec(geom_point, data = mtcars,
-#'     x = "mpg", y = "wt", size = "cyl", color = "cyl")
+#' ggplot() +
+#'   geom_exec(geom_point,
+#'     data = mtcars,
+#'     x = "mpg", y = "wt", size = "cyl", color = "cyl"
+#'   )
 #' }
 #' @export
-geom_exec <- function (geomfunc = NULL, data = NULL,
-                        position = NULL, ...) {
+geom_exec <- function(geomfunc = NULL, data = NULL,
+                      position = NULL, ...) {
   params <- list(...)
 
   mapping <-
@@ -59,19 +62,19 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # segment
     "arrow", "xend", "yend",
     # stat_summary,
-    "fun.data", "fun", "fun.min", "fun.max", 
+    "fun.data", "fun", "fun.min", "fun.max",
     # bracket
     "y.position", "tip.length", "label.size", "step.increase",
     "bracket.nudge.y", "bracket.shorten", "coord.flip"
-
-
   )
 
   columns <- colnames(data)
 
   # Helper to check for geoms/stats that use linewidth for strokes
   is_line_geom <- function(f) {
-    if (is.null(f)) return(FALSE)
+    if (is.null(f)) {
+      return(FALSE)
+    }
 
     # List of geoms/stats that use linewidth in modern ggplot2
     line_geoms <- list(
@@ -88,45 +91,40 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     )
 
     for (geom in line_geoms) {
-      if (identical(f, geom)) return(TRUE)
+      if (identical(f, geom)) {
+        return(TRUE)
+      }
     }
     return(FALSE)
   }
 
   # Auto-convert size to linewidth for line-based geoms
   if (is_line_geom(geomfunc) && "size" %in% names(params) && !"linewidth" %in% names(params)) {
-     names(params)[names(params) == "size"] <- "linewidth"
+    names(params)[names(params) == "size"] <- "linewidth"
   }
 
   for (key in names(params)) {
     value <- params[[key]]
-    if (is.null(value)) {
-
-    }
-    else if (unlist(value)[1] %in% columns & key %in% allowed_options) {
+    if (is.null(value)) {} else if (unlist(value)[1] %in% columns & key %in% allowed_options) {
       mapping[[key]] <- value
-
-    }
-    else if (key %in% allowed_options) {
+    } else if (key %in% allowed_options) {
       option[[key]] <- value
-    }
-    else if (key =="group") {
+    } else if (key == "group") {
       mapping[[key]] <- value # for line plot
-    }
-    else if(key == "step.group.by"){
+    } else if (key == "step.group.by") {
       # for geom_bracket, value are variable name.
       # but this parameter is an option not an aes
       option[[key]] <- value
     }
     # else warnings("Don't know '", key, "'")
   }
-  if (!is.null(position))
+  if (!is.null(position)) {
     option[["position"]] <- position
-  option[["data"]] <- data
-  if(is.null(geomfunc)){
-   res <- list(option = option, mapping = mapping)
   }
-  else{
+  option[["data"]] <- data
+  if (is.null(geomfunc)) {
+    res <- list(option = option, mapping = mapping)
+  } else {
     option[["mapping"]] <- create_aes(mapping)
     res <- do.call(geomfunc, option)
   }

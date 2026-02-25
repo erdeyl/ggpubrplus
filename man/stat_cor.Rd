@@ -144,10 +144,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
@@ -172,12 +172,13 @@ df <- mtcars
 df$cyl <- as.factor(df$cyl)
 
 # Scatter plot with correlation coefficient
-#:::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
+# :::::::::::::::::::::::::::::::::::::::::::::::::
+sp <- ggscatter(df,
+  x = "wt", y = "mpg",
+  add = "reg.line", # Add regressin line
+  add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+  conf.int = TRUE # Add confidence interval
+)
 # Add correlation coefficient
 sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
 
@@ -191,16 +192,18 @@ sp + stat_cor(aes(label = after_stat(r.label)), label.x = 3)
 
 # Use R2 instead of R
 ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
- stat_cor(
-   aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
-  label.x = 3
-)
+  stat_cor(
+    aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+    label.x = 3
+  )
 
 # Color by groups and facet
-#::::::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   color = "cyl", palette = "jco",
-   add = "reg.line", conf.int = TRUE)
+# ::::::::::::::::::::::::::::::::::::::::::::::::::::
+sp <- ggscatter(df,
+  x = "wt", y = "mpg",
+  color = "cyl", palette = "jco",
+  add = "reg.line", conf.int = TRUE
+)
 sp + stat_cor(aes(color = cyl), label.x = 3)
 
 }

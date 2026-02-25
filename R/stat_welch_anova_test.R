@@ -1,14 +1,14 @@
 #' @include utilities.R utils_stat_test_label.R stat_anova_test.R
 NULL
-#'Add Welch One-Way ANOVA Test P-values to a GGPlot
-#'@description Add Welch one-way ANOVA test p-values to a ggplot, such as
+#' Add Welch One-Way ANOVA Test P-values to a GGPlot
+#' @description Add Welch one-way ANOVA test p-values to a ggplot, such as
 #'  box blots, dot plots and stripcharts.
 #' @inheritParams ggpubr-common-params
-#'@inheritParams ggplot2::layer
-#'@inheritParams stat_pvalue_manual
-#'@inheritParams stat_anova_test
+#' @inheritParams ggplot2::layer
+#' @inheritParams stat_pvalue_manual
+#' @inheritParams stat_anova_test
 #'
-#'@section Computed variables: \itemize{
+#' @section Computed variables: \itemize{
 #'  \item{statistic}:	the value of the test statistic (F-value)
 #'  \item{DFn}: Degrees of Freedom in the numerator (i.e. DF effect)
 #'  \item{DFd}:	Degrees of Freedom in the denominator (i.e., DF error)
@@ -24,20 +24,20 @@ NULL
 #'
 #' @examples
 #' # Data preparation
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Transform `dose` into factor variable
 #' df <- ToothGrowth
 #' df$dose <- as.factor(df$dose)
 #' # Add a random grouping variable
 #' set.seed(123)
 #' df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
-#' df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
-#' df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+#' df$len <- ifelse(df$group == "grp2", df$len + 2, df$len)
+#' df$len <- ifelse(df$group == "grp3", df$len + 7, df$len)
 #' head(df, 3)
 #'
 #'
 #' # Basic boxplot
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Create a basic boxplot
 #' # Add 5% and 10% space to the plot bottom and the top, respectively
 #' bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -63,16 +63,16 @@ NULL
 #'
 #'
 #' # Faceted plots
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Create a ggplot facet
 #' bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
-#'  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+#'   scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
 #' # Add p-values
 #' bxp + stat_welch_anova_test()
 #'
 #'
 #' # Grouped plots
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' bxp2 <- ggboxplot(df, x = "group", y = "len", color = "dose", palette = "npg")
 #'
 #' # For each x-position, computes tests between legend groups
@@ -83,18 +83,17 @@ NULL
 #'
 #' @export
 stat_welch_anova_test <- function(mapping = NULL, data = NULL, group.by = NULL,
-                            label = "{method}, p = {p.format}",
-                            label.x.npc = "left", label.y.npc = "top",
-                            label.x = NULL, label.y = NULL, step.increase = 0.1,
-                            p.adjust.method = "holm", significance = list(),
-                            p.format.style = "default", p.digits = NULL,
-                            p.leading.zero = NULL, p.min.threshold = NULL,
-                            p.decimal.mark = NULL,
-                            geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
-                            inherit.aes = TRUE, parse = FALSE,  ...) {
-
+                                  label = "{method}, p = {p.format}",
+                                  label.x.npc = "left", label.y.npc = "top",
+                                  label.x = NULL, label.y = NULL, step.increase = 0.1,
+                                  p.adjust.method = "holm", significance = list(),
+                                  p.format.style = "default", p.digits = NULL,
+                                  p.leading.zero = NULL, p.min.threshold = NULL,
+                                  p.decimal.mark = NULL,
+                                  geom = "text", position = "identity", na.rm = FALSE, show.legend = FALSE,
+                                  inherit.aes = TRUE, parse = FALSE, ...) {
   label <- get_welch_anova_test_label_template(label)
-  if(missing(parse) & is_plotmath_expression(label)){
+  if (missing(parse) & is_plotmath_expression(label)) {
     parse <- TRUE
   }
 
@@ -107,7 +106,7 @@ stat_welch_anova_test <- function(mapping = NULL, data = NULL, group.by = NULL,
       group.by = group.by,
       correction = "none",
       na.rm = na.rm, stat.label = label,
-      label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
+      label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
       step.increase = step.increase, p.adjust.method = p.adjust.method,
@@ -119,9 +118,8 @@ stat_welch_anova_test <- function(mapping = NULL, data = NULL, group.by = NULL,
   )
 }
 
-get_welch_anova_test_label_template <- function(label){
-  switch(
-    label,
+get_welch_anova_test_label_template <- function(label) {
+  switch(label,
     as_italic = "{method}, italic(p) = {p.format}",
     as_detailed = "{method}, F({DFn}, {DFd}) = {statistic}, p = {p.format}, n = {n}",
     as_detailed_italic = "{method}, italic(F)({DFn}, {DFd}) = {F}, italic(p) = {p.format}, italic(n) = {n}",

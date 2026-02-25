@@ -207,10 +207,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
@@ -242,7 +242,7 @@ Adds automatically one-way and two-way ANOVA test p-values to a
 
 \examples{
 # Data preparation
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Transform `dose` into factor variable
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
@@ -251,13 +251,13 @@ df$id <- rep(1:10, 6)
 # Add a random grouping variable
 set.seed(123)
 df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
-df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
-df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+df$len <- ifelse(df$group == "grp2", df$len + 2, df$len)
+df$len <- ifelse(df$group == "grp3", df$len + 7, df$len)
 head(df, 3)
 
 
 # Basic boxplot
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a basic boxplot
 # Add 5\% and 10\% space to the plot bottom and the top, respectively
 bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -285,7 +285,7 @@ bxp + stat_anova_test(label = "as_detailed_italic")
 
 
 # Faceted plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a ggplot facet
 bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
   scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
@@ -294,7 +294,7 @@ bxp + stat_anova_test()
 
 
 # Grouped plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 bxp2 <- ggboxplot(df, x = "group", y = "len", color = "dose", palette = "npg")
 
 # For each x-position, computes tests between legend groups
@@ -303,26 +303,26 @@ bxp2 + stat_anova_test(aes(group = dose), label = "p = {p.format}{p.signif}")
 #  For each legend group, computes tests between x variable groups
 bxp2 + stat_anova_test(aes(group = dose, color = dose), group.by = "legend.var")
 
-
 \dontrun{
 # Two-way ANOVA: Independent measures
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Visualization: box plots with p-values
 # Two-way interaction p-values between x and legend (group) variables
 bxp3 <- ggboxplot(
-  df, x = "supp", y = "len",
+  df,
+  x = "supp", y = "len",
   color = "dose", palette = "jco"
 )
-bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
+bxp3 + stat_anova_test(aes(group = dose), method = "two_way")
 
 # One-way repeatead measures ANOVA
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
 ggboxplot(df, x = "dose", y = "len") +
   stat_anova_test(method = "one_way_repeated", wid = "id")
 
 # Two-way repeatead measures ANOVA
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 df$id <- as.factor(rep(1:10, 6))
 ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
   stat_anova_test(aes(group = supp), method = "two_way_repeated", wid = "id")
@@ -330,6 +330,7 @@ ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
 # Grouped one-way repeated measures ANOVA
 ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
   stat_anova_test(aes(group = supp, color = supp),
-  method = "one_way_repeated", wid = "id", group.by = "legend.var")
- }
+    method = "one_way_repeated", wid = "id", group.by = "legend.var"
+  )
+}
 }

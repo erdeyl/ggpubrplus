@@ -159,10 +159,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
@@ -192,7 +192,7 @@ Add automatically Friedman test p-values to a ggplot, such as
 
 \examples{
 # Data preparation
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Transform `dose` into factor variable
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
@@ -200,13 +200,13 @@ df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
 # Add a random grouping variable
 set.seed(123)
 df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
-df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
-df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+df$len <- ifelse(df$group == "grp2", df$len + 2, df$len)
+df$len <- ifelse(df$group == "grp3", df$len + 7, df$len)
 head(df, 3)
 
 
 # Basic boxplot
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a basic boxplot
 # Add 5\% and 10\% space to the plot bottom and the top, respectively
 bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -233,18 +233,18 @@ bxp + stat_friedman_test(aes(wid = id), label = "as_detailed_italic")
 
 
 # Faceted plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a ggplot facet
-df$id <- rep(1:10,6)
+df$id <- rep(1:10, 6)
 bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
- scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
 # Add p-values
 bxp + stat_friedman_test(aes(wid = id))
 
 
 # Grouped plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
-df$id <- rep(1:10,6)
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+df$id <- rep(1:10, 6)
 bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco")
 
 # For each legend group, computes tests within x variable groups
@@ -253,7 +253,7 @@ bxp + stat_friedman_test(aes(wid = id, group = supp, color = supp), within = "x"
 # For each x-position, computes tests within legend variable groups
 bxp + stat_friedman_test(
   aes(wid = id, group = supp, color = supp),
-  within =  "group", label = "p = {p.format}"
+  within = "group", label = "p = {p.format}"
 )
 
 }

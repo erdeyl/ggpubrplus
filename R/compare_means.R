@@ -1,7 +1,7 @@
 #' @include utilities.R p_format_utils.R
 NULL
-#'Comparison of Means
-#'@description Performs one or multiple mean comparisons.
+#' Comparison of Means
+#' @description Performs one or multiple mean comparisons.
 #' @param formula a formula of the form \code{x ~ group} where \code{x} is a
 #'  numeric variable giving the data values and \code{group} is a factor with
 #'  one or multiple levels giving the corresponding groups. For example,
@@ -77,59 +77,59 @@ NULL
 #'  show exact values. If provided, overrides the style default.
 #' @param p.decimal.mark character string to use as the decimal mark. If NULL,
 #'  uses \code{getOption("OutDec")}.
-#'@return return a data frame with the following columns:
-#'\itemize{
-#'\item \code{.y.}: the y variable used in the test.
-#'\item \code{group1,group2}: the compared groups in the pairwise tests.
-#'Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
-#'\item \code{p}: the p-value.
-#'\item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
-#'\item \code{p.format}: the formatted p-value.
-#'\item \code{p.format.signif}: the formatted p-value with significance symbols.
-#'\item \code{p.signif}: the significance level.
-#'\item \code{method}: the statistical test used to compare groups.
+#' @return return a data frame with the following columns:
+#' \itemize{
+#' \item \code{.y.}: the y variable used in the test.
+#' \item \code{group1,group2}: the compared groups in the pairwise tests.
+#' Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
+#' \item \code{p}: the p-value.
+#' \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
+#' \item \code{p.format}: the formatted p-value.
+#' \item \code{p.format.signif}: the formatted p-value with significance symbols.
+#' \item \code{p.signif}: the significance level.
+#' \item \code{method}: the statistical test used to compare groups.
 #'
 #'
-#'}
+#' }
 #' @param ... Other arguments to be passed to the test function.
 #' @examples
 #' # Load data
-#' #:::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::
 #' data("ToothGrowth")
 #' df <- ToothGrowth
 #'
 #' # One-sample test
-#' #:::::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ 1, df, mu = 0)
 #'
 #' # Two-samples unpaired test
-#' #:::::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ supp, df)
 #'
 #' # Two-samples paired test
-#' #:::::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ supp, df, paired = TRUE)
 #'
 #' # Compare supp levels after grouping the data by "dose"
-#' #::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ supp, df, group.by = "dose")
 #'
 #' # pairwise comparisons
-#' #::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::
 #' # As dose contains more thant two levels ==>
 #' # pairwise test is automatically performed.
 #' compare_means(len ~ dose, df)
 #'
 #' # Comparison against reference group
-#' #::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ dose, df, ref.group = "0.5")
 #'
 #' # Comparison against all
-#' #::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ dose, df, ref.group = ".all.")
 #'
 #' # Anova and kruskal.test
-#' #::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::
 #' compare_means(len ~ dose, df, method = "anova")
 #' compare_means(len ~ dose, df, method = "kruskal.test")
 
@@ -143,9 +143,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
                           p.leading.zero = NULL, p.min.threshold = NULL,
                           p.decimal.mark = NULL,
                           signif.cutoffs = NULL, signif.symbols = NULL,
-                          ns.symbol = "ns", use.four.stars = FALSE, ...)
-{
-
+                          ns.symbol = "ns", use.four.stars = FALSE, ...) {
   . <- NULL
 
   method.info <- .method_info(method)
@@ -161,16 +159,17 @@ compare_means <- function(formula, data, method = "wilcox.test",
     symnum.args = symnum.args
   )
 
-  if(!inherits(data, "data.frame"))
+  if (!inherits(data, "data.frame")) {
     stop("data must be a data.frame.")
+  }
 
   variables <- response.var <- .formula_left_variables(formula)
   group <- .formula_right_variables(formula)
-  if(group == "1") group <- NULL # NULL model
+  if (group == "1") group <- NULL # NULL model
 
-  if(!.is_empty(group)){
+  if (!.is_empty(group)) {
     group.vals <- .select_vec(data, group)
-    if(!is.factor(group.vals)) data[[group]] <- factor(group.vals, levels = unique(group.vals))
+    if (!is.factor(group.vals)) data[[group]] <- factor(group.vals, levels = unique(group.vals))
   }
 
   # Keep only variables of interest
@@ -181,81 +180,89 @@ compare_means <- function(formula, data, method = "wilcox.test",
   #   1. Gather the data
   #   2. group by variable
   #   3. Perform pairwise test between levels of each grouing variable
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::
   # ex: formula = c(GATA3, XBP1, DEPDC1) ~ group
-  if(.is_multi_formula(formula)){
+  if (.is_multi_formula(formula)) {
     data <- df_gather(data, cols = variables, names_to = ".y.", values_to = ".value.") %>%
       dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     response.var <- ".value."
-    group.by = c(group.by,  ".y.")
+    group.by <- c(group.by, ".y.")
     formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
   }
 
   # Check if comparisons should be done against a reference group
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
-  if(!is.null(ref.group)){
-
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::
+  if (!is.null(ref.group)) {
     group.vals <- .select_vec(data, group)
-    if(is.factor(group.vals)) group.levs <- levels(group.vals)
-    else group.levs <- unique(group.vals)
+    if (is.factor(group.vals)) {
+      group.levs <- levels(group.vals)
+    } else {
+      group.levs <- unique(group.vals)
+    }
 
-    if(ref.group %in% group.levs){
+    if (ref.group %in% group.levs) {
       data[[group]] <- stats::relevel(group.vals, ref.group)
     }
 
-    if(ref.group == ".all."){
+    if (ref.group == ".all.") {
       data <- data %>%
-        mutate(.group. = as.character(group.vals),
-               .all. = ".all.") # Add 'all' column
+        mutate(
+          .group. = as.character(group.vals),
+          .all. = ".all."
+        ) # Add 'all' column
       # Create a new grouping column gathering group and the .all. columns
       .group.name. <- NULL
       data <- data %>%
-        df_gather(cols = c(".group.", ".all."), names_to =  ".group.name.", values_to = ".group.") %>%
+        df_gather(cols = c(".group.", ".all."), names_to = ".group.name.", values_to = ".group.") %>%
         dplyr::select(-.group.name.)
       data[[".group."]] <- factor(data[[".group."]], levels = c(".all.", group.levs))
       group <- ".group."
       formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
-
-    }
-    else if(!(ref.group %in% group.levs)){
+    } else if (!(ref.group %in% group.levs)) {
       stop("Can't find specified reference group: ", ref.group, ". ",
-           "Allowed values include one of: ", .collapse(group.levs, sep = ", "), call. = FALSE)
+        "Allowed values include one of: ", .collapse(group.levs, sep = ", "),
+        call. = FALSE
+      )
     }
   }
 
   # Peform the test
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::
   test.func <- .test_pairwise
-  if(method %in% c("anova", "kruskal.test"))
+  if (method %in% c("anova", "kruskal.test")) {
     test.func <- .test_multigroups
-
-  if(is.null(group.by)){
-    res <- test.func(formula = formula, data = data, method = method,
-                     paired = paired, p.adjust.method = "none", ...)
   }
-  else{
+
+  if (is.null(group.by)) {
+    res <- test.func(
+      formula = formula, data = data, method = method,
+      paired = paired, p.adjust.method = "none", ...
+    )
+  } else {
     grouped.d <- .group_by(data, group.by)
     res <- grouped.d %>%
       mutate(p = purrr::map(
         data,
-        test.func, formula = formula,
-        method = method, paired = paired, p.adjust.method = "none",...)
-      ) %>%
+        test.func,
+        formula = formula,
+        method = method, paired = paired, p.adjust.method = "none", ...
+      )) %>%
       df_select(vars = c(group.by, "p")) %>%
       unnest(cols = "p")
   }
 
   # Add response variables to the result
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
-  if(!c(".y." %in% colnames(res)))
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::
+  if (!c(".y." %in% colnames(res))) {
     res <- res %>%
-    dplyr::mutate(.y. = variables) %>%
-    dplyr::select(!!!syms(c(group.by, ".y.")), dplyr::everything())
+      dplyr::mutate(.y. = variables) %>%
+      dplyr::select(!!!syms(c(group.by, ".y.")), dplyr::everything())
+  }
 
   # Select only reference groups if any
   # Skip for anova/kruskal.test which don't have group1/group2 columns (Issue #572)
-  #::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  if(!is.null(ref.group) && !method %in% c("anova", "kruskal.test")){
+  # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  if (!is.null(ref.group) && !method %in% c("anova", "kruskal.test")) {
     group.levs <- .select_vec(data, group) %>% .levels()
     group1 <- NULL
     res <- res %>% dplyr::filter(group1 == ref.group | group2 == ref.group)
@@ -263,21 +270,23 @@ compare_means <- function(formula, data, method = "wilcox.test",
     # swap group1 and group2 if group2 contains ref.group
     group2 <- res$group2
     res <- transform(res,
-                    group1 = ifelse(group2 == ref.group, group2, group1),
-                    group2 = ifelse(group2 == ref.group, group1, group2))
+      group1 = ifelse(group2 == ref.group, group2, group1),
+      group2 = ifelse(group2 == ref.group, group1, group2)
+    )
   }
   # Formatting and adjusting pvalues, and adding significance symbols
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::
   symnum.args$x <- res$p
   pvalue.signif <- do.call(stats::symnum, symnum.args) %>%
     as.character()
 
   pvalue.format <- format_p_value(res$p,
-                                   style = p.format.style,
-                                   digits = p.digits,
-                                   leading.zero = p.leading.zero,
-                                   min.threshold = p.min.threshold,
-                                   decimal.mark = p.decimal.mark)
+    style = p.format.style,
+    digits = p.digits,
+    leading.zero = p.leading.zero,
+    min.threshold = p.min.threshold,
+    decimal.mark = p.decimal.mark
+  )
 
   .y. <- p.adj <- p <- NULL
   pvalue.adj <- res %>%
@@ -285,13 +294,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
     reframe(p.adj = stats::p.adjust(p, method = p.adjust.method))
   res <- res %>%
     dplyr::ungroup() %>%
-    mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
-           method = method.name)
+    mutate(
+      p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
+      method = method.name
+    )
 
   # Resolve p.digits for adjusted p-value rounding
- p_params <- resolve_p_format_params(
-   p.format.style, p.digits, p.leading.zero, p.min.threshold, p.decimal.mark
- )
+  p_params <- resolve_p_format_params(
+    p.format.style, p.digits, p.leading.zero, p.min.threshold, p.decimal.mark
+  )
   res %>%
     mutate(p.adj = signif(p.adj, digits = p_params$digits)) %>%
     add_p_format_signif() %>%
@@ -300,26 +311,31 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
 
 # Check and get test method info
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # return a list(method, name)
-.method_info <- function(method){
-
-  if(is.null(method))
-    method = "wilcox.test"
+.method_info <- function(method) {
+  if (is.null(method)) {
+    method <- "wilcox.test"
+  }
 
   allowed.methods <- list(
     t = "t.test", t.test = "t.test", student = "t.test",
     wiloxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
     anova = "anova", aov = "anova",
-    kruskal = "kruskal.test", kruskal.test = "kruskal.test")
+    kruskal = "kruskal.test", kruskal.test = "kruskal.test"
+  )
 
   method.names <- list(
     t.test = "T-test", wilcox.test = "Wilcoxon",
-    anova = "Anova", kruskal.test = "Kruskal-Wallis")
+    anova = "Anova", kruskal.test = "Kruskal-Wallis"
+  )
 
-  if(!(method %in% names(allowed.methods)))
-    stop("Non-supported method specified. Allowed methods are one of: ",
-         .collapse(allowed.methods, sep =", "))
+  if (!(method %in% names(allowed.methods))) {
+    stop(
+      "Non-supported method specified. Allowed methods are one of: ",
+      .collapse(allowed.methods, sep = ", ")
+    )
+  }
   method <- allowed.methods[[method]]
   method.name <- method.names[[method]]
 
@@ -327,65 +343,69 @@ compare_means <- function(formula, data, method = "wilcox.test",
 }
 
 # Comparing two groups
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-.test <- function(data, formula, method = "t.test",  ...)
-{
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.test <- function(data, formula, method = "t.test", ...) {
   test <- match.fun(method)
 
   x <- deparse(formula[[2]])
   group <- attr(stats::terms(formula), "term.labels")
 
-  if(.is_empty(group)) # Case of null model
+  if (.is_empty(group)) { # Case of null model
     test.opts <- list(x = .select_vec(data, x), ...)
-  else test.opts <- list(formula = formula, data = data, ...)
+  } else {
+    test.opts <- list(formula = formula, data = data, ...)
+  }
 
   res <- data.frame(p = suppressWarnings(do.call(test, test.opts)$p.value))
   group1 <- group2 <- NULL
 
-  if(!.is_empty(group)){
+  if (!.is_empty(group)) {
     group.lev <- .select_vec(data, group) %>% levels()
     res <- res %>%
       dplyr::mutate(
         group1 = group.lev[1],
         group2 = group.lev[2]
       ) %>%
-      dplyr::select(group1,group2, dplyr::everything())
+      dplyr::select(group1, group2, dplyr::everything())
+  } else {
+    res <- res %>%
+      dplyr::mutate(group1 = 1, group2 = "null model") %>%
+      dplyr::select(group1, group2, everything())
   }
-  else res <- res %>% dplyr::mutate(group1 = 1, group2 = "null model") %>%
-    dplyr::select(group1, group2, everything())
   res
 }
 
 
 # pairwise test
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .test_pairwise <- function(data, formula, method = "wilcox.test",
                            paired = FALSE, pool.sd = !paired,
-                           ...)
-{
-
+                           ...) {
   x <- deparse(formula[[2]])
   group <- attr(stats::terms(formula), "term.labels")
 
   # One sample test
-  if(.is_empty(group)){
-    res <- .test(data, formula, method = method,  ...)
+  if (.is_empty(group)) {
+    res <- .test(data, formula, method = method, ...)
     return(res)
   }
 
   # Pairwise test
   method <- switch(method,
-                   t.test = "pairwise.t.test",
-                   wilcox.test = "pairwise.wilcox.test")
+    t.test = "pairwise.t.test",
+    wilcox.test = "pairwise.wilcox.test"
+  )
   test <- match.fun(method)
 
-  test.opts <- list(x = .select_vec(data, x),
-                    g = .select_vec(data, group),
-                    paired = paired,
-                    ...)
-  if(method == "pairwise.t.test"){
-    if(missing(pool.sd)){
-      if(!paired) pool.sd <- FALSE
+  test.opts <- list(
+    x = .select_vec(data, x),
+    g = .select_vec(data, group),
+    paired = paired,
+    ...
+  )
+  if (method == "pairwise.t.test") {
+    if (missing(pool.sd)) {
+      if (!paired) pool.sd <- FALSE
     }
     test.opts$pool.sd <- pool.sd
   }
@@ -406,19 +426,18 @@ compare_means <- function(formula, data, method = "wilcox.test",
 }
 
 # Compare multiple groups
-#::::::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"), ...){
-
+.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"), ...) {
   method <- match.arg(method)
   . <- NULL
 
-  if(method == "anova")
+  if (method == "anova") {
     pvalue <- stats::lm(formula, data = data) %>%
-    stats::anova(.) %>%
-    .$`Pr(>F)` %>%
-    .[1]
-  else if(method == "kruskal.test"){
+      stats::anova(.) %>%
+      .$`Pr(>F)` %>%
+      .[1]
+  } else if (method == "kruskal.test") {
     pvalue <- stats::kruskal.test(formula, data = data)$p.value
   }
 
@@ -426,17 +445,16 @@ compare_means <- function(formula, data, method = "wilcox.test",
 }
 
 
-
 # Formula with multiple response variables
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # ex formula = c(GATA3, XBP1, DEPDC1) ~ group
-.is_multi_formula <- function(formula){
+.is_multi_formula <- function(formula) {
   x <- grep(",", formula)
   !.is_empty(x)
 }
 
 # Get formula variables
-.formula_left_variables <- function(formula){
+.formula_left_variables <- function(formula) {
   . <- NULL
   x <- deparse(formula[[2]]) %>%
     gsub("c\\(|\\)|\\s", "", .) %>%
@@ -444,14 +462,13 @@ compare_means <- function(formula, data, method = "wilcox.test",
     unlist()
   x
 }
-.formula_right_variables <- function(formula){
+.formula_right_variables <- function(formula) {
   group <- attr(stats::terms(formula), "term.labels")
-  if(.is_empty(group)) group <- "1"
+  if (.is_empty(group)) group <- "1"
   group
 }
 
-.update_test_arguments <- function(formula, data, group.by){
-
+.update_test_arguments <- function(formula, data, group.by) {
   variables <- .formula_left_variables(formula)
   group <- .formula_right_variables(formula)
 
@@ -459,6 +476,5 @@ compare_means <- function(formula, data, method = "wilcox.test",
     df_gather(cols = variables, names_to = ".y.", values_to = ".value.") %>%
     dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
   formula <- .collapse(".value.", group, sep = " ~ ") %>% stats::as.formula()
-  group.by = c(group.by, ".y.")
-
+  group.by <- c(group.by, ".y.")
 }

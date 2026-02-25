@@ -4,10 +4,10 @@
 #'
 #' General resources:
 #'
-#'\itemize{
+#' \itemize{
 #' \item \href{https://github.com/erdeyl/ggpubrplus}{ggpubrplus documentation}
 #' \item \href{https://rpkgs.datanovia.com/ggpubr/}{Original ggpubr documentation}
-#'}
+#' }
 #'
 #' @section P-Value Formatting:
 #'

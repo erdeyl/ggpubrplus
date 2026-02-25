@@ -200,8 +200,6 @@ format_p_value <- function(p,
                            leading.zero = NULL,
                            min.threshold = NULL,
                            decimal.mark = NULL) {
-
-
   # Validate style
 
   style <- match.arg(style, names(.p_format_styles))
@@ -294,7 +292,9 @@ format_p_value <- function(p,
 #'
 #' @keywords internal
 format_single_p <- function(p, digits, leading.zero, scientific, decimal.mark) {
-  if (is.na(p)) return(NA_character_)
+  if (is.na(p)) {
+    return(NA_character_)
+  }
 
 
   if (scientific) {
@@ -336,7 +336,6 @@ resolve_p_format_params <- function(style = "default",
                                     leading.zero = NULL,
                                     min.threshold = NULL,
                                     decimal.mark = NULL) {
-
   style <- match.arg(style, names(.p_format_styles))
   style_settings <- .p_format_styles[[style]]
 
@@ -384,8 +383,9 @@ create_p_label <- function(p.format, p.signif = NULL) {
 
   # Create base label
   label <- ifelse(has_inequality,
-                  paste("p", p.format),
-                  paste("p =", p.format))
+    paste("p", p.format),
+    paste("p =", p.format)
+  )
 
   # Normalize spacing around inequality symbols
   label <- gsub("([<>])\\s*", "\\1 ", label)

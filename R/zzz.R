@@ -1,7 +1,6 @@
 # Package load and attach hooks
 
 .onAttach <- function(libname, pkgname) {
-
   # Check for stale lock files and warn user
   lib_path <- .libPaths()[1]
   lock_dir <- file.path(lib_path, paste0("00LOCK-", pkgname))
@@ -44,8 +43,6 @@
 #'
 #' @export
 clean_lock_files <- function(package = "ggpubrplus", lib = .libPaths()[1], ask = TRUE) {
-
-
   if (package == "all") {
     # Find all lock directories
     lock_dirs <- list.dirs(lib, recursive = FALSE, full.names = TRUE)
@@ -78,21 +75,28 @@ clean_lock_files <- function(package = "ggpubrplus", lib = .libPaths()[1], ask =
   # Remove lock directories
   success <- TRUE
   for (d in lock_dirs) {
-    tryCatch({
-      unlink(d, recursive = TRUE, force = TRUE)
-      if (dir.exists(d)) {
-        # unlink doesn't always error on failure, check if still exists
-        warning("Failed to remove ", d, ": directory still exists. ",
-                "You may need to remove it manually or check permissions.")
-        success <- FALSE
-      } else {
-        message("Removed: ", d)
+    tryCatch(
+      {
+        unlink(d, recursive = TRUE, force = TRUE)
+        if (dir.exists(d)) {
+          # unlink doesn't always error on failure, check if still exists
+          warning(
+            "Failed to remove ", d, ": directory still exists. ",
+            "You may need to remove it manually or check permissions."
+          )
+          success <- FALSE
+        } else {
+          message("Removed: ", d)
+        }
+      },
+      error = function(e) {
+        warning(
+          "Failed to remove ", d, ": ", e$message,
+          "\nOn Linux/macOS, you may need: sudo rm -rf '", d, "'"
+        )
+        success <<- FALSE
       }
-    }, error = function(e) {
-      warning("Failed to remove ", d, ": ", e$message,
-              "\nOn Linux/macOS, you may need: sudo rm -rf '", d, "'")
-      success <<- FALSE
-    })
+    )
   }
 
   if (success) {

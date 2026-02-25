@@ -289,10 +289,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{logical for parsing plotmath expression.}
@@ -344,7 +344,7 @@ df <- ToothGrowth
 df$dose <- factor(df$dose)
 
 # Data preparation
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Transform `dose` into factor variable
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
@@ -354,39 +354,43 @@ head(df, 3)
 
 
 # Two groups by x position
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 
 # Create a box plot
 # Add 10\% spaces between the p-value labels and the plot border
 bxp <- ggboxplot(
-  df, x = "dose", y = "len",
+  df,
+  x = "dose", y = "len",
   color = "supp", palette = c("#00AFBB", "#E7B800")
 ) +
- scale_y_continuous(expand = expansion(mult = c(0.05, 0.10)))
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.10)))
 
 
 # Add p-values onto the box plots
 # label can be "p.format"  or "p.adj.format"
 bxp + geom_pwc(
-  aes(group = supp), tip.length = 0,
+  aes(group = supp),
+  tip.length = 0,
   method = "t_test", label = "p.format"
 )
 
 # Show adjusted p-values and significance levels
 # Hide ns (non-significant)
 bxp + geom_pwc(
-  aes(group = supp), tip.length = 0,
+  aes(group = supp),
+  tip.length = 0,
   method = "t_test", label = "{p.adj.format}{p.adj.signif}",
   p.adjust.method = "bonferroni", p.adjust.by = "panel",
   hide.ns = TRUE
 )
 
 # Complex cases
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # 1. Add p-values of OJ vs VC at each dose group
 bxp.complex <- bxp +
   geom_pwc(
-    aes(group = supp), tip.length = 0,
+    aes(group = supp),
+    tip.length = 0,
     method = "t_test", label = "p.adj.format",
     p.adjust.method = "bonferroni", p.adjust.by = "panel"
   )
@@ -403,19 +407,21 @@ bxp.complex
 
 
 # Three groups by x position
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 
 # Simple plots
-#_____________________________________
+# _____________________________________
 
 # Box plots with p-values
 bxp <- ggboxplot(
-  df, x = "supp", y = "len", fill = "dose",
+  df,
+  x = "supp", y = "len", fill = "dose",
   palette = "npg"
 )
 bxp +
   geom_pwc(
-    aes(group = dose), tip.length = 0,
+    aes(group = dose),
+    tip.length = 0,
     method = "t_test", label = "p.adj.format",
     bracket.nudge.y = -0.08
   ) +
@@ -423,13 +429,15 @@ bxp +
 
 # Bar plots with p-values
 bp <- ggbarplot(
-  df, x = "supp", y = "len", fill = "dose",
+  df,
+  x = "supp", y = "len", fill = "dose",
   palette = "npg", add = "mean_sd",
   position = position_dodge(0.8)
 )
 bp +
   geom_pwc(
-    aes(group = dose), tip.length = 0,
+    aes(group = dose),
+    tip.length = 0,
     method = "t_test", label = "p.adj.format",
     bracket.nudge.y = -0.08
   ) +

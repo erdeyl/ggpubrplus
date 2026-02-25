@@ -75,15 +75,18 @@ Create multi-panel plots of a data set grouped by one or two
  grouping variables. Wrapper around \code{\link[ggplot2]{facet_wrap}}
 }
 \examples{
-p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
-      color = "supp")
+p <- ggboxplot(ToothGrowth,
+  x = "dose", y = "len",
+  color = "supp"
+)
 print(p)
 
 facet(p, facet.by = "supp")
 
 # Customize
-facet(p + theme_bw(), facet.by = "supp",
-  short.panel.labs = FALSE,   # Allow long labels in panels
+facet(p + theme_bw(),
+  facet.by = "supp",
+  short.panel.labs = FALSE, # Allow long labels in panels
   panel.labs.background = list(fill = "steelblue", color = "steelblue")
 )
 }
