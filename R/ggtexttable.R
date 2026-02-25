@@ -317,7 +317,7 @@ table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = 
 {
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
-  for(i in 1:nrow(cells)){
+  for(i in seq_len(nrow(cells))){
     tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-fg")
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size, col = color)
   }
@@ -330,7 +330,7 @@ table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth
 {
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
-  for(i in 1:nrow(cells)){
+  for(i in seq_len(nrow(cells))){
     tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-bg")
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(
       fill = fill, col = color, lwd = linewidth, alpha = alpha
@@ -879,7 +879,6 @@ tstyle <- function(pal, size = 12){
   style
 
 }
-
 
 
 

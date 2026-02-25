@@ -140,16 +140,12 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
                       ...)
 {
 
-  # Handle size vs linewidth parameter compatibility
-  # size deprecated in ggplot2 v >= 3.4.0
-  if (!is.null(size) && !is.null(linewidth)) {
-    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
-  } else if (!is.null(size)) {
-    linewidth <- size
-    size <- NULL
-  } else if (is.null(linewidth)) {
-    linewidth <- NULL # Default value
-  }
+  line_width <- .resolve_linewidth_args(
+    size = size, linewidth = linewidth, default_linewidth = NULL,
+    warn_if_size = FALSE, null_size_after = TRUE
+  )
+  size <- line_width$size
+  linewidth <- line_width$linewidth
 
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
@@ -223,5 +219,4 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
              title = title, xlab = xlab, ylab = ylab,...)
   p
 }
-
 

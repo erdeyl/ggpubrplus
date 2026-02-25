@@ -235,7 +235,7 @@ stat_pvalue_manual <- function(
     geom_exec(
       geom_bracket, data = data, xmin = "xmin", xmax = "xmax",
       label = "label", y.position = "y.position", vjust = "vjust",
-      group = 1:nrow(data),  tip.length =  tip.length,
+      group = seq_len(nrow(data)),  tip.length =  tip.length,
       label.size = label.size, size = bracket.size,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       color = color, linetype = linetype, step.increase = step.increase,

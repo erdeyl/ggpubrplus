@@ -25,6 +25,27 @@ required_package <- function(pkg){
   }
 }
 
+# Resolve line width compatibility between `size` and `linewidth`.
+.resolve_linewidth_args <- function(size = NULL, linewidth = NULL, default_linewidth = NULL,
+                                    warn_if_size = TRUE, null_size_after = FALSE){
+  if(!is.null(size) && !is.null(linewidth)){
+    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+  }
+
+  if(!is.null(size)){
+    if(isTRUE(warn_if_size)){
+      warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+    }
+    linewidth <- size
+    if(isTRUE(null_size_after)) size <- NULL
+  }
+  else if(is.null(linewidth)){
+    linewidth <- default_linewidth
+  }
+
+  list(size = size, linewidth = linewidth)
+}
+
 # Unnesting, adapt to tidyr 1.0.0
 unnest <- function(data, cols = "data", ...){
   if(is_pkg_version_sup("tidyr", "0.8.3")){
@@ -1008,7 +1029,6 @@ p
   }
   return (legend)
 }
-
 
 
 

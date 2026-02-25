@@ -91,7 +91,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
   # Find layer containing statistical test data
   key_columns <- c("group1", "group2", "p")
   if(is.null(layer)){
-    for(i in 1:length(.build_data)){
+    for(i in seq_along(.build_data)){
       if(all( key_columns %in% colnames(.build_data[[i]]))){
         layer <- i
         break

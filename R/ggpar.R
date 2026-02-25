@@ -180,7 +180,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   if(is.numeric(palette)) palette <- grDevices::palette()[palette]
 
 
-  for(i in 1:length(list.plots)){
+  for(i in seq_along(list.plots)){
     p <- list.plots[[i]]
     if(is_ggplot(p)){
         p <- p + .ggcolor(palette)+
@@ -209,4 +209,3 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   if(is_ggplot(original.p)) list.plots[[1]]
   else list.plots
 }
-

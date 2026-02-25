@@ -166,16 +166,11 @@ ggviolin_core <- function(data, x, y,
                      ...)
 {
 
-  # Handle size vs linewidth parameter compatibility
-  # size deprecated in ggplot2 v >= 3.4.0
-  if (!is.null(size) && !is.null(linewidth)) {
-    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
-  } else if (!is.null(size)) {
-    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
-    linewidth <- size
-  } else if (is.null(linewidth)) {
-    linewidth <- NULL # Default value
-  }
+  line_width <- .resolve_linewidth_args(
+    size = size, linewidth = linewidth, default_linewidth = NULL
+  )
+  size <- line_width$size
+  linewidth <- line_width$linewidth
 
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
