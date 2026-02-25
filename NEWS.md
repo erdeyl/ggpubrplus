@@ -1,3 +1,11 @@
+# ggpubrplus 0.9.0.3
+
+## Maintenance
+
+- Merge PR #14 style normalization and sequence-idiom safety cleanup.
+- Regenerate and synchronize Rd manuals with current roxygen sources.
+- Exclude generated `Rplots.pdf` from source tarballs via `.Rbuildignore` to keep CRAN checks clean.
+
 # ggpubrplus 0.9.0.2
 
 ## Maintenance
