@@ -19,15 +19,16 @@ install.packages("png")
 
 # Import the image
 img.file <- system.file(file.path("images", "background-image.png"),
-                       package = "ggpubrplus")
+  package = "ggpubrplus"
+)
 img <- png::readPNG(img.file)
 
 # Plot with background image
-ggplot(iris, aes(Species, Sepal.Length))+
- background_image(img)+
- geom_boxplot(aes(fill = Species), color = "white")+
- fill_palette("jco")
- }
+ggplot(iris, aes(Species, Sepal.Length)) +
+  background_image(img) +
+  geom_boxplot(aes(fill = Species), color = "white") +
+  fill_palette("jco")
+}
 
 }
 \author{

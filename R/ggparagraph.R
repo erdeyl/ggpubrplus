@@ -66,7 +66,7 @@ splitString <- function(text) {
       "in",
       valueOnly = TRUE
     )
-  for (i in 2:length(strings)) {
+  for (i in seq_along(strings)[-1]) {
     width <- grid::stringWidth(strings[i])
     if (grid::convertWidth(linewidth + gapwidth + width,
       "in",

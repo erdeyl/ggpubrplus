@@ -210,10 +210,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
@@ -229,49 +229,60 @@ data("ToothGrowth")
 head(ToothGrowth)
 
 # Two independent groups
-#:::::::::::::::::::::::::::::::::::::::::::::::::
-p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
-  color = "supp", palette = "npg", add = "jitter")
+# :::::::::::::::::::::::::::::::::::::::::::::::::
+p <- ggboxplot(ToothGrowth,
+  x = "supp", y = "len",
+  color = "supp", palette = "npg", add = "jitter"
+)
 
 #  Add p-value
 p + stat_compare_means()
 # Change method
 p + stat_compare_means(method = "t.test")
 
- # Paired samples
- #:::::::::::::::::::::::::::::::::::::::::::::::::
- ggpaired(ToothGrowth, x = "supp", y = "len",
-   color = "supp", line.color = "gray", line.size = 0.4,
-   palette = "npg")+
- stat_compare_means(paired = TRUE)
+# Paired samples
+# :::::::::::::::::::::::::::::::::::::::::::::::::
+ggpaired(ToothGrowth,
+  x = "supp", y = "len",
+  color = "supp", line.color = "gray", line.size = 0.4,
+  palette = "npg"
+) +
+  stat_compare_means(paired = TRUE)
 
 # More than two groups
-#:::::::::::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::::::::::
 # Pairwise comparisons: Specify the comparisons you want
-my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "npg")+
-# Add pairwise comparisons p-value
-stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40))+
-stat_compare_means(label.y = 45)     # Add global Anova p-value
+my_comparisons <- list(c("0.5", "1"), c("1", "2"), c("0.5", "2"))
+ggboxplot(ToothGrowth,
+  x = "dose", y = "len",
+  color = "dose", palette = "npg"
+) +
+  # Add pairwise comparisons p-value
+  stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40)) +
+  stat_compare_means(label.y = 45) # Add global Anova p-value
 
 # Multiple pairwise test against a reference group
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-    color = "dose", palette = "npg")+
-stat_compare_means(method = "anova", label.y = 40)+ # Add global p-value
-stat_compare_means(aes(label = after_stat(p.signif)),
-                  method = "t.test", ref.group = "0.5")
+ggboxplot(ToothGrowth,
+  x = "dose", y = "len",
+  color = "dose", palette = "npg"
+) +
+  stat_compare_means(method = "anova", label.y = 40) + # Add global p-value
+  stat_compare_means(aes(label = after_stat(p.signif)),
+    method = "t.test", ref.group = "0.5"
+  )
 
 # Multiple grouping variables
-#:::::::::::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::::::::::
 # Box plot facetted by "dose"
-p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
-              color = "supp", palette = "npg",
-              add = "jitter",
-              facet.by = "dose", short.panel.labs = FALSE)
+p <- ggboxplot(ToothGrowth,
+  x = "supp", y = "len",
+  color = "supp", palette = "npg",
+  add = "jitter",
+  facet.by = "dose", short.panel.labs = FALSE
+)
 # Use only p.format as label. Remove method name.
 p + stat_compare_means(
- aes(label = paste0("p = ", after_stat(p.format)))
+  aes(label = paste0("p = ", after_stat(p.format)))
 )
 
 }

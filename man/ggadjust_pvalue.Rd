@@ -111,7 +111,7 @@ Adjust p-values produced by \code{\link{geom_pwc}()} on a ggplot.
 }
 \examples{
 # Data preparation
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
 # Add a random grouping variable
@@ -119,10 +119,11 @@ df$group <- factor(rep(c("grp1", "grp2"), 30))
 head(df, 3)
 
 # Boxplot: Two groups by panel
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 # Create a box plot
 bxp <- ggboxplot(
-  df, x = "supp", y = "len", fill = "#00AFBB",
+  df,
+  x = "supp", y = "len", fill = "#00AFBB",
   facet.by = "dose"
 )
 # Make facet and add p-values
@@ -130,16 +131,18 @@ bxp <- bxp + geom_pwc(method = "t_test")
 bxp
 # Adjust all p-values together after
 ggadjust_pvalue(
-  bxp, p.adjust.method = "bonferroni",
+  bxp,
+  p.adjust.method = "bonferroni",
   label = "{p.adj.format}{p.adj.signif}", hide.ns = TRUE
 )
 
 
 # Boxplot: Three groups by panel
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 # Create a box plot
 bxp <- ggboxplot(
-  df, x = "dose", y = "len", fill = "#00AFBB",
+  df,
+  x = "dose", y = "len", fill = "#00AFBB",
   facet.by = "supp"
 )
 # Make facet and add p-values
@@ -147,7 +150,8 @@ bxp <- bxp + geom_pwc(method = "t_test")
 bxp
 # Adjust all p-values together after
 ggadjust_pvalue(
-  bxp, p.adjust.method = "bonferroni",
+  bxp,
+  p.adjust.method = "bonferroni",
   label = "{p.adj.format}{p.adj.signif}"
 )
 }

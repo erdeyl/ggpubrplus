@@ -119,7 +119,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     # hist.x <- hist.data$x
     # hist.y <- hist.data$y
     # break.x <- c(0, hist.x) %>% unique()
-    # label.break <- 1:(length(break.x)-1)
+    # label.break <- seq_len(length(break.x) - 1)
     # lab.y <- .select_vec(data, x) %>%
     #   cut(breaks = break.x, labels = label.break) %>%
     #   hist.y[.]
@@ -281,7 +281,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   hist.x <- hist.data$x
   hist.y <- hist.data$y
   break.x <- c(0, hist.x) %>% unique()
-  label.break <- 1:(length(break.x) - 1)
+  label.break <- seq_len(length(break.x) - 1)
   lab.y <- .select_vec(data, x) %>%
     cut(breaks = break.x, labels = label.break) %>%
     hist.y[.]

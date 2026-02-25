@@ -97,11 +97,15 @@ df$dose <- as.factor(df$dose)
 # Create some plots
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
 # Box plot
-bxp <- ggboxplot(df, x = "dose", y = "len",
-    color = "dose", palette = "jco")
+bxp <- ggboxplot(df,
+  x = "dose", y = "len",
+  color = "dose", palette = "jco"
+)
 # Dot plot
-dp <- ggdotplot(df, x = "dose", y = "len",
-    color = "dose", palette = "jco")
+dp <- ggdotplot(df,
+  x = "dose", y = "len",
+  color = "dose", palette = "jco"
+)
 # Density plot
 dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 
@@ -109,8 +113,7 @@ dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
 ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 # Use a common legend for multiple plots
-ggarrange(bxp, dp,  common.legend = TRUE)
-
+ggarrange(bxp, dp, common.legend = TRUE)
 
 }
 \seealso{

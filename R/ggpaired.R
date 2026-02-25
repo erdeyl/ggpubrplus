@@ -125,7 +125,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
   if (!is.null(id)) {
     id <- .select_vec(data, id)
   } else {
-    id <- rep(1:(nrow(data) / 2), 2)
+    id <- rep(seq_len(nrow(data) / 2), 2)
   }
   data$id <- id
 
