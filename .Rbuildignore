@@ -16,3 +16,4 @@
 ^_tmp$
 ^CRAN-SUBMISSION$
 ^\.claude$
+^check-as-cran\.sh$

@@ -1,3 +1,11 @@
+# ggpubrplus 0.9.0.2
+
+## Maintenance
+
+- Refactor duplicated `size`/`linewidth` compatibility handling into a shared internal helper.
+- Replace remaining `1:nrow()` / `1:length()` patterns touched by recent compatibility work with safer `seq_len()` / `seq_along()` usage.
+- Regenerate README/pkgdown artifacts so rendered docs stay synchronized with current package metadata.
+
 # ggpubrplus 0.9.0.1
 
 ## Maintenance
