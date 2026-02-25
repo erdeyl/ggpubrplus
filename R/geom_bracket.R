@@ -336,7 +336,7 @@ build_signif_mapping <- function(mapping, data){
   if(is.null(mapping$xmin)) mapping$xmin <- data$xmin
   if(is.null(mapping$xmax)) mapping$xmax <- data$xmax
   if(is.null(mapping$y.position)) mapping$y.position <- data$y.position
-  if(is.null(mapping$group)) mapping$group <- 1:nrow(data)
+  if(is.null(mapping$group)) mapping$group <- seq_len(nrow(data))
   if(is.null(mapping$step.increase)) mapping$step.increase <- data$step.increase
   if(is.null(mapping$vjust)) mapping$vjust <- data$vjust
   if(is.null(mapping$bracket.nudge.y)) mapping$bracket.nudge.y <- data$bracket.nudge.y

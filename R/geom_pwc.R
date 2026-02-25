@@ -473,7 +473,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
                               # Bracket groups, used for spacing vertically brackets
                               bracket.group <- 1
-                              if(nrow(stat.test) > 1) bracket.group <- 1:nrow(stat.test)
+                              if(nrow(stat.test) > 1) bracket.group <- seq_len(nrow(stat.test))
                               if(is.grouped.plots){
                                 if(grouping.var == "x"){
                                   nb.comparisons.by.group <- stat.test %>%
@@ -488,7 +488,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
                               # Parameters for customizing brackets
                               group <- 1
-                              if(nrow(stat.test) > 1) group <- 1:nrow(stat.test)
+                              if(nrow(stat.test) > 1) group <- seq_len(nrow(stat.test))
                               stat.test <- stat.test %>%
                                 mutate(
                                   group =  group,
