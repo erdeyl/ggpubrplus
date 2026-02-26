@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,31 @@
       <small>Source: <a href="https://github.com/erdeyl/ggpubrplus/blob/HEAD/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.0.4" id="ggpubrplus-0904">ggpubrplus 0.9.0.4<a class="anchor" aria-label="anchor" href="#ggpubrplus-0904"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-9-0-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-0-4"></a></h3>
+<ul><li>Fix <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> grouped edge cases where pairwise comparisons are not computable (e.g., subsets with fewer than two levels), preventing <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">tidyr::pivot_longer()</a></code> empty-selection failures.</li>
+<li>Return clean empty-layer outputs from <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> when no subset is comparable.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="tests-0-9-0-4">Tests<a class="anchor" aria-label="anchor" href="#tests-0-9-0-4"></a></h3>
+<ul><li>Add regression coverage for grouped <code>&lt;2</code> level subsets in both <code><a href="../reference/compare_means.html">compare_means()</a></code> and <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="maintenance-0-9-0-4">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-0-9-0-4"></a></h3>
+<ul><li>Re-run examples and regenerate documentation/manual artifacts for this patch.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.0.3" id="ggpubrplus-0903">ggpubrplus 0.9.0.3<a class="anchor" aria-label="anchor" href="#ggpubrplus-0903"></a></h2>
+<div class="section level3">
+<h3 id="maintenance-0-9-0-3">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-0-9-0-3"></a></h3>
+<ul><li>Merge PR <a href="https://github.com/erdeyl/ggpubrplus/issues/14">#14</a> style normalization and sequence-idiom safety cleanup.</li>
+<li>Regenerate and synchronize Rd manuals with current roxygen sources.</li>
+<li>Exclude generated <code>Rplots.pdf</code> from source tarballs via <code>.Rbuildignore</code> to keep CRAN checks clean.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0.2" id="ggpubrplus-0902">ggpubrplus 0.9.0.2<a class="anchor" aria-label="anchor" href="#ggpubrplus-0902"></a></h2>
 <div class="section level3">

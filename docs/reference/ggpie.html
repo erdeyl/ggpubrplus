@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,8 +153,9 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span><span class="co"># +++++++++++++++++++++++++++++++</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span> group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Child"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Child"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    group value</span>
@@ -171,7 +172,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Reducing margins around the pie chart</span></span></span>
 <span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>, label <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span> plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.75</span>,<span class="op">-</span><span class="fl">.75</span>,<span class="op">-</span><span class="fl">.75</span>,<span class="op">-</span><span class="fl">.75</span><span class="op">)</span>,<span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.75</span>, <span class="op">-</span><span class="fl">.75</span>, <span class="op">-</span><span class="fl">.75</span>, <span class="op">-</span><span class="fl">.75</span><span class="op">)</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggpie-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -181,9 +182,11 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span><span class="co"># Change fill color by group</span></span></span>
 <span class="r-in"><span><span class="co"># set line color to white</span></span></span>
 <span class="r-in"><span><span class="co"># Use custom color palette</span></span></span>
-<span class="r-in"><span> <span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>, label <span class="op">=</span> <span class="st">"group"</span>,</span></span>
-<span class="r-in"><span>      fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
-<span class="r-in"><span>       palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="st">"group"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggpie-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -192,19 +195,21 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Show group names and value as labels</span></span></span>
 <span class="r-in"><span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">group</span>, <span class="st">" ("</span>, <span class="va">df</span><span class="op">$</span><span class="va">value</span>, <span class="st">"%)"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>, label <span class="op">=</span> <span class="va">labs</span>,</span></span>
-<span class="r-in"><span>   fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
-<span class="r-in"><span>   palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="va">labs</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggpie-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change the position and font color of labels</span></span></span>
-<span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>, label <span class="op">=</span> <span class="va">labs</span>,</span></span>
-<span class="r-in"><span>   lab.pos <span class="op">=</span> <span class="st">"in"</span>, lab.font <span class="op">=</span> <span class="st">"white"</span>,</span></span>
-<span class="r-in"><span>   fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
-<span class="r-in"><span>   palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggpie</span><span class="op">(</span><span class="va">df</span>, <span class="st">"value"</span>,</span></span>
+<span class="r-in"><span>  label <span class="op">=</span> <span class="va">labs</span>,</span></span>
+<span class="r-in"><span>  lab.pos <span class="op">=</span> <span class="st">"in"</span>, lab.font <span class="op">=</span> <span class="st">"white"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"group"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggpie-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

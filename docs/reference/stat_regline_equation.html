@@ -15,7 +15,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -226,7 +226,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Simple scatter plot with correlation coefficient and</span></span></span>
 <span class="r-in"><span><span class="co"># regression line</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span><span class="va">mtcars</span>, x <span class="op">=</span> <span class="st">"wt"</span>, y <span class="op">=</span> <span class="st">"mpg"</span>, add <span class="op">=</span> <span class="st">"reg.line"</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="stat_cor.html">stat_cor</a></span><span class="op">(</span>label.x <span class="op">=</span> <span class="fl">3</span>, label.y <span class="op">=</span> <span class="fl">34</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">stat_regline_equation</span><span class="op">(</span>label.x <span class="op">=</span> <span class="fl">3</span>, label.y <span class="op">=</span> <span class="fl">32</span><span class="op">)</span></span></span>
@@ -234,26 +234,29 @@ shouldn't inherit behaviour from the default plot specification. Set to
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Groupped scatter plot</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Sepal.Length"</span>, y <span class="op">=</span> <span class="st">"Sepal.Width"</span>,</span></span>
+<span class="r-in"><span>  <span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Sepal.Length"</span>, y <span class="op">=</span> <span class="st">"Sepal.Width"</span>,</span></span>
 <span class="r-in"><span>  color <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span>,</span></span>
 <span class="r-in"><span>  add <span class="op">=</span> <span class="st">"reg.line"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">Species</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="stat_cor.html">stat_cor</a></span><span class="op">(</span>label.y <span class="op">=</span> <span class="fl">4.4</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">stat_regline_equation</span><span class="op">(</span>label.y <span class="op">=</span> <span class="fl">4.2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="stat_regline_equation-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Polynomial equation</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Demo data</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">4321</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      y2 <span class="op">=</span> <span class="va">y</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">2</span><span class="op">)</span>, block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>,</span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  y2 <span class="op">=</span> <span class="va">y</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2</span><span class="op">)</span>, block <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit polynomial regression line and add labels</span></span></span>
 <span class="r-in"><span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/poly.html" class="external-link">poly</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">3</span>, raw <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -261,7 +264,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">stat_smooth</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">group</span>, color <span class="op">=</span> <span class="va">group</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"lm"</span>, formula <span class="op">=</span> <span class="va">formula</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">stat_regline_equation</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">..eq.label..</span>, <span class="va">..adj.rr.label..</span>, sep <span class="op">=</span> <span class="st">"~~~~"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">..eq.label..</span>, <span class="va">..adj.rr.label..</span>, sep <span class="op">=</span> <span class="st">"~~~~"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    formula <span class="op">=</span> <span class="va">formula</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></span>

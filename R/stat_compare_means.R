@@ -283,6 +283,18 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
       .test <- do.call(compare_means, method.args)
     }
 
+    if (nrow(.test) == 0) {
+      .test$label <- character(0)
+      .test$x <- numeric(0)
+      .test$y <- numeric(0)
+      .test$hjust <- numeric(0)
+      .test$vjust <- numeric(0)
+      if (!("p.format.signif" %in% names(.test))) {
+        .test$p.format.signif <- character(0)
+      }
+      return(.test)
+    }
+
     # Format p-value for label using the specified style
     p_formatted <- format_p_value(.test$p,
       style = p.format.style,
@@ -291,6 +303,8 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
       min.threshold = p.min.threshold,
       decimal.mark = p.decimal.mark
     )
+    .test$p.format <- p_formatted
+    .test <- add_p_format_signif(.test)
     pvaltxt <- create_p_label(p_formatted)
     .test$label <- paste(.test$method, pvaltxt, sep = label.sep)
 

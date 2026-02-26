@@ -1,3 +1,18 @@
+# ggpubrplus 0.9.0.4
+
+## Bug fixes
+
+- Fix `stat_compare_means()` grouped edge cases where pairwise comparisons are not computable (e.g., subsets with fewer than two levels), preventing `tidyr::pivot_longer()` empty-selection failures.
+- Return clean empty-layer outputs from `stat_compare_means()` when no subset is comparable.
+
+## Tests
+
+- Add regression coverage for grouped `<2` level subsets in both `compare_means()` and `stat_compare_means()`.
+
+## Maintenance
+
+- Re-run examples and regenerate documentation/manual artifacts for this patch.
+
 # ggpubrplus 0.9.0.3
 
 ## Maintenance

@@ -15,7 +15,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,8 +145,10 @@ is possible to place the labels on either of the four sides by setting
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">ToothGrowth</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>      color <span class="op">=</span> <span class="st">"supp"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">ToothGrowth</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"supp"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="facet-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -154,8 +156,9 @@ is possible to place the labels on either of the four sides by setting
 <span class="r-plt img"><img src="facet-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Customize</span></span></span>
-<span class="r-in"><span><span class="fu">facet</span><span class="op">(</span><span class="va">p</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>, facet.by <span class="op">=</span> <span class="st">"supp"</span>,</span></span>
-<span class="r-in"><span>  short.panel.labs <span class="op">=</span> <span class="cn">FALSE</span>,   <span class="co"># Allow long labels in panels</span></span></span>
+<span class="r-in"><span><span class="fu">facet</span><span class="op">(</span><span class="va">p</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  facet.by <span class="op">=</span> <span class="st">"supp"</span>,</span></span>
+<span class="r-in"><span>  short.panel.labs <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># Allow long labels in panels</span></span></span>
 <span class="r-in"><span>  panel.labs.background <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"steelblue"</span>, color <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="facet-3.png" alt="" width="700" height="433"></span>

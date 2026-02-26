@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -216,12 +216,12 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load data</span></span></span>
-<span class="r-in"><span><span class="co">#:::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ToothGrowth"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">ToothGrowth</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># One-sample test</span></span></span>
-<span class="r-in"><span><span class="co">#:::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">df</span>, mu <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.   group1 group2         p   p.adj p.format p.signif method p.format.signif</span>
@@ -229,7 +229,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> len        1 null m… 1.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.7<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.7e-11  ****     Wilco… p = 1.7e-11 **…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two-samples unpaired test</span></span></span>
-<span class="r-in"><span><span class="co">#:::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">supp</span>, <span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.   group1 group2      p p.adj p.format p.signif method   p.format.signif</span>
@@ -237,7 +237,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> len   OJ     VC     0.064<span style="text-decoration: underline;">5</span> 0.064 0.064    ns       Wilcoxon p = 0.064 ns   </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two-samples paired test</span></span></span>
-<span class="r-in"><span><span class="co">#:::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">supp</span>, <span class="va">df</span>, paired <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.   group1 group2       p  p.adj p.format p.signif method   p.format.signif</span>
@@ -245,7 +245,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> len   OJ     VC     0.004<span style="text-decoration: underline;">31</span> 0.004<span style="text-decoration: underline;">3</span> 0.0043   **       Wilcoxon p = 0.0043 **  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compare supp levels after grouping the data by "dose"</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">supp</span>, <span class="va">df</span>, group.by <span class="op">=</span> <span class="st">"dose"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dose .y.   group1 group2       p p.adj p.format p.signif method  </span>
@@ -256,7 +256,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: p.format.signif &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># pairwise comparisons</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="co"># As dose contains more thant two levels ==&gt;</span></span></span>
 <span class="r-in"><span><span class="co"># pairwise test is automatically performed.</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">dose</span>, <span class="va">df</span><span class="op">)</span></span></span>
@@ -268,7 +268,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> len   1      2         1.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.8<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 0.00018  ***      Wilco… p = 0.00018 ***</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Comparison against reference group</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">dose</span>, <span class="va">df</span>, ref.group <span class="op">=</span> <span class="st">"0.5"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.   group1 group2          p  p.adj p.format p.signif method p.format.signif</span>
@@ -277,7 +277,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> len   0.5    2         8.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span> 1.7<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 8.4e-08  ****     Wilco… p = 8.4e-08 **…</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Comparison against all</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">dose</span>, <span class="va">df</span>, ref.group <span class="op">=</span> <span class="st">".all."</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.   group1 group2         p   p.adj p.format p.signif method p.format.signif</span>
@@ -287,7 +287,7 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> len   .all.  2      0.000<span style="text-decoration: underline;">179</span>  0.000<span style="text-decoration: underline;">36</span> 0.00018  ***      Wilco… p = 0.00018 ***</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Anova and kruskal.test</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="fu">compare_means</span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">dose</span>, <span class="va">df</span>, method <span class="op">=</span> <span class="st">"anova"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.          p   p.adj p.format p.signif method p.format.signif </span>

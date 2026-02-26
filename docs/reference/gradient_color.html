@@ -21,7 +21,7 @@ gradient_fill(): Change gradient fill.
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,8 +82,10 @@ case a basic color palette is created using the function
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span></span>
-<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"wt"</span>, y <span class="op">=</span> <span class="st">"mpg"</span>,</span></span>
-<span class="r-in"><span>               color <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"wt"</span>, y <span class="op">=</span> <span class="st">"mpg"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"mpg"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change gradient color</span></span></span>
 <span class="r-in"><span><span class="co"># Use one custom color</span></span></span>
@@ -91,7 +93,7 @@ case a basic color palette is created using the function
 <span class="r-plt img"><img src="gradient_color-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two colors</span></span></span>
-<span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu">gradient_color</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,  <span class="st">"red"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">+</span> <span class="fu">gradient_color</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="gradient_color-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Three colors</span></span></span>

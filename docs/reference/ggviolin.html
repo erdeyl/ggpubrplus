@@ -17,7 +17,7 @@ data at different values."><!-- Global site tag (gtag.js) - Google Analytics -->
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -359,36 +359,48 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span><span class="co"># Add summary statistics</span></span></span>
 <span class="r-in"><span><span class="co"># ++++++++++++++++++++++++++</span></span></span>
 <span class="r-in"><span><span class="co"># Draw quantiles</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>, add <span class="op">=</span> <span class="st">"none"</span>,</span></span>
-<span class="r-in"><span>   quantiles <span class="op">=</span> <span class="fl">0.5</span>, quantile.linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"none"</span>,</span></span>
+<span class="r-in"><span>  quantiles <span class="op">=</span> <span class="fl">0.5</span>, quantile.linetype <span class="op">=</span> <span class="st">"dashed"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add box plot</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span> add <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"boxplot"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span> add <span class="op">=</span> <span class="st">"dotplot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"dotplot"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `binwidth`.</span>
 <span class="r-plt img"><img src="ggviolin-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add jitter points and</span></span></span>
 <span class="r-in"><span><span class="co"># change point shape by groups ("dose")</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>add <span class="op">=</span> <span class="st">"jitter"</span>, shape <span class="op">=</span> <span class="st">"dose"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"jitter"</span>, shape <span class="op">=</span> <span class="st">"dose"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add mean_sd + jittered points</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span> add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"jitter"</span>, <span class="st">"mean_sd"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"jitter"</span>, <span class="st">"mean_sd"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change error.plot to "crossbar"</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span> add <span class="op">=</span> <span class="st">"mean_sd"</span>, error.plot <span class="op">=</span> <span class="st">"crossbar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"mean_sd"</span>, error.plot <span class="op">=</span> <span class="st">"crossbar"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -396,29 +408,36 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></dd>
 <span class="r-in"><span><span class="co"># +++++++++++++++++++++++++++</span></span></span>
 <span class="r-in"><span><span class="co"># Change outline and fill colors</span></span></span>
 <span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>   color <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"gray"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change outline colors by groups: dose</span></span></span>
 <span class="r-in"><span><span class="co"># Use custom color palette and add boxplot</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,  color <span class="op">=</span> <span class="st">"dose"</span>,</span></span>
-<span class="r-in"><span>   palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   add <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"dose"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"boxplot"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change fill color by groups: dose</span></span></span>
 <span class="r-in"><span><span class="co"># add boxplot with white fill color</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>, fill <span class="op">=</span> <span class="st">"dose"</span>,</span></span>
-<span class="r-in"><span>   palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   add <span class="op">=</span> <span class="st">"boxplot"</span>, add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"dose"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"boxplot"</span>, add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot with multiple groups</span></span></span>
 <span class="r-in"><span><span class="co"># +++++++++++++++++++++</span></span></span>
 <span class="r-in"><span><span class="co"># fill or color box plot by a second group : "supp"</span></span></span>
-<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>, color <span class="op">=</span> <span class="st">"supp"</span>,</span></span>
-<span class="r-in"><span> palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span><span class="op">)</span>, add <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggviolin</span><span class="op">(</span><span class="va">df</span>, <span class="st">"dose"</span>, <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"supp"</span>,</span></span>
+<span class="r-in"><span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span><span class="op">)</span>, add <span class="op">=</span> <span class="st">"boxplot"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggviolin-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

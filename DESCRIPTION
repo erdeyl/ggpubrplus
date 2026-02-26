@@ -1,8 +1,8 @@
 Package: ggpubrplus
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots (Extended)
-Version: 0.9.0.3
-Date: 2026-02-25
+Version: 0.9.0.4
+Date: 2026-02-26
 Authors@R: c(
     person("Laszlo", "Erdey", role = c("aut", "cre"), email = "erdey.laszlo@econ.unideb.hu",
            comment = "Faculty of Economics and Business, University of Debrecen, Hungary"))
