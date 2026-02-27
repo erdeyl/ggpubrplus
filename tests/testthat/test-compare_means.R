@@ -224,3 +224,18 @@ test_that("compare_means keeps pairwise t-test pool.sd default behavior", {
   expect_equal(default$p, pooled$p)
   expect_false(isTRUE(all.equal(pooled$p, unpooled$p)))
 })
+
+test_that("compare_means adds p.adj.format without changing p.adj type", {
+  results <- compare_means(
+    len ~ supp, ToothGrowth,
+    method = "t.test",
+    p.format.style = "apa"
+  )
+
+  expect_true("p.adj.format" %in% colnames(results))
+  expect_type(results$p.adj, "double")
+  expect_equal(
+    results$p.adj.format,
+    format_p_value(results$p.adj, style = "apa")
+  )
+})

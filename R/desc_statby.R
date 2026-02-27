@@ -19,7 +19,8 @@
 #' \item \strong{mad}: median absolute deviation (see ?MAD)
 #' \item \strong{sd}: standard deviation of the sample
 #' \item \strong{se}: standard error of the mean. It's calculated as the sample standard deviation divided by the root of the sample size.
-#' \item \strong{ci}: confidence interval of the mean
+#' \item \strong{ci}: half-width (margin of error) of the confidence interval of
+#' the mean. The full interval is \code{mean \eqn{\pm} ci}.
 #' \item \strong{range}: the range = max - min
 #' \item \strong{cv}: coefficient of variation, sd/mean
 #' \item \strong{var}: variance, sd^2

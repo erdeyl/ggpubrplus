@@ -17,7 +17,8 @@ NULL
 #'  two levels, then a pairwise comparison is performed. \item
 #'  \code{\link[stats]{anova}} (parametric) and
 #'  \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
-#'  test comparing multiple groups. }
+#'  test comparing multiple groups. In this one-way setting, Type I/II/III sums
+#'  of squares coincide. }
 #' @param paired a logical indicating whether you want a paired test. Used only
 #'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
 #' @param group.by  a character vector containing the name of grouping variables.
@@ -85,6 +86,7 @@ NULL
 #' \item \code{p}: the p-value.
 #' \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 #' \item \code{p.format}: the formatted p-value.
+#' \item \code{p.adj.format}: the formatted adjusted p-value.
 #' \item \code{p.format.signif}: the formatted p-value with significance symbols.
 #' \item \code{p.signif}: the significance level.
 #' \item \code{method}: the statistical test used to compare groups.
@@ -304,7 +306,17 @@ compare_means <- function(formula, data, method = "wilcox.test",
     p.format.style, p.digits, p.leading.zero, p.min.threshold, p.decimal.mark
   )
   res %>%
-    mutate(p.adj = signif(p.adj, digits = p_params$digits)) %>%
+    mutate(
+      p.adj = signif(p.adj, digits = p_params$digits),
+      p.adj.format = format_p_value(
+        p.adj,
+        style = p.format.style,
+        digits = p.digits,
+        leading.zero = p.leading.zero,
+        min.threshold = p.min.threshold,
+        decimal.mark = p.decimal.mark
+      )
+    ) %>%
     add_p_format_signif() %>%
     tibble::as_tibble()
 }
