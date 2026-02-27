@@ -1,3 +1,17 @@
+# ggpubrplus 0.9.0.5
+
+## Bug fixes
+
+- Finalize sparse-subset robustness for `stat_compare_means()`, `compare_means()`, and `geom_pwc()` to prevent empty-selection failures in grouped workflows.
+- Tighten sparse fallback error matching in `geom_pwc()` and ensure unrelated method errors are rethrown.
+- Preserve `pairwise.t.test` default semantics for `pool.sd = !paired` in `compare_means(..., method = "t.test")`.
+- Accept the `"wilcoxon"` alias while preserving `"wiloxon"` backward compatibility.
+
+## Maintenance
+
+- Remove duplicated internal helper definitions and keep a single canonical implementation.
+- Refresh documentation, manuals, and pkgdown artifacts for the new patch release.
+
 # ggpubrplus 0.9.0.4
 
 ## Bug fixes

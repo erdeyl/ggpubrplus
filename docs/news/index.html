@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,11 +39,29 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.0.5" id="ggpubrplus-0905">ggpubrplus 0.9.0.5<a class="anchor" aria-label="anchor" href="#ggpubrplus-0905"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-9-0-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-0-5"></a></h3>
+<ul><li>Finalize sparse-subset robustness for <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code>, <code><a href="../reference/compare_means.html">compare_means()</a></code>, and <code><a href="../reference/geom_pwc.html">geom_pwc()</a></code> to prevent empty-selection failures in grouped workflows.</li>
+<li>Tighten sparse fallback error matching in <code><a href="../reference/geom_pwc.html">geom_pwc()</a></code> and ensure unrelated method errors are rethrown.</li>
+<li>Preserve <code>pairwise.t.test</code> default semantics for <code>pool.sd = !paired</code> in <code>compare_means(..., method = "t.test")</code>.</li>
+<li>Accept the <code>"wilcoxon"</code> alias while preserving <code>"wiloxon"</code> backward compatibility.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="maintenance-0-9-0-5">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-0-9-0-5"></a></h3>
+<ul><li>Remove duplicated internal helper definitions and keep a single canonical implementation.</li>
+<li>Refresh documentation, manuals, and pkgdown artifacts for the new patch release.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0.4" id="ggpubrplus-0904">ggpubrplus 0.9.0.4<a class="anchor" aria-label="anchor" href="#ggpubrplus-0904"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-0-9-0-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-0-4"></a></h3>
 <ul><li>Fix <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> grouped edge cases where pairwise comparisons are not computable (e.g., subsets with fewer than two levels), preventing <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">tidyr::pivot_longer()</a></code> empty-selection failures.</li>
 <li>Return clean empty-layer outputs from <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> when no subset is comparable.</li>
+<li>Restore <code>compare_means(..., method = "t.test")</code> pairwise defaults to match <code>pairwise.t.test(pool.sd = !paired)</code>.</li>
+<li>Add the correctly spelled <code>"wilcoxon"</code> method alias while keeping <code>"wiloxon"</code> for backward compatibility.</li>
+<li>Remove duplicated <code>keep_only_tbl_df_classes()</code> helper definition.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="tests-0-9-0-4">Tests<a class="anchor" aria-label="anchor" href="#tests-0-9-0-4"></a></h3>
