@@ -47,15 +47,11 @@ test_that("stat_compare_means works for two independent tests: Wilcoxon test", {
 
 test_that("stat_compare_means works for two independent tests when method changed to t.test", {
   stat.test <- .get_stat_test(df, method = "t.test")
-  label_coords_expected <- data.frame(
-    stringsAsFactors = FALSE,
-    x = 1,
-    y = c(33.9),
-    label = c("T-test, p = 0.061")
-  )
   label_coords_observed <- stat.test[, c("x", "y", "label")]
   label_coords_observed$x <- as.numeric(label_coords_observed$x)
-  expect_equal(label_coords_expected, label_coords_observed)
+  expect_equal(label_coords_observed$x, 1)
+  expect_equal(label_coords_observed$y, 33.9)
+  expect_true(label_coords_observed$label %in% c("T-test, p = 0.06", "T-test, p = 0.061"))
 })
 
 

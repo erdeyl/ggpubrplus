@@ -197,3 +197,29 @@ test_that("compare_means skips grouped subsets with <2 levels without error", {
   expect_equal(as.character(results$group1), "M")
   expect_equal(as.character(results$group2), "F")
 })
+
+test_that("compare_means accepts wilcoxon alias", {
+  expected <- compare_means(len ~ supp, ToothGrowth, method = "wilcox.test")
+  results <- compare_means(len ~ supp, ToothGrowth, method = "wilcoxon")
+
+  expect_equal(results$p, expected$p)
+  expect_equal(results$method, expected$method)
+})
+
+test_that("compare_means keeps pairwise t-test pool.sd default behavior", {
+  dat <- data.frame(
+    y = c(
+      -0.56047565, -0.23017749, 1.55870830, 0.07050839, 0.12928774, 1.71506500, 0.46091621, -1.26506120,
+      -2.24741140, -1.28264790, 5.39632720, 1.93925530, 2.10308580, 0.94273086, -1.72336450, 7.64765250,
+      1.99570100, -2.93323430, 2.40271180, 0.05441718, -1.13564740, 0.56405017, -1.05200890, -0.45778246
+    ),
+    g = factor(rep(c("A", "B", "C"), each = 8), levels = c("A", "B", "C"))
+  )
+
+  default <- compare_means(y ~ g, dat, method = "t.test")
+  pooled <- compare_means(y ~ g, dat, method = "t.test", pool.sd = TRUE)
+  unpooled <- compare_means(y ~ g, dat, method = "t.test", pool.sd = FALSE)
+
+  expect_equal(default$p, pooled$p)
+  expect_false(isTRUE(all.equal(pooled$p, unpooled$p)))
+})
