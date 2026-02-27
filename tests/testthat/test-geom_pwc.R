@@ -382,3 +382,17 @@ test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones
   )
   expect_gte(nrow(b$data[[2]]), 1)
 })
+
+test_that("geom_pwc rethrows non-sparse method errors", {
+  bad_method <- function(data, formula, ...) {
+    stop("not enough memory in method backend", call. = FALSE)
+  }
+
+  p <- ggboxplot(df, x = "supp", y = "len") +
+    geom_pwc(method = bad_method)
+
+  expect_warning(
+    ggplot2::ggplot_build(p),
+    "not enough memory in method backend"
+  )
+})

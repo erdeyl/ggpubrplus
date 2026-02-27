@@ -415,6 +415,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   # Return an empty result instead of erroring in tidyr::pivot_longer(cols = -"..group2..").
   if (ncol(pvalues) == 0) {
     return(tibble::tibble(
+      .y. = character(),
       group1 = character(),
       group2 = character(),
       p = numeric()

@@ -4,6 +4,9 @@
 
 - Fix `stat_compare_means()` grouped edge cases where pairwise comparisons are not computable (e.g., subsets with fewer than two levels), preventing `tidyr::pivot_longer()` empty-selection failures.
 - Return clean empty-layer outputs from `stat_compare_means()` when no subset is comparable.
+- Restore `compare_means(..., method = "t.test")` pairwise defaults to match `pairwise.t.test(pool.sd = !paired)`.
+- Add the correctly spelled `"wilcoxon"` method alias while keeping `"wiloxon"` for backward compatibility.
+- Remove duplicated `keep_only_tbl_df_classes()` helper definition.
 
 ## Tests
 

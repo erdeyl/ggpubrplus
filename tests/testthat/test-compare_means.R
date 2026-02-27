@@ -192,6 +192,7 @@ test_that("compare_means skips grouped subsets with <2 levels without error", {
     results <- compare_means(y ~ gp, data = dat, group.by = "x")
   )
 
+  expect_true(".y." %in% colnames(results))
   expect_equal(unique(as.character(results$x)), "B")
   expect_equal(nrow(results), 1)
   expect_equal(as.character(results$group1), "M")
