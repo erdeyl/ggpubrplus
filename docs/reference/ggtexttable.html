@@ -43,7 +43,7 @@ tab_add_title(),tab_add_footnote(): Add title, subtitle and footnote to a table.
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -439,9 +439,9 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span><span class="co"># Remaining columns are right justified i.e., hjust = 1 , x = 0.9</span></span></span>
 <span class="r-in"><span><span class="va">table_theme</span> <span class="op">&lt;-</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tbody.style <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   hjust <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.9</span>, <span class="fl">.9</span>,<span class="fl">.9</span>, <span class="fl">.9</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>    hjust <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.9</span>, <span class="fl">.9</span>, <span class="fl">.9</span>, <span class="fl">.9</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>, rows <span class="op">=</span> <span class="cn">NULL</span>, theme <span class="op">=</span> <span class="va">table_theme</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-2.png" alt="" width="700" height="433"></span>
@@ -456,7 +456,7 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Column names border only</span></span></span>
 <span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>, rows <span class="op">=</span> <span class="cn">NULL</span>, theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"blank"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, row.side <span class="op">=</span> <span class="st">"top"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, row.side <span class="op">=</span> <span class="st">"top"</span>, linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># classic theme</span></span></span>
@@ -473,48 +473,58 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Customize the table as you want</span></span></span>
-<span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>, rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>           theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
-<span class="r-in"><span>             colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"#8cc257"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>             tbody.style <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e8f3de"</span>, <span class="st">"#d3e8bb"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"#8cc257"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tbody.style <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e8f3de"</span>, <span class="st">"#d3e8bb"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use RColorBrewer palette</span></span></span>
 <span class="r-in"><span><span class="co"># Provide as many fill color as there are rows in the table body, here nrow = 6</span></span></span>
 <span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>,</span></span>
-<span class="r-in"><span>           theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
-<span class="r-in"><span>             colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>             tbody.style <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="get_palette.html">get_palette</a></span><span class="op">(</span><span class="st">"RdBu"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tbody.style <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="get_palette.html">get_palette</a></span><span class="op">(</span><span class="st">"RdBu"</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Text justification</span></span></span>
-<span class="r-in"><span><span class="co">#::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># ::::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="co"># Default is "centre" for the body and header, and "right" for the row names.</span></span></span>
 <span class="r-in"><span><span class="co"># Left justification: hjust=0, x=0.1</span></span></span>
 <span class="r-in"><span><span class="co"># Right justification: hjust=1, x=0.9</span></span></span>
-<span class="r-in"><span><span class="va">tbody.style</span> <span class="op">=</span> <span class="fu">tbody_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span>,</span></span>
-<span class="r-in"><span>   fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e8f3de"</span>, <span class="st">"#d3e8bb"</span><span class="op">)</span>, hjust<span class="op">=</span><span class="fl">1</span>, x<span class="op">=</span><span class="fl">0.9</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>           theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
-<span class="r-in"><span>             colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"#8cc257"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>             tbody.style <span class="op">=</span> <span class="va">tbody.style</span></span></span>
-<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tbody.style</span> <span class="op">&lt;-</span> <span class="fu">tbody_style</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"black"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#e8f3de"</span>, <span class="st">"#d3e8bb"</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">1</span>, x <span class="op">=</span> <span class="fl">0.9</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggtexttable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    colnames.style <span class="op">=</span> <span class="fu">colnames_style</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"#8cc257"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tbody.style <span class="op">=</span> <span class="va">tbody.style</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Access and modify the font and</span></span></span>
 <span class="r-in"><span><span class="co"># the background of table cells</span></span></span>
 <span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::</span></span></span>
-<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>                  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"classic"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">table_cell_font</span><span class="op">(</span><span class="va">tab</span>, row <span class="op">=</span> <span class="fl">3</span>, column <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>                      face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">table_cell_bg</span><span class="op">(</span><span class="va">tab</span>, row <span class="op">=</span> <span class="fl">4</span>, column <span class="op">=</span> <span class="fl">3</span>, linewidth <span class="op">=</span> <span class="fl">5</span>,</span></span>
-<span class="r-in"><span>                    fill<span class="op">=</span><span class="st">"darkolivegreen1"</span>, color <span class="op">=</span> <span class="st">"darkolivegreen4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"classic"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">table_cell_font</span><span class="op">(</span><span class="va">tab</span>,</span></span>
+<span class="r-in"><span>  row <span class="op">=</span> <span class="fl">3</span>, column <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  face <span class="op">=</span> <span class="st">"bold"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">table_cell_bg</span><span class="op">(</span><span class="va">tab</span>,</span></span>
+<span class="r-in"><span>  row <span class="op">=</span> <span class="fl">4</span>, column <span class="op">=</span> <span class="fl">3</span>, linewidth <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"darkolivegreen1"</span>, color <span class="op">=</span> <span class="st">"darkolivegreen4"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tab</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -522,8 +532,8 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span><span class="co"># Spaning from row 2 to the last row in the data</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>, rows <span class="op">=</span> <span class="cn">NULL</span>, theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"classic"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">table_cell_bg</span><span class="op">(</span>row <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_nrow</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, fill <span class="op">=</span> <span class="st">"darkblue"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">table_cell_font</span><span class="op">(</span>row <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_nrow</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, face <span class="op">=</span> <span class="st">"italic"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">table_cell_bg</span><span class="op">(</span>row <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_nrow</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, fill <span class="op">=</span> <span class="st">"darkblue"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">table_cell_font</span><span class="op">(</span>row <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_nrow</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, face <span class="op">=</span> <span class="st">"italic"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-13.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add separators and borders</span></span></span>
@@ -532,20 +542,20 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="va">df</span>, theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"blank"</span><span class="op">)</span>, rows <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Add horizontal and vertical lines</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, row.side <span class="op">=</span> <span class="st">"top"</span>, linewidth <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span>, row.side <span class="op">=</span> <span class="st">"bottom"</span>, linewidth <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_vline</span><span class="op">(</span>at.column <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_ncol</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column.side <span class="op">=</span> <span class="st">"left"</span>, from.row <span class="op">=</span> <span class="fl">2</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, row.side <span class="op">=</span> <span class="st">"top"</span>, linewidth <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_hline</span><span class="op">(</span>at.row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span>, row.side <span class="op">=</span> <span class="st">"bottom"</span>, linewidth <span class="op">=</span> <span class="fl">3</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_vline</span><span class="op">(</span>at.column <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu">tab_ncol</span><span class="op">(</span><span class="va">tab</span><span class="op">)</span>, column.side <span class="op">=</span> <span class="st">"left"</span>, from.row <span class="op">=</span> <span class="fl">2</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add borders to table body and header</span></span></span>
 <span class="r-in"><span><span class="co"># Cross out some cells</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tbody_add_border</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">thead_add_border</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_cell_crossout</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, linecolor <span class="op">=</span> <span class="st">"red"</span>,</span></span>
-<span class="r-in"><span>   reduce.size.by <span class="op">=</span> <span class="fl">0.6</span></span></span>
-<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">tbody_add_border</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">thead_add_border</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_cell_crossout</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, column <span class="op">=</span> <span class="fl">3</span>, linecolor <span class="op">=</span> <span class="st">"red"</span>,</span></span>
+<span class="r-in"><span>    reduce.size.by <span class="op">=</span> <span class="fl">0.6</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-15.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add titles andd footnote</span></span></span>
@@ -554,40 +564,47 @@ specified, overrides the just setting.</p></dd>
 <span class="r-in"><span><span class="co"># Wrap subtitle into multiple lines using strwrap()</span></span></span>
 <span class="r-in"><span><span class="va">main.title</span> <span class="op">&lt;-</span> <span class="st">"Edgar Anderson's Iris Data"</span></span></span>
 <span class="r-in"><span><span class="va">subtitle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span><span class="st">"This famous (Fisher's or Anderson's) iris data set gives the measurements"</span>,</span></span>
-<span class="r-in"><span><span class="st">" in centimeters of the variables sepal length and width and petal length and width,"</span>,</span></span>
-<span class="r-in"><span> <span class="st">" respectively, for 50 flowers from each of 3 species of iris."</span>,</span></span>
-<span class="r-in"><span> <span class="st">" The species are Iris setosa, versicolor, and virginica."</span></span></span>
+<span class="r-in"><span>  <span class="st">"This famous (Fisher's or Anderson's) iris data set gives the measurements"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">" in centimeters of the variables sepal length and width and petal length and width,"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">" respectively, for 50 flowers from each of 3 species of iris."</span>,</span></span>
+<span class="r-in"><span>  <span class="st">" The species are Iris setosa, versicolor, and virginica."</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/strwrap.html" class="external-link">strwrap</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">80</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span>collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/strwrap.html" class="external-link">strwrap</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">80</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span>collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"light"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_title</span><span class="op">(</span>text <span class="op">=</span> <span class="va">subtitle</span>, face <span class="op">=</span> <span class="st">"plain"</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_title</span><span class="op">(</span>text <span class="op">=</span> <span class="va">main.title</span>, face <span class="op">=</span> <span class="st">"bold"</span>, padding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="st">"line"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu">tab_add_footnote</span><span class="op">(</span>text <span class="op">=</span> <span class="st">"*Table created using ggpubr"</span>, size <span class="op">=</span> <span class="fl">10</span>, face <span class="op">=</span> <span class="st">"italic"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_title</span><span class="op">(</span>text <span class="op">=</span> <span class="va">subtitle</span>, face <span class="op">=</span> <span class="st">"plain"</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_title</span><span class="op">(</span>text <span class="op">=</span> <span class="va">main.title</span>, face <span class="op">=</span> <span class="st">"bold"</span>, padding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="st">"line"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tab_add_footnote</span><span class="op">(</span>text <span class="op">=</span> <span class="st">"*Table created using ggpubr"</span>, size <span class="op">=</span> <span class="fl">10</span>, face <span class="op">=</span> <span class="st">"italic"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-16.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Combine density plot and summary table</span></span></span>
-<span class="r-in"><span><span class="co">#:::::::::::::::::::::::::::::::::::::</span></span></span>
+<span class="r-in"><span><span class="co"># :::::::::::::::::::::::::::::::::::::</span></span></span>
 <span class="r-in"><span><span class="co"># Density plot of "Sepal.Length"</span></span></span>
-<span class="r-in"><span><span class="va">density.p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdensity.html">ggdensity</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
-<span class="r-in"><span>                      fill <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">density.p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdensity.html">ggdensity</a></span><span class="op">(</span><span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Draw the summary table of Sepal.Length</span></span></span>
 <span class="r-in"><span><span class="co"># Descriptive statistics by groups</span></span></span>
-<span class="r-in"><span><span class="va">stable</span> <span class="op">&lt;-</span> <span class="fu"><a href="desc_statby.html">desc_statby</a></span><span class="op">(</span><span class="va">iris</span>, measure.var <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
-<span class="r-in"><span>                     grps <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stable</span> <span class="op">&lt;-</span> <span class="fu"><a href="desc_statby.html">desc_statby</a></span><span class="op">(</span><span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  measure.var <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
+<span class="r-in"><span>  grps <span class="op">=</span> <span class="st">"Species"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">stable</span> <span class="op">&lt;-</span> <span class="va">stable</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Species"</span>, <span class="st">"length"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">stable.p</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="va">stable</span>, rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>                       theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"mOrange"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stable.p</span> <span class="op">&lt;-</span> <span class="fu">ggtexttable</span><span class="op">(</span><span class="va">stable</span>,</span></span>
+<span class="r-in"><span>  rows <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ttheme</span><span class="op">(</span><span class="st">"mOrange"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Arrange the plots on the same page</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">density.p</span>, <span class="va">stable.p</span>,</span></span>
-<span class="r-in"><span>         ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>         heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggtexttable-17.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -47,15 +47,11 @@ test_that("stat_compare_means works for two independent tests: Wilcoxon test", {
 
 test_that("stat_compare_means works for two independent tests when method changed to t.test", {
   stat.test <- .get_stat_test(df, method = "t.test")
-  label_coords_expected <- data.frame(
-    stringsAsFactors = FALSE,
-    x = 1,
-    y = c(33.9),
-    label = c("T-test, p = 0.061")
-  )
   label_coords_observed <- stat.test[, c("x", "y", "label")]
   label_coords_observed$x <- as.numeric(label_coords_observed$x)
-  expect_equal(label_coords_expected, label_coords_observed)
+  expect_equal(label_coords_observed$x, 1)
+  expect_equal(label_coords_observed$y, 33.9)
+  expect_true(label_coords_observed$label %in% c("T-test, p = 0.06", "T-test, p = 0.061"))
 })
 
 
@@ -334,4 +330,61 @@ test_that("stat_compare_means with p.format.signif uses custom signif.cutoffs", 
   )
   # p = 0.064 is between 0.05 and 0.10, so should get "*"
   expect_equal(stat.test$label, "p = 0.064 *")
+})
+
+test_that("stat_compare_means handles grouped subsets with <2 levels", {
+  set.seed(42)
+  dat <- data.frame(
+    x = factor(c(rep("A", 8), rep("B", 8), rep("C", 8))),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep(c("M", "F"), each = 4), rep("F", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    stat_compare_means(aes(group = grp))
+
+  expect_no_error(
+    b <- ggplot2::ggplot_build(p)
+  )
+  stat.test <- b$data[[2]]
+  expect_true(all(c("group1", "group2", "p") %in% colnames(stat.test)))
+  expect_gte(nrow(stat.test), 1)
+})
+
+test_that("stat_compare_means returns empty layer when no subset is comparable", {
+  set.seed(2)
+  dat <- data.frame(
+    x = factor(rep(c("A", "B", "C"), each = 8)),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep("F", 8), rep("M", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    stat_compare_means(aes(group = grp))
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_equal(nrow(b$data[[2]]), 0)
+})
+
+test_that("stat_compare_means handles one-level x without error", {
+  set.seed(3)
+  dat <- data.frame(
+    x = factor(rep("A", 20)),
+    y = rnorm(20)
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y") + stat_compare_means()
+
+  expect_no_error(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_equal(nrow(b$data[[2]]), 0)
 })

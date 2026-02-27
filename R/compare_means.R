@@ -320,7 +320,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   allowed.methods <- list(
     t = "t.test", t.test = "t.test", student = "t.test",
-    wiloxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
+    wiloxon = "wilcox.test", wilcoxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
     anova = "anova", aov = "anova",
     kruskal = "kruskal.test", kruskal.test = "kruskal.test"
   )
@@ -404,14 +404,24 @@ compare_means <- function(formula, data, method = "wilcox.test",
     ...
   )
   if (method == "pairwise.t.test") {
-    if (missing(pool.sd)) {
-      if (!paired) pool.sd <- FALSE
-    }
     test.opts$pool.sd <- pool.sd
   }
 
   pvalues <- suppressWarnings(do.call(test, test.opts)$p.value) %>%
     as.data.frame()
+
+  # No pairwise comparisons are possible when a subset has < 2 group levels.
+  # This occurs in grouped workflows (e.g., some x-groups missing one legend level).
+  # Return an empty result instead of erroring in tidyr::pivot_longer(cols = -"..group2..").
+  if (ncol(pvalues) == 0) {
+    return(tibble::tibble(
+      .y. = character(),
+      group1 = character(),
+      group2 = character(),
+      p = numeric()
+    ))
+  }
+
   p <- NULL
   pvalues$..group2.. <- rownames(pvalues)
   pvalues <- pvalues %>%

@@ -17,7 +17,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,21 +110,26 @@ the display list or redrawn from the display list.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Density plot</span></span></span>
-<span class="r-in"><span><span class="va">density.p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdensity.html">ggdensity</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
-<span class="r-in"><span>                      fill <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">density.p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdensity.html">ggdensity</a></span><span class="op">(</span><span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
+<span class="r-in"><span>  fill <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Text plot</span></span></span>
 <span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"iris data set gives the measurements in cm"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"of the variables sepal length and width"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"and petal length and width, respectively,"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"for 50 flowers from each of 3 species of iris."</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"The species are Iris setosa, versicolor, and virginica."</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"of the variables sepal length and width"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"and petal length and width, respectively,"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"for 50 flowers from each of 3 species of iris."</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"The species are Iris setosa, versicolor, and virginica."</span>,</span></span>
+<span class="r-in"><span>  sep <span class="op">=</span> <span class="st">" "</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">text.p</span> <span class="op">&lt;-</span> <span class="fu">ggparagraph</span><span class="op">(</span><span class="va">text</span>, face <span class="op">=</span> <span class="st">"italic"</span>, size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Arrange the plots on the same page</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">density.p</span>, <span class="va">text.p</span>,</span></span>
-<span class="r-in"><span>         ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>         heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggparagraph-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

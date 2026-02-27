@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,9 +68,11 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a scatter plot</span></span></span>
-<span class="r-in"><span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Sepal.Length"</span>, y <span class="op">=</span> <span class="st">"Sepal.Width"</span>,</span></span>
-<span class="r-in"><span>               color <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span>,</span></span>
-<span class="r-in"><span>               size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggscatter.html">ggscatter</a></span><span class="op">(</span><span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Sepal.Length"</span>, y <span class="op">=</span> <span class="st">"Sepal.Width"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"Species"</span>, palette <span class="op">=</span> <span class="st">"jco"</span>,</span></span>
+<span class="r-in"><span>  size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.6</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sp</span></span></span>
 <span class="r-plt img"><img src="theme_transparent-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

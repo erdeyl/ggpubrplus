@@ -29,7 +29,7 @@ fill_palette(): change fill palette only.
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,8 +113,10 @@ scale_fill_xxx() functions.</p></dd>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">ToothGrowth</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Basic plot</span></span></span>
-<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>   color <span class="op">=</span> <span class="st">"dose"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"dose"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p</span></span></span>
 <span class="r-plt img"><img src="set_palette-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

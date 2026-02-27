@@ -15,7 +15,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,10 +129,12 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"iris data set gives the measurements in cm"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"of the variables sepal length and width"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"and petal length and width, respectively,"</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"for 50 flowers from each of 3 species of iris."</span>,</span></span>
-<span class="r-in"><span>             <span class="st">"The species are Iris setosa, versicolor, and virginica."</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"of the variables sepal length and width"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"and petal length and width, respectively,"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"for 50 flowers from each of 3 species of iris."</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"The species are Iris setosa, versicolor, and virginica."</span>,</span></span>
+<span class="r-in"><span>  sep <span class="op">=</span> <span class="st">"\n"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a text grob</span></span></span>
 <span class="r-in"><span><span class="va">tgrob</span> <span class="op">&lt;-</span> <span class="fu">text_grob</span><span class="op">(</span><span class="va">text</span>, face <span class="op">=</span> <span class="st">"italic"</span>, color <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span></span></span>

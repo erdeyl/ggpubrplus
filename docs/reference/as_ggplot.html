@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,8 +76,10 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Creat some plots</span></span></span>
 <span class="r-in"><span><span class="va">bxp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Species"</span>, y <span class="op">=</span> <span class="st">"Sepal.Length"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggviolin.html">ggviolin</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="st">"Species"</span>, y <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
-<span class="r-in"><span>              add <span class="op">=</span> <span class="st">"mean_sd"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggviolin.html">ggviolin</a></span><span class="op">(</span><span class="va">iris</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Species"</span>, y <span class="op">=</span> <span class="st">"Sepal.Length"</span>,</span></span>
+<span class="r-in"><span>  add <span class="op">=</span> <span class="st">"mean_sd"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Arrange the plots in one page</span></span></span>
 <span class="r-in"><span><span class="co"># Returns a gtable (grob) object</span></span></span>

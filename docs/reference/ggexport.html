@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,11 +120,15 @@ plots.</p></dd>
 <span class="r-in"><span><span class="va">df</span><span class="op">$</span><span class="va">dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">dose</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Box plot</span></span></span>
-<span class="r-in"><span><span class="va">bxp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>    color <span class="op">=</span> <span class="st">"dose"</span>, palette <span class="op">=</span> <span class="st">"jco"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bxp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggboxplot.html">ggboxplot</a></span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"dose"</span>, palette <span class="op">=</span> <span class="st">"jco"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Dot plot</span></span></span>
-<span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdotplot.html">ggdotplot</a></span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
-<span class="r-in"><span>    color <span class="op">=</span> <span class="st">"dose"</span>, palette <span class="op">=</span> <span class="st">"jco"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdotplot.html">ggdotplot</a></span><span class="op">(</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"dose"</span>, y <span class="op">=</span> <span class="st">"len"</span>,</span></span>
+<span class="r-in"><span>  color <span class="op">=</span> <span class="st">"dose"</span>, palette <span class="op">=</span> <span class="st">"jco"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Density plot</span></span></span>
 <span class="r-in"><span><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="ggdensity.html">ggdensity</a></span><span class="op">(</span><span class="va">df</span>, x <span class="op">=</span> <span class="st">"len"</span>, fill <span class="op">=</span> <span class="st">"dose"</span>, palette <span class="op">=</span> <span class="st">"jco"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -135,7 +139,7 @@ plots.</p></dd>
 <span class="r-in"><span><span class="co"># Export to png</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ggarrange.html">ggarrange</a></span><span class="op">(</span><span class="va">bxp</span>, <span class="va">dp</span>, <span class="va">dens</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">ggexport</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"test.png"</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

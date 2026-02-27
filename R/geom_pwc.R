@@ -358,13 +358,16 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     is.grouped.plots <- contains_multiple_grouping_vars(df)
     formula <- y ~ x
     grouping.var <- NULL
+    comparison.var <- "x"
     if (is.grouped.plots) {
       if (group.by == "legend.var") {
         grouping.var <- "group"
         formula <- y ~ x
+        comparison.var <- "x"
       } else {
         grouping.var <- "x"
         formula <- y ~ group
+        comparison.var <- "group"
       }
       df <- df %>% rstatix::df_group_by(vars = grouping.var)
     }
@@ -380,7 +383,100 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     }
 
     method.args <- method.args %>% .add_item(data = df, formula = formula)
-    stat.test <- do.call(method, method.args)
+    stat.test <- tryCatch(
+      do.call(method, method.args),
+      error = function(e) {
+        sparse_error <- grepl(
+          "not enough.*(group|groups|observation|observations|level|levels)|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level",
+          conditionMessage(e),
+          ignore.case = TRUE
+        )
+        if (!sparse_error) {
+          stop(e)
+        }
+        if (!is.grouped.plots) {
+          return(data.frame())
+        }
+
+        # Retry using only grouped subsets with at least two comparison levels.
+        df_fallback <- data %>% mutate(x = as.factor(.data$x))
+        requires_ref_level <- !is.null(ref.group.id) && !(ref.group.id %in% c("all", ".all."))
+        ref_level <- if (requires_ref_level) as.character(ref.group.id) else NA_character_
+        ref_level_label <- if (requires_ref_level && !is.null(ref.group)) {
+          as.character(ref.group)
+        } else {
+          ref_level
+        }
+        grouped_summary <- df_fallback %>%
+          dplyr::group_by(.data[[grouping.var]]) %>%
+          dplyr::summarise(
+            .n_levels = dplyr::n_distinct(.data[[comparison.var]]),
+            .has_ref = if (requires_ref_level) {
+              ref_level %in% as.character(unique(.data[[comparison.var]]))
+            } else {
+              TRUE
+            },
+            .groups = "drop"
+          )
+        grouped_summary$.is_comparable <- grouped_summary$.n_levels >= 2 & grouped_summary$.has_ref
+        if (requires_ref_level) {
+          grouped_summary$.skip_reason <- ifelse(
+            grouped_summary$.is_comparable,
+            NA_character_,
+            ifelse(
+              !grouped_summary$.has_ref & grouped_summary$.n_levels < 2,
+              paste0("missing ref.group='", ref_level_label, "' and <2 comparison levels"),
+              ifelse(
+                !grouped_summary$.has_ref,
+                paste0("missing ref.group='", ref_level_label, "'"),
+                "<2 comparison levels"
+              )
+            )
+          )
+        } else {
+          grouped_summary$.skip_reason <- ifelse(
+            grouped_summary$.is_comparable,
+            NA_character_,
+            "<2 comparison levels"
+          )
+        }
+
+        comparable <- grouped_summary %>%
+          dplyr::filter(.data$.is_comparable)
+
+        skipped_summary <- grouped_summary %>%
+          dplyr::filter(!.data$.is_comparable)
+        if (nrow(skipped_summary) > 0) {
+          skipped_desc <- paste0(
+            as.character(skipped_summary[[grouping.var]]),
+            " (",
+            skipped_summary$.skip_reason,
+            ")"
+          )
+          message(
+            "geom_pwc(): skipped ",
+            nrow(skipped_summary),
+            " grouped subset(s): ",
+            paste(skipped_desc, collapse = ", ")
+          )
+        }
+
+        if (nrow(comparable) == 0) {
+          return(data.frame())
+        }
+
+        df_fallback <- df_fallback %>%
+          dplyr::semi_join(comparable, by = grouping.var) %>%
+          rstatix::df_group_by(vars = grouping.var)
+        method.args.fallback <- method.args
+        method.args.fallback$data <- df_fallback
+        do.call(method, method.args.fallback)
+      }
+    )
+
+    if (nrow(stat.test) == 0) {
+      return(data.frame())
+    }
 
     # Add method name
     method.name <- rstatix::get_description(stat.test)
