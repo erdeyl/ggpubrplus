@@ -14,20 +14,18 @@ background_image(raster.img)
 Add background image to ggplot2.
 }
 \examples{
-\dontrun{
-install.packages("png")
+if (requireNamespace("png", quietly = TRUE)) {
+  # Import the image
+  img.file <- system.file(file.path("images", "background-image.png"),
+    package = "ggpubrplus"
+  )
+  img <- png::readPNG(img.file)
 
-# Import the image
-img.file <- system.file(file.path("images", "background-image.png"),
-  package = "ggpubrplus"
-)
-img <- png::readPNG(img.file)
-
-# Plot with background image
-ggplot(iris, aes(Species, Sepal.Length)) +
-  background_image(img) +
-  geom_boxplot(aes(fill = Species), color = "white") +
-  fill_palette("jco")
+  # Plot with background image
+  ggplot(iris, aes(Species, Sepal.Length)) +
+    background_image(img) +
+    geom_boxplot(aes(fill = Species), color = "white") +
+    fill_palette("jco")
 }
 
 }

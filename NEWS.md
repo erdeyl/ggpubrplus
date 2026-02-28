@@ -1,3 +1,14 @@
+# ggpubrplus 0.9.0.6
+
+## Bug fixes
+
+- Avoid package installation calls in examples by updating `background_image()` to use `requireNamespace("png", quietly = TRUE)`.
+- Declare `png` in `Suggests` to satisfy example dependency checks.
+
+## Maintenance
+
+- Refresh generated manuals and documentation assets for the 0.9.0.6 patch release.
+
 # ggpubrplus 0.9.0.5
 
 ## Bug fixes

@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggpubrplus</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,8 @@
 <li><p><strong>mad</strong>: median absolute deviation (see ?MAD)</p></li>
 <li><p><strong>sd</strong>: standard deviation of the sample</p></li>
 <li><p><strong>se</strong>: standard error of the mean. It's calculated as the sample standard deviation divided by the root of the sample size.</p></li>
-<li><p><strong>ci</strong>: confidence interval of the mean</p></li>
+<li><p><strong>ci</strong>: half-width (margin of error) of the confidence interval of
+the mean. The full interval is <code>[mean - ci, mean + ci]</code>.</p></li>
 <li><p><strong>range</strong>: the range = max - min</p></li>
 <li><p><strong>cv</strong>: coefficient of variation, sd/mean</p></li>
 <li><p><strong>var</strong>: variance, sd^2</p></li>
