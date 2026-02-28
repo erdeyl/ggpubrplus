@@ -43,7 +43,8 @@ between two groups of samples. If the grouping variable contains more than
 two levels, then a pairwise comparison is performed. \item
 \code{\link[stats]{anova}} (parametric) and
 \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
-test comparing multiple groups. }}
+test comparing multiple groups. In this one-way setting, Type I/II/III sums
+of squares coincide. }}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
@@ -129,6 +130,7 @@ Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
 \item \code{p}: the p-value.
 \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 \item \code{p.format}: the formatted p-value.
+\item \code{p.adj.format}: the formatted adjusted p-value.
 \item \code{p.format.signif}: the formatted p-value with significance symbols.
 \item \code{p.signif}: the significance level.
 \item \code{method}: the statistical test used to compare groups.

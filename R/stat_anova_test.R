@@ -322,37 +322,101 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
 
     # Run statistical tests
     df <- df %>% rstatix::convert_as_factor(vars = c(between, within))
-    if (!is.null(group)) {
-      df <- df %>% rstatix::df_group_by(vars = group)
-    }
 
     anova_methods <- c("one_way", "one_way_repeated", "two_way", "two_way_repeated", "two_way_mixed")
-    if (method %in% anova_methods) {
-      method.args <- method.args %>%
-        .add_item(data = df, dv = "y", between = between, within = within, wid = wid)
-      stat.test <- do.call(rstatix::anova_test, method.args) %>%
-        rstatix::get_anova_table(correction = correction)
-      method.name <- "Anova"
-    } else if (method == "kruskal_test") {
-      .formula <- paste0("y ~", between) %>% as.formula()
-      method.name <- "Kruskal-Wallis"
-      stat.test <- rstatix::kruskal_test(df, .formula)
-      stat.test$statistic <- round(stat.test$statistic, 2)
-    } else if (method == "welch_anova_test") {
-      .formula <- paste0("y ~", between) %>% as.formula()
-      method.name <- "Welch Anova"
-      stat.test <- rstatix::welch_anova_test(df, .formula)
-      stat.test$statistic <- round(stat.test$statistic, 2)
-    } else if (method == "friedman_test") {
-      if (is.null(within)) stop("The argument 'within' is required.")
-      if (is.null(wid)) stop("The argument 'wid' is required.")
-      .formula <- paste0("y ~", within, " | ", wid) %>% as.formula()
-      method.name <- "Friedman test"
-      stat.test <- rstatix::friedman_test(df, .formula)
-      stat.test$statistic <- round(stat.test$statistic, 2)
-    } else {
-      stop("Don't support the method: ", method, call. = FALSE)
+    method.name <- switch(method,
+      kruskal_test = "Kruskal-Wallis",
+      welch_anova_test = "Welch Anova",
+      friedman_test = "Friedman test",
+      "Anova"
+    )
+
+    run_single_test <- function(df_input) {
+      if (method %in% anova_methods) {
+        test.args <- method.args %>%
+          .add_item(data = df_input, dv = "y", between = between, within = within, wid = wid)
+        do.call(rstatix::anova_test, test.args) %>%
+          rstatix::get_anova_table(correction = correction)
+      } else if (method == "kruskal_test") {
+        .formula <- paste0("y ~", between) %>% as.formula()
+        out <- rstatix::kruskal_test(df_input, .formula)
+        out$statistic <- round(out$statistic, 2)
+        out
+      } else if (method == "welch_anova_test") {
+        .formula <- paste0("y ~", between) %>% as.formula()
+        out <- rstatix::welch_anova_test(df_input, .formula)
+        out$statistic <- round(out$statistic, 2)
+        out
+      } else if (method == "friedman_test") {
+        if (is.null(within)) stop("The argument 'within' is required.")
+        if (is.null(wid)) stop("The argument 'wid' is required.")
+        .formula <- paste0("y ~", within, " | ", wid) %>% as.formula()
+        out <- rstatix::friedman_test(df_input, .formula)
+        out$statistic <- round(out$statistic, 2)
+        out
+      } else {
+        stop("Don't support the method: ", method, call. = FALSE)
+      }
     }
+
+    is_sparse_subset_error <- function(e) {
+      grepl(
+        "not enough.*(group|groups|observation|observations|level|levels)|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level|all observations are in the same group",
+        conditionMessage(e),
+        ignore.case = TRUE
+      )
+    }
+
+    if (!is.null(group)) {
+      group.values <- unique(df[[group]])
+      if (is.factor(df[[group]])) {
+        ordered.levels <- levels(df[[group]])
+        group.values <- ordered.levels[ordered.levels %in% as.character(group.values)]
+      } else if (is.numeric(df[[group]])) {
+        group.values <- sort(group.values)
+      }
+      stat.tests <- vector("list", length(group.values))
+      skipped <- character()
+
+      for (i in seq_along(group.values)) {
+        group.id <- group.values[i]
+        grouped.data <- df[df[[group]] == group.id, , drop = FALSE]
+        out <- tryCatch(
+          run_single_test(grouped.data),
+          error = function(e) {
+            if (!is_sparse_subset_error(e)) {
+              stop(e)
+            }
+            skipped <<- c(skipped, as.character(group.id))
+            return(NULL)
+          }
+        )
+        if (is.null(out) || nrow(out) == 0) {
+          next
+        }
+        out <- keep_only_tbl_df_classes(out)
+        if (!(group %in% colnames(out))) {
+          out[[group]] <- group.id
+        }
+        stat.tests[[i]] <- out
+      }
+
+      stat.test <- dplyr::bind_rows(stat.tests)
+      if (length(skipped) > 0) {
+        message(
+          "stat_compare_multiple_means(): skipped ",
+          length(skipped),
+          " grouped subset(s): ",
+          paste(skipped, collapse = ", ")
+        )
+      }
+      if (nrow(stat.test) == 0) {
+        return(data.frame())
+      }
+    } else {
+      stat.test <- run_single_test(df)
+    }
+    stat.test <- keep_only_tbl_df_classes(stat.test)
 
     # Prepare the output for visualization
     if (is_two_way) {
@@ -373,7 +437,13 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
       # stat test is computed between x variable groups
       # labels are stacked on y-axis. labels group ids are group (legend var)
       else if (group == "group") {
-        if ("colour" %in% colnames(df)) stat.test$colour <- .levels(df$colour)
+        if ("colour" %in% colnames(df)) {
+          color.data <- df %>%
+            dplyr::select("group", "colour") %>%
+            dplyr::distinct(group, .keep_all = TRUE)
+          stat.test <- stat.test %>%
+            dplyr::left_join(color.data, by = "group")
+        }
         y.group <- stat.test$group
       }
     }

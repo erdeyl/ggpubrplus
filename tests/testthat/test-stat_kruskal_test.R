@@ -45,3 +45,22 @@ test_that("stat_kruskal_test works for grouped plots: grouped by legend variable
   expect_equal(as.numeric(stat.test$y), c(36.4, 39.62, 42.84))
   expect_equal(stat.test$label, c("0.012", "0.018", "0.038"))
 })
+
+test_that("stat_kruskal_test skips sparse grouped subsets without warning", {
+  sparse <- data.frame(
+    x = factor(c("A", "A", "B", "B", "C", "C")),
+    y = c(1, 2, 3, 4, 5, 6),
+    grp = factor(c("g1", "g2", "g1", "g2", "g1", "g1"))
+  )
+
+  p <- ggplot(sparse, aes(x, y, color = grp)) +
+    geom_point() +
+    stat_kruskal_test(aes(group = grp), group.by = "x.var")
+
+  expect_no_warning(
+    built <- ggplot2::ggplot_build(p)
+  )
+
+  stat.test <- built$data[[2]]
+  expect_equal(as.numeric(stat.test$x), c(1, 2))
+})

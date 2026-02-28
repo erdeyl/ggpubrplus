@@ -14,6 +14,11 @@ stat_regline_equation(
   label.y = NULL,
   output.type = "expression",
   decreasing = TRUE,
+  rr.digits = 2,
+  adj.rr.digits = rr.digits,
+  aic.digits = 2,
+  bic.digits = aic.digits,
+  eq.digits = 2,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -65,6 +70,15 @@ for absolute positioning of the label. If too short they will be recycled.}
 formatted in standard mathematical convention with terms in decreasing
 order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in
 increasing order (e.g., "y = 1 + 2*x").}
+
+\item{rr.digits, adj.rr.digits}{integer indicating significant digits used for
+\eqn{R^2} and adjusted \eqn{R^2} labels. Defaults preserve legacy behavior.}
+
+\item{aic.digits, bic.digits}{integer indicating significant digits used for AIC
+and BIC labels. Defaults preserve legacy behavior.}
+
+\item{eq.digits}{integer indicating significant digits used for polynomial
+equation coefficients. Default preserves legacy behavior.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
@@ -170,7 +184,7 @@ p <- ggplot(my.data, aes(x, y2, color = group)) +
   geom_point() +
   stat_smooth(aes(fill = group, color = group), method = "lm", formula = formula) +
   stat_regline_equation(
-    aes(label = paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
+    aes(label = paste(after_stat(eq.label), after_stat(adj.rr.label), sep = "~~~~")),
     formula = formula
   ) +
   theme_bw()

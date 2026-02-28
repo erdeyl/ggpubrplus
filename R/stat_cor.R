@@ -31,7 +31,9 @@ NULL
 #' @param output.type character One of "expression", "latex", "tex" or "text".
 #' @param digits,r.digits,p.digits integer indicating the number of decimal
 #'  places (round) or significant digits (signif) to be used for the correlation
-#'  coefficient and the p-value, respectively..
+#'  coefficient and the p-value, respectively. These control computed variables
+#'  (\code{after_stat(r)}, \code{after_stat(rr)}, \code{after_stat(p)}). The
+#'  default p-value label uses the raw test p-value formatted in one step.
 #' @param r.accuracy a real value specifying the number of decimal places of
 #'  precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
 #'  to show 2 decimal places of precision. If specified, then \code{r.digits} is
